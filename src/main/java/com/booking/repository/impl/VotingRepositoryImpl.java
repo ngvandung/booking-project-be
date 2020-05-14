@@ -6,9 +6,12 @@ package com.booking.repository.impl;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.Voting;
 import com.booking.repository.VotingRepository;
@@ -19,6 +22,7 @@ import com.booking.repository.elasticsearch.VotingElasticsearchRepository;
  *
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class VotingRepositoryImpl implements VotingRepository {
 	private static final Logger log = Logger.getLogger(VotingRepositoryImpl.class);
 
@@ -35,7 +39,12 @@ public class VotingRepositoryImpl implements VotingRepository {
 			if (optionalVoting.isPresent()) {
 				voting = optionalVoting.get();
 			} else {
-				voting = sessionFactory.getCurrentSession().get(Voting.class, votingId);
+				Session session = sessionFactory.openSession();
+				Transaction transaction = null;
+				transaction = session.beginTransaction();
+				voting = session.get(Voting.class, votingId);
+				transaction.commit();
+				session.close();
 			}
 			return voting;
 		} catch (Exception e) {
@@ -46,35 +55,35 @@ public class VotingRepositoryImpl implements VotingRepository {
 
 	@Override
 	public Voting updateVoting(Voting voting) {
-		try {
-			sessionFactory.getCurrentSession().update(voting);
-			return voting;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(voting);
+		transaction.commit();
+		session.close();
+		return voting;
 	}
 
 	@Override
 	public Voting createVoting(Voting voting) {
-		try {
-			sessionFactory.getCurrentSession().save(voting);
-			return voting;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(voting);
+		transaction.commit();
+		session.close();
+		return voting;
 	}
 
 	@Override
 	public Voting deleteVoting(long votingId) {
-		try {
-			Voting voting = sessionFactory.getCurrentSession().get(Voting.class, votingId);
-			sessionFactory.getCurrentSession().delete(voting);
-			return voting;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		Voting voting = session.get(Voting.class, votingId);
+		session.delete(voting);
+		transaction.commit();
+		session.close();
+		return voting;
 	}
 }

@@ -10,12 +10,12 @@ import com.booking.model.CityCategory;
  *
  */
 public interface CityCategoryService {
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Integer start,
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start,
 			Integer end);
 
-	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long userId);
+	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long stateId, long userId);
 
-	public CityCategory createCityCategory(String cityName, long userId);
+	public CityCategory createCityCategory(String cityName, long stateId, long userId);
 
 	public CityCategory deleteCityCategory(long cityId);
 

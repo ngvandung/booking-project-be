@@ -31,7 +31,7 @@ import com.booking.util.UserContext;
 public class UserController {
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Iterable<User> userApi(HttpServletRequest request, HttpSession session,
+	public Iterable<User> getUsers(HttpServletRequest request, HttpSession session,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email,
 			@RequestParam(name = "phone", required = false) String phone,

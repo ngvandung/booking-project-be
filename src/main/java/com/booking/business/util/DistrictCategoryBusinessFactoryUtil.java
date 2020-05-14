@@ -25,18 +25,19 @@ public class DistrictCategoryBusinessFactoryUtil {
 	}
 	// ============================
 
-	public static Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Integer start,
-			Integer end) {
-		return getDistrictCategoryBusiness().getDistrictCategories(districtName, isActive, start, end);
+	public static Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Long cityId,
+			Integer start, Integer end) {
+		return getDistrictCategoryBusiness().getDistrictCategories(districtName, isActive, cityId, start, end);
 	}
 
 	public static DistrictCategory updateDistrictCategory(long districtId, String districtName, Integer isActive,
-			UserContext userContext) {
-		return getDistrictCategoryBusiness().updateDistrictCategory(districtId, districtName, isActive, userContext);
+			long cityId, UserContext userContext) {
+		return getDistrictCategoryBusiness().updateDistrictCategory(districtId, districtName, isActive, cityId,
+				userContext);
 	}
 
-	public static DistrictCategory createDistrictCategory(String districtName, UserContext userContext) {
-		return getDistrictCategoryBusiness().createDistrictCategory(districtName, userContext);
+	public static DistrictCategory createDistrictCategory(String districtName, long cityId, UserContext userContext) {
+		return getDistrictCategoryBusiness().createDistrictCategory(districtName, cityId, userContext);
 	}
 
 	public static DistrictCategory deleteDistrictCategory(long districtId, UserContext userContext) {

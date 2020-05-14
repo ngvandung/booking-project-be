@@ -25,18 +25,18 @@ public class CityCategoryBusinessFactoryUtil {
 		return _cityCategoryBusiness;
 	} // ============================
 
-	public static Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Integer start,
-			Integer end) {
-		return getCityCategoryBusiness().getCityCategories(cityName, isActive, start, end);
+	public static Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId,
+			Integer start, Integer end) {
+		return getCityCategoryBusiness().getCityCategories(cityName, isActive, stateId, start, end);
 	}
 
-	public static CityCategory updateCityCategory(long cityId, String cityName, Integer isActive,
+	public static CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long stateId,
 			UserContext userContext) {
-		return getCityCategoryBusiness().updateCityCategory(cityId, cityName, isActive, userContext);
+		return getCityCategoryBusiness().updateCityCategory(cityId, cityName, isActive, stateId, userContext);
 	}
 
-	public static CityCategory createCityCategory(String cityName, UserContext userContext) {
-		return getCityCategoryBusiness().createCityCategory(cityName, userContext);
+	public static CityCategory createCityCategory(String cityName, long stateId, UserContext userContext) {
+		return getCityCategoryBusiness().createCityCategory(cityName, stateId, userContext);
 	}
 
 	public static CityCategory deleteCityCategory(long cityId, UserContext userContext) {

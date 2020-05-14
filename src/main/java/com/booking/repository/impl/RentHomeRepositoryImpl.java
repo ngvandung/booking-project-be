@@ -6,9 +6,12 @@ package com.booking.repository.impl;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.RentHome;
 import com.booking.repository.RentHomeRepository;
@@ -19,7 +22,8 @@ import com.booking.repository.elasticsearch.RentHomeElasticsearchRepository;
  *
  */
 @Repository
-public class RentHomeRepositoryImpl implements RentHomeRepository{
+@Transactional(rollbackFor = Exception.class)
+public class RentHomeRepositoryImpl implements RentHomeRepository {
 	private static final Logger log = Logger.getLogger(RentHomeRepositoryImpl.class);
 
 	@Autowired
@@ -35,7 +39,12 @@ public class RentHomeRepositoryImpl implements RentHomeRepository{
 			if (optionalRentHome.isPresent()) {
 				rentHome = optionalRentHome.get();
 			} else {
-				rentHome = sessionFactory.getCurrentSession().get(RentHome.class, rentId);
+				Session session = sessionFactory.openSession();
+				Transaction transaction = null;
+				transaction = session.beginTransaction();
+				rentHome = session.get(RentHome.class, rentId);
+				transaction.commit();
+				session.close();
 			}
 			return rentHome;
 		} catch (Exception e) {
@@ -46,35 +55,35 @@ public class RentHomeRepositoryImpl implements RentHomeRepository{
 
 	@Override
 	public RentHome updateRentHome(RentHome rentHome) {
-		try {
-			sessionFactory.getCurrentSession().update(rentHome);
-			return rentHome;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(rentHome);
+		transaction.commit();
+		session.close();
+		return rentHome;
 	}
 
 	@Override
 	public RentHome createRentHome(RentHome rentHome) {
-		try {
-			sessionFactory.getCurrentSession().save(rentHome);
-			return rentHome;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(rentHome);
+		transaction.commit();
+		session.close();
+		return rentHome;
 	}
 
 	@Override
 	public RentHome deleteRentHome(long rentId) {
-		try {
-			RentHome rentHome = sessionFactory.getCurrentSession().get(RentHome.class, rentId);
-			sessionFactory.getCurrentSession().delete(rentHome);
-			return rentHome;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		RentHome rentHome = session.get(RentHome.class, rentId);
+		session.delete(rentHome);
+		transaction.commit();
+		session.close();
+		return rentHome;
 	}
 }

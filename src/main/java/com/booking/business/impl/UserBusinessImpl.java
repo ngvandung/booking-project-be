@@ -7,12 +7,10 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.booking.business.UserBusiness;
-import com.booking.constant.RoleConstant;
 import com.booking.model.User;
-import com.booking.model.UserRole;
-import com.booking.repository.UserRoleRepository;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.service.UserService;
 import com.booking.util.UserContext;
@@ -25,8 +23,6 @@ public class UserBusinessImpl implements UserBusiness {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserRoleRepository userRoleRepository;
 
 	@Override
 	public Iterable<User> getUsers(String username, String email, String phone, String firstName, String lastName,
@@ -66,18 +62,18 @@ public class UserBusinessImpl implements UserBusiness {
 			throw new DuplicateKeyException(username);
 		}
 
-		User user = userService.createUser(username, password, email, phone, firstName, lastName, age, address, isHost,
-				birthDay, description);
-		if (user != null) {
-			// Default new user is role USER
-			UserRole userRole = new UserRole();
-			userRole.setRoleId(RoleConstant.USER);
-			userRole.setUserId(user.getUserId());
-			userRoleRepository.createUserRole(userRole);
-
-			return user;
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		int isEnabled = 0;
+		if (isHost == 1) {
+			isEnabled = 0;
+		} else {
+			isEnabled = 1;
 		}
-		return null;
+
+		User user = userService.createUser(username, passwordEncoder.encode(password), email, phone, firstName,
+				lastName, age, address, isHost, birthDay, description, isEnabled);
+
+		return user;
 	}
 
 	@Override

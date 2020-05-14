@@ -37,7 +37,7 @@ public class StateCategoryServiceImpl implements StateCategoryService {
 
 	@Override
 	public Iterable<StateCategory> getStateCategories(String stateName, Integer isActive, Integer start, Integer end) {
-		return null;
+		return stateCategoryRepository.getStateCategories(stateName, isActive, start, end);
 	}
 
 	@Override

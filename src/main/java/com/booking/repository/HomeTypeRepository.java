@@ -10,6 +10,9 @@ import com.booking.model.HomeType;
  *
  */
 public interface HomeTypeRepository {
+
+	public Iterable<HomeType> getHomeTypes(String typeName, Integer start, Integer end);
+
 	public HomeType findById(long homeTypeId);
 
 	public HomeType updateHomeType(HomeType homeType);

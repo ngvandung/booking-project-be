@@ -13,7 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.booking.business.impl.AuthBusinessImpl;
+import com.booking.business.impl.CityCategoryBusinessImpl;
+import com.booking.business.impl.DistrictCategoryBusinessImpl;
+import com.booking.business.impl.HomeTypeBusinessImpl;
+import com.booking.business.impl.StateCategoryBusinessImpl;
 import com.booking.business.impl.UserBusinessImpl;
+import com.booking.business.impl.VillageCategoryBusinessImpl;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.util.ApplicationContext;
 import com.booking.util.BeanUtil;
@@ -46,6 +52,36 @@ public class AppConfig implements WebMvcConfigurer {
 	@Bean
 	public UserBusinessImpl userBusinessImpl() {
 		return new UserBusinessImpl();
+	}
+	
+	@Bean
+	public HomeTypeBusinessImpl homeTypeBusinessImpl() {
+		return new HomeTypeBusinessImpl();
+	}
+	
+	@Bean
+	public CityCategoryBusinessImpl cityCategoryBusinessImpl() {
+		return new CityCategoryBusinessImpl();
+	}
+	
+	@Bean
+	public DistrictCategoryBusinessImpl districtCategoryBusinessImpl() {
+		return new DistrictCategoryBusinessImpl();
+	}
+	
+	@Bean
+	public StateCategoryBusinessImpl stateCategoryBusinessImpl() {
+		return new StateCategoryBusinessImpl();
+	}
+	
+	@Bean
+	public VillageCategoryBusinessImpl villageCategoryBusinessImpl() {
+		return new VillageCategoryBusinessImpl();
+	}
+	
+	@Bean
+	public AuthBusinessImpl authBusinessImpl() {
+		return new AuthBusinessImpl();
 	}
 
 	@Bean

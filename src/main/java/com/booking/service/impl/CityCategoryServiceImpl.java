@@ -40,18 +40,19 @@ public class CityCategoryServiceImpl implements CityCategoryService {
 	private CounterService counterService;
 
 	@Override
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Integer start, Integer end) {
-		return cityCategoryRepository.getCityCategories(cityName, isActive, start, end);
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start, Integer end) {
+		return cityCategoryRepository.getCityCategories(cityName, isActive, stateId, start, end);
 	}
 
 	@Override
-	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long userId) {
+	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long stateId, long userId) {
 		CityCategory cityCategory = cityCategoryRepository.findById(cityId);
 
 		if (cityCategory != null) {
 			cityCategory.setCityName(cityName);
 			cityCategory.setModifiedDate(new Date());
 			cityCategory.setIsActive(isActive);
+			cityCategory.setStateId(stateId);
 			cityCategory.setUserId(userId);
 
 			cityCategory = cityCategoryRepository.updateCityCategory(cityCategory);
@@ -67,7 +68,7 @@ public class CityCategoryServiceImpl implements CityCategoryService {
 	}
 
 	@Override
-	public CityCategory createCityCategory(String cityName, long userId) {
+	public CityCategory createCityCategory(String cityName, long stateId, long userId) {
 		CityCategory cityCategory = new CityCategory();
 
 		long cityId = counterService.increment(CityCategory.class.getName());
@@ -75,6 +76,7 @@ public class CityCategoryServiceImpl implements CityCategoryService {
 		cityCategory.setCityId(cityId);
 		cityCategory.setCityName(cityName);
 		cityCategory.setIsActive(1);
+		cityCategory.setStateId(stateId);
 		cityCategory.setCreateDate(new Date());
 		cityCategory.setModifiedDate(new Date());
 		cityCategory.setUserId(userId);

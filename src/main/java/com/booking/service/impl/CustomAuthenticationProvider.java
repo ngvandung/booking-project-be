@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +31,8 @@ import com.booking.repository.UserRoleRepository;
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
+	private static final Logger log = Logger.getLogger(CustomAuthenticationProvider.class);
+
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;
 	@Autowired
@@ -39,6 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
 
@@ -46,7 +50,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		if (user != null) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String comparePassword = user.getPassword();
-			if (passwordEncoder.matches(password, passwordEncoder.encode(comparePassword))) {
+			if (passwordEncoder.matches(password, comparePassword)) {
 				Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 				List<UserRole> userRoles = userRoleRepository.findByUserId(user.getUserId());
 				for (UserRole userRole : userRoles) {

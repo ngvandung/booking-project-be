@@ -11,7 +11,7 @@ import com.booking.model.CityCategory;
  */
 public interface CityCategoryRepository {
 
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Integer start, Integer end);
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start, Integer end);
 
 	public CityCategory findById(long cityId);
 

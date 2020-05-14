@@ -6,8 +6,6 @@ package com.booking.repository.impl;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.apache.log4j.Logger;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
@@ -24,10 +22,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.booking.constant.RoleConstant;
 import com.booking.constant.UserConstant;
 import com.booking.model.User;
+import com.booking.model.UserRole;
 import com.booking.repository.UserRepository;
+import com.booking.repository.UserRoleRepository;
 import com.booking.repository.elasticsearch.UserElasticsearchRepository;
 
 /**
@@ -35,7 +37,7 @@ import com.booking.repository.elasticsearch.UserElasticsearchRepository;
  *
  */
 @Repository
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserRepositoryImpl implements UserRepository {
 
 	private static final Logger log = Logger.getLogger(UserRepositoryImpl.class);
@@ -45,6 +47,9 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Autowired
 	private UserElasticsearchRepository userElasticsearchRepository;
+
+	@Autowired
+	private UserRoleRepository userRoleRepository;
 
 	@Override
 	public Iterable<User> getUsers(String username, String email, String phone, String firstName, String lastName,
@@ -101,61 +106,69 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public User deleteUser(long userId) {
-		try {
-			User user = sessionFactory.getCurrentSession().get(User.class, userId);
-			sessionFactory.getCurrentSession().delete(user);
-			return user;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Transaction transaction = null;
+		Session session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
+		User user = session.get(User.class, userId);
+		session.delete(user);
+		transaction.commit();
+		session.close();
+		return user;
 	}
 
 	@Override
 	public User findByUserId(long userId) {
 		User user = null;
-		try {
-			Optional<User> optionalUser = userElasticsearchRepository.findById(userId);
-			if (optionalUser.isPresent()) {
-				user = optionalUser.get();
-			} else {
-				user = sessionFactory.getCurrentSession().get(User.class, userId);
-			}
-			return user;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
+
+		Optional<User> optionalUser = userElasticsearchRepository.findById(userId);
+		if (optionalUser.isPresent()) {
+			user = optionalUser.get();
+		} else {
+			Transaction transaction = null;
+			Session session = sessionFactory.openSession();
+			transaction = session.beginTransaction();
+			user = session.get(User.class, userId);
+			transaction.commit();
+			session.close();
 		}
+		return user;
 	}
 
 	@Override
 	public User updateUser(User user) {
-		try {
-			sessionFactory.getCurrentSession().update(user);
-			return user;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Transaction transaction = null;
+		Session session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
+		session.update(user);
+		transaction.commit();
+		session.close();
+		return user;
 	}
 
 	@Override
 	public User createUser(User user) {
-		try {
-			sessionFactory.getCurrentSession().save(user);
-			return user;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Transaction transaction = null;
+		Session session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
+		session.save(user);
+
+		// Default new user is role USER
+		UserRole userRole = new UserRole();
+		userRole.setRoleId(RoleConstant.USER);
+		userRole.setUserId(user.getUserId());
+		userRoleRepository.createUserRole(userRole);
+
+		transaction.commit();
+		session.close();
+		return user;
 	}
 
 	@Override
 	public User findByUserName(String username) {
+		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		User user = null;
 		try {
-			Session session = sessionFactory.getSessionFactory().openSession();
 			if (session != null) {
 				// start a transaction
 				transaction = session.beginTransaction();
@@ -179,6 +192,7 @@ public class UserRepositoryImpl implements UserRepository {
 			}
 			log.error(e);
 		}
+		session.close();
 		return user;
 	}
 

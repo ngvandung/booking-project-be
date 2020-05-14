@@ -25,12 +25,20 @@ public class Location {
 	private long locationId;
 	@Column(name = "stateId", nullable = false)
 	private long stateId;
+	@Column(name = "stateName", nullable = false)
+	private long stateName;
 	@Column(name = "cityId", nullable = false)
 	private long cityId;
+	@Column(name = "cityName", nullable = false)
+	private long cityName;
 	@Column(name = "districtId", nullable = false)
 	private long districtId;
+	@Column(name = "districtName", nullable = false)
+	private long districtName;
 	@Column(name = "villageId", nullable = false)
 	private long villageId;
+	@Column(name = "villageName", nullable = false)
+	private long villageName;
 	@Column(name = "linkGoogleMap", nullable = false)
 	private String linkGoogleMap;
 	@Column(name = "isActive", nullable = false)
@@ -41,6 +49,38 @@ public class Location {
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
 	private long userId;
+
+	public long getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(long stateName) {
+		this.stateName = stateName;
+	}
+
+	public long getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(long cityName) {
+		this.cityName = cityName;
+	}
+
+	public long getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(long districtName) {
+		this.districtName = districtName;
+	}
+
+	public long getVillageName() {
+		return villageName;
+	}
+
+	public void setVillageName(long villageName) {
+		this.villageName = villageName;
+	}
 
 	public long getLocationId() {
 		return locationId;

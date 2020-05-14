@@ -20,7 +20,7 @@ public interface UserService {
 			String lastName, int age, String address, int isHost, Date birthDay, String description, int isEnabled);
 
 	public User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, int isHost, Date birthDay, String description);
+			String lastName, int age, String address, int isHost, Date birthDay, String description, int isEnabled);
 
 	public User deleteUser(long userId);
 

@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, int isHost, Date birthDay, String description) {
+			String lastName, int age, String address, int isHost, Date birthDay, String description, int isEnabled) {
 		User user = new User();
 
 		long userId = counterService.increment(User.class.getName());
@@ -102,12 +102,11 @@ public class UserServiceImpl implements UserService {
 		user.setIsHost(isHost);
 		user.setBirthDay(birthDay);
 		user.setDescription(description);
-		user.setIsEnabled(1);
+		user.setIsEnabled(isEnabled);
 		user.setModifiedDate(new Date());
 		user.setCreateDate(new Date());
 
 		user = userRepository.createUser(user);
-
 		if (user != null) {
 			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(user.getUserId())).withObject(user)
 					.build();

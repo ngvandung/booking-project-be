@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -19,13 +20,15 @@ import com.booking.service.AuthService;
  *
  */
 public class LogInterceptor extends HandlerInterceptorAdapter {
+	
+	private static final Logger log = Logger.getLogger(LogInterceptor.class);
 	@Autowired
 	private AuthService authService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+		
 		String authorization = request.getHeader("Authorization");
 
 		HttpSession session = request.getSession();

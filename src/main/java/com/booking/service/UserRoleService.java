@@ -11,4 +11,6 @@ import com.booking.model.UserRole;
  */
 public interface UserRoleService {
 	public UserRole updateUserRole(int roleId, long userId);
+	
+	public UserRole createUserRole(UserRole userRole);
 }

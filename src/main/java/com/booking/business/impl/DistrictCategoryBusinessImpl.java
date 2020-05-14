@@ -21,27 +21,27 @@ public class DistrictCategoryBusinessImpl implements DistrictCategoryBusiness {
 	private DistrictCategoryService districtCategoryService;
 
 	@Override
-	public Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Integer start,
-			Integer end) {
-		return districtCategoryService.getDistrictCategories(districtName, isActive, start, end);
+	public Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Long cityId,
+			Integer start, Integer end) {
+		return districtCategoryService.getDistrictCategories(districtName, isActive, cityId, start, end);
 	}
 
 	@Override
-	public DistrictCategory updateDistrictCategory(long districtId, String districtName, Integer isActive,
+	public DistrictCategory updateDistrictCategory(long districtId, String districtName, Integer isActive, long cityId,
 			UserContext userContext) {
 		DistrictCategory DistrictCategory = districtCategoryService.findById(districtId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, DistrictCategory.getUserId())) {
 			DistrictCategory = districtCategoryService.updateDistrictCategory(districtId, districtName, isActive,
-					userContext.getUser().getUserId());
+					cityId, userContext.getUser().getUserId());
 		}
 		return DistrictCategory;
 	}
 
 	@Override
-	public DistrictCategory createDistrictCategory(String districtName, UserContext userContext) {
+	public DistrictCategory createDistrictCategory(String districtName, long cityId, UserContext userContext) {
 		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
 
-		return districtCategoryService.createDistrictCategory(districtName, userContext.getUser().getUserId());
+		return districtCategoryService.createDistrictCategory(districtName, cityId, userContext.getUser().getUserId());
 	}
 
 	@Override

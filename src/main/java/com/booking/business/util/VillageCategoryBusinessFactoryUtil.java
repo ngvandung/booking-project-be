@@ -25,18 +25,19 @@ public class VillageCategoryBusinessFactoryUtil {
 	}
 	// ============================
 
-	public static Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Integer start,
-			Integer end) {
-		return getVillageCategoryBusiness().getVillageCategories(villageName, isActive, start, end);
+	public static Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId,
+			Integer start, Integer end) {
+		return getVillageCategoryBusiness().getVillageCategories(villageName, isActive, districtId, start, end);
 	}
 
 	public static VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive,
-			UserContext userContext) {
-		return getVillageCategoryBusiness().updateVillageCategory(villageId, villageName, isActive, userContext);
+			long districtId, UserContext userContext) {
+		return getVillageCategoryBusiness().updateVillageCategory(villageId, villageName, isActive, districtId,
+				userContext);
 	}
 
-	public static VillageCategory createVillageCategory(String villageName, UserContext userContext) {
-		return getVillageCategoryBusiness().createVillageCategory(villageName, userContext);
+	public static VillageCategory createVillageCategory(String villageName, long districtId, UserContext userContext) {
+		return getVillageCategoryBusiness().createVillageCategory(villageName, districtId, userContext);
 	}
 
 	public static VillageCategory deleteVillageCategory(long villageId, UserContext userContext) {

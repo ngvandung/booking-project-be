@@ -11,12 +11,13 @@ import com.booking.util.UserContext;
  *
  */
 public interface VillageCategoryBusiness {
-	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Integer start,
-			Integer end);
+	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId,
+			Integer start, Integer end);
 
-	public VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive, UserContext userContext);
+	public VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive, long districtId,
+			UserContext userContext);
 
-	public VillageCategory createVillageCategory(String villageName, UserContext userContext);
+	public VillageCategory createVillageCategory(String villageName, long districtId, UserContext userContext);
 
 	public VillageCategory deleteVillageCategory(long villageId, UserContext userContext);
 

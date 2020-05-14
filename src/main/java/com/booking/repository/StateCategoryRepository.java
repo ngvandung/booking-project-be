@@ -10,6 +10,9 @@ import com.booking.model.StateCategory;
  *
  */
 public interface StateCategoryRepository {
+
+	public Iterable<StateCategory> getStateCategories(String stateName, Integer isActive, Integer start, Integer end);
+
 	public StateCategory findById(long stateId);
 
 	public StateCategory updateStateCategory(StateCategory stateCategory);

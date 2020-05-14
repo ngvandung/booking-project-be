@@ -6,9 +6,20 @@ package com.booking.repository.impl;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.HomeType;
 import com.booking.repository.HomeTypeRepository;
@@ -19,6 +30,7 @@ import com.booking.repository.elasticsearch.HomeTypeElasticsearchRepository;
  *
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class HomeTypeRepositoryImpl implements HomeTypeRepository {
 	private static final Logger log = Logger.getLogger(HomeTypeRepositoryImpl.class);
 
@@ -35,7 +47,12 @@ public class HomeTypeRepositoryImpl implements HomeTypeRepository {
 			if (optionalHomeType.isPresent()) {
 				homeType = optionalHomeType.get();
 			} else {
-				homeType = sessionFactory.getCurrentSession().get(HomeType.class, homeTypeId);
+				Session session = sessionFactory.openSession();
+				Transaction transaction = null;
+				transaction = session.beginTransaction();
+				homeType = session.get(HomeType.class, homeTypeId);
+				transaction.commit();
+				session.close();
 			}
 			return homeType;
 		} catch (Exception e) {
@@ -46,35 +63,56 @@ public class HomeTypeRepositoryImpl implements HomeTypeRepository {
 
 	@Override
 	public HomeType updateHomeType(HomeType homeType) {
-		try {
-			sessionFactory.getCurrentSession().update(homeType);
-			return homeType;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(homeType);
+		transaction.commit();
+		session.close();
+		return homeType;
 	}
 
 	@Override
 	public HomeType createHomeType(HomeType homeType) {
-		try {
-			sessionFactory.getCurrentSession().save(homeType);
-			return homeType;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(homeType);
+		transaction.commit();
+		session.close();
+		return homeType;
 	}
 
 	@Override
 	public HomeType deleteHomeType(long homeTypeId) {
-		try {
-			HomeType homeType = sessionFactory.getCurrentSession().get(HomeType.class, homeTypeId);
-			sessionFactory.getCurrentSession().delete(homeType);
-			return homeType;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		HomeType homeType = session.get(HomeType.class, homeTypeId);
+		session.delete(homeType);
+		transaction.commit();
+		session.close();
+		return homeType;
+	}
+
+	@Override
+	public Iterable<HomeType> getHomeTypes(String typeName, Integer start, Integer end) {
+		if (start == null || end == null) {
+			start = 0;
+			end = 15;
 		}
+		Pageable sortedByHomeTypeId = PageRequest.of(start, end, Sort.by("homeTypeId"));
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.must(QueryBuilders.matchAllQuery());
+		if (typeName != null) {
+			QueryBuilder queryBuilder = QueryBuilders.matchQuery("typeName", typeName);
+			boolQueryBuilder.must(queryBuilder);
+		}
+
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder)
+				.withPageable(sortedByHomeTypeId).build();
+
+		return homeTypeElasticsearchRepository.search(searchQuery);
 	}
 }

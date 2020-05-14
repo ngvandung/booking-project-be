@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.User;
 import com.booking.repository.UserDetailsRepository;
@@ -20,6 +21,7 @@ import com.booking.repository.UserDetailsRepository;
  *
  */
 @Repository("UserDetailsRepository")
+@Transactional(rollbackFor = Exception.class)
 public class UserDetailsRepositoryImpl implements UserDetailsRepository {
 
 	@Autowired
@@ -29,8 +31,8 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
 	public User findUserByUsername(String username) {
 		Transaction transaction = null;
 		User user = null;
+		Session session = sessionFactory.openSession();
 		try {
-			Session session = sessionFactory.getSessionFactory().openSession();
 			if (session != null) {
 				// start a transaction
 				transaction = session.beginTransaction();
@@ -54,6 +56,7 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
 			}
 			e.printStackTrace();
 		}
+		session.close();
 		return user;
 	}
 

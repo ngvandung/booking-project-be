@@ -6,9 +6,12 @@ package com.booking.repository.impl;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.Comment;
 import com.booking.repository.CommentRepository;
@@ -19,6 +22,7 @@ import com.booking.repository.elasticsearch.CommentElasticsearchRepository;
  *
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class CommentRepositoryImpl implements CommentRepository {
 	private static final Logger log = Logger.getLogger(CommentRepositoryImpl.class);
 
@@ -35,7 +39,12 @@ public class CommentRepositoryImpl implements CommentRepository {
 			if (optionalComment.isPresent()) {
 				comment = optionalComment.get();
 			} else {
-				comment = sessionFactory.getCurrentSession().get(Comment.class, commentId);
+				Session session = sessionFactory.openSession();
+				Transaction transaction = null;
+				transaction = session.beginTransaction();
+				comment = session.get(Comment.class, commentId);
+				transaction.commit();
+				session.close();
 			}
 			return comment;
 		} catch (Exception e) {
@@ -46,36 +55,36 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@Override
 	public Comment updateComment(Comment comment) {
-		try {
-			sessionFactory.getCurrentSession().update(comment);
-			return comment;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(comment);
+		transaction.commit();
+		session.close();
+		return comment;
 	}
 
 	@Override
 	public Comment createComment(Comment comment) {
-		try {
-			sessionFactory.getCurrentSession().save(comment);
-			return comment;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(comment);
+		transaction.commit();
+		session.close();
+		return comment;
 	}
 
 	@Override
 	public Comment deleteComment(long commentId) {
-		try {
-			Comment comment = sessionFactory.getCurrentSession().get(Comment.class, commentId);
-			sessionFactory.getCurrentSession().delete(comment);
-			return comment;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		Comment comment = sessionFactory.getCurrentSession().get(Comment.class, commentId);
+		session.delete(comment);
+		transaction.commit();
+		session.close();
+		return comment;
 	}
 
 }

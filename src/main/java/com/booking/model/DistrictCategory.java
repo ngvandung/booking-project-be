@@ -27,12 +27,22 @@ public class DistrictCategory {
 	private String districtName;
 	@Column(name = "isActive", nullable = false)
 	private int isActive;
+	@Column(name = "cityId", nullable = false)
+	private long cityId;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
 	private long userId;
+
+	public long getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(long cityId) {
+		this.cityId = cityId;
+	}
 
 	public long getDistrictId() {
 		return districtId;

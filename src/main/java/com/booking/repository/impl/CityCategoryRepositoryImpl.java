@@ -11,7 +11,9 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.constant.CityCategoryConstant;
 import com.booking.model.CityCategory;
@@ -30,6 +33,7 @@ import com.booking.repository.elasticsearch.CityCategoryElasticsearchRepository;
  *
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class CityCategoryRepositoryImpl implements CityCategoryRepository {
 
 	private static final Logger log = Logger.getLogger(CityCategoryRepositoryImpl.class);
@@ -48,7 +52,12 @@ public class CityCategoryRepositoryImpl implements CityCategoryRepository {
 			if (optionalCityCategory.isPresent()) {
 				cityCategory = optionalCityCategory.get();
 			} else {
-				cityCategory = sessionFactory.getCurrentSession().get(CityCategory.class, cityId);
+				Session session = sessionFactory.openSession();
+				Transaction transaction = null;
+				transaction = session.beginTransaction();
+				cityCategory = session.get(CityCategory.class, cityId);
+				transaction.commit();
+				session.close();
 			}
 			return cityCategory;
 		} catch (Exception e) {
@@ -59,40 +68,41 @@ public class CityCategoryRepositoryImpl implements CityCategoryRepository {
 
 	@Override
 	public CityCategory updateCityCategory(CityCategory cityCategory) {
-		try {
-			sessionFactory.getCurrentSession().update(cityCategory);
-			return cityCategory;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(cityCategory);
+		transaction.commit();
+		session.close();
+		return cityCategory;
 	}
 
 	@Override
 	public CityCategory createCityCategory(CityCategory cityCategory) {
-		try {
-			sessionFactory.getCurrentSession().save(cityCategory);
-			return cityCategory;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(cityCategory);
+		transaction.commit();
+		session.close();
+		return cityCategory;
 	}
 
 	@Override
 	public CityCategory deleteCityCategory(long cityId) {
-		try {
-			CityCategory cityCategory = sessionFactory.getCurrentSession().get(CityCategory.class, cityId);
-			sessionFactory.getCurrentSession().delete(cityCategory);
-			return cityCategory;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		CityCategory cityCategory = session.get(CityCategory.class, cityId);
+		session.delete(cityCategory);
+		transaction.commit();
+		session.close();
+		return cityCategory;
 	}
 
 	@Override
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Integer start, Integer end) {
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start,
+			Integer end) {
 		if (start == null || end == null) {
 			start = 0;
 			end = 15;

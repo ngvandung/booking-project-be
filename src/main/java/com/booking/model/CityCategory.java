@@ -27,12 +27,22 @@ public class CityCategory {
 	private String cityName;
 	@Column(name = "isActive", nullable = false)
 	private int isActive;
+	@Column(name = "stateId", nullable = false)
+	private long stateId;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
 	private long userId;
+
+	public long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(long stateId) {
+		this.stateId = stateId;
+	}
 
 	public long getCityId() {
 		return cityId;

@@ -17,6 +17,6 @@ public interface UserRoleRepository {
 	public UserRole updateUserRole(UserRole userRole);
 
 	public UserRole createUserRole(UserRole userRole);
-	
+
 	public UserRole findByRoleId_UserId(int roleId, long userId);
 }

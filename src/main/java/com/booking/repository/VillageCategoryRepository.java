@@ -10,6 +10,10 @@ import com.booking.model.VillageCategory;
  *
  */
 public interface VillageCategoryRepository {
+
+	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId, Integer start,
+			Integer end);
+
 	public VillageCategory findById(long villageId);
 
 	public VillageCategory updateVillageCategory(VillageCategory villageCategory);

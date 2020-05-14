@@ -3,12 +3,13 @@
  */
 package com.booking.repository.impl;
 
-import javax.transaction.Transactional;
-
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.Counter;
 import com.booking.repository.CounterRepository;
@@ -18,7 +19,7 @@ import com.booking.repository.CounterRepository;
  *
  */
 @Repository
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class CounterRepositoryImpl implements CounterRepository {
 
 	private static final Logger log = Logger.getLogger(CounterRepositoryImpl.class);
@@ -28,35 +29,35 @@ public class CounterRepositoryImpl implements CounterRepository {
 
 	@Override
 	public Counter createCounter(Counter counter) {
-		try {
-			sessionFactory.getCurrentSession().save(counter);
-			return counter;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(counter);
+		transaction.commit();
+		session.close();
+		return counter;
 	}
 
 	@Override
 	public Counter updateCounter(Counter counter) {
-		try {
-			sessionFactory.getCurrentSession().update(counter);
-			return counter;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(counter);
+		transaction.commit();
+		session.close();
+		return counter;
 	}
 
 	@Override
 	public Counter findById(String clazz) {
-		try {
-			Counter counter = sessionFactory.getCurrentSession().find(Counter.class, clazz);
-			return counter;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		Counter counter = session.find(Counter.class, clazz);
+		transaction.commit();
+		session.close();
+		return counter;
 	}
 
 }

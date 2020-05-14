@@ -13,6 +13,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.UserRole;
 import com.booking.repository.UserRoleRepository;
@@ -22,6 +23,7 @@ import com.booking.repository.UserRoleRepository;
  *
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class UserRoleRepositoryImpl implements UserRoleRepository {
 
 	private static final Logger log = Logger.getLogger(UserRoleRepositoryImpl.class);
@@ -31,10 +33,10 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<UserRole> findByUserId(long userId) {
-		Transaction transaction = null;
 		List<UserRole> userRole = new ArrayList<UserRole>();
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
 		try {
-			Session session = sessionFactory.getSessionFactory().openSession();
 			if (session != null) {
 				// start a transaction
 				transaction = session.beginTransaction();
@@ -54,37 +56,38 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 			}
 			log.error(e);
 		}
+		session.close();
 		return userRole;
 	}
 
 	@Override
 	public UserRole updateUserRole(UserRole userRole) {
-		try {
-			sessionFactory.getCurrentSession().update(userRole);
-			return userRole;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Transaction transaction = null;
+		Session session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
+		session.update(userRole);
+		transaction.commit();
+		session.close();
+		return userRole;
 	}
 
 	@Override
 	public UserRole createUserRole(UserRole userRole) {
-		try {
-			sessionFactory.getCurrentSession().save(userRole);
-			return userRole;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Transaction transaction = null;
+		Session session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
+		session.save(userRole);
+		transaction.commit();
+		session.close();
+		return userRole;
 	}
 
 	@Override
 	public UserRole findByRoleId_UserId(int roleId, long userId) {
 		Transaction transaction = null;
+		Session session = sessionFactory.openSession();
 		UserRole userRole = null;
 		try {
-			Session session = sessionFactory.getSessionFactory().openSession();
 			if (session != null) {
 				// start a transaction
 				transaction = session.beginTransaction();
@@ -109,6 +112,7 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 			}
 			log.error(e);
 		}
+		session.close();
 		return userRole;
 	}
 

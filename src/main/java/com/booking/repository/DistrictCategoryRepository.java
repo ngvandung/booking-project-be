@@ -10,6 +10,9 @@ import com.booking.model.DistrictCategory;
  *
  */
 public interface DistrictCategoryRepository {
+	
+	public Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Long cityId, Integer start, Integer end);
+	
 	public DistrictCategory findById(long districtCategoryId);
 
 	public DistrictCategory updateDistrictCategory(DistrictCategory districtCategory);

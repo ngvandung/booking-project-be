@@ -22,25 +22,25 @@ public class CityCategoryBusinessImpl implements CityCategoryBusiness {
 	private CityCategoryService cityCategoryService;
 
 	@Override
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Integer start, Integer end) {
-		return cityCategoryService.getCityCategories(cityName, isActive, start, end);
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start, Integer end) {
+		return cityCategoryService.getCityCategories(cityName, isActive, stateId, start, end);
 	}
 
 	@Override
-	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, UserContext userContext) {
+	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long stateId, UserContext userContext) {
 		CityCategory cityCategory = cityCategoryService.findById(cityId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, cityCategory.getUserId())) {
-			cityCategory = cityCategoryService.updateCityCategory(cityId, cityName, isActive,
+			cityCategory = cityCategoryService.updateCityCategory(cityId, cityName, isActive, stateId,
 					userContext.getUser().getUserId());
 		}
 		return cityCategory;
 	}
 
 	@Override
-	public CityCategory createCityCategory(String cityName, UserContext userContext) {
+	public CityCategory createCityCategory(String cityName, long stateId, UserContext userContext) {
 		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
 
-		return cityCategoryService.createCityCategory(cityName, userContext.getUser().getUserId());
+		return cityCategoryService.createCityCategory(cityName, stateId, userContext.getUser().getUserId());
 	}
 
 	@Override

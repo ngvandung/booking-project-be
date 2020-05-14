@@ -37,21 +37,22 @@ public class VillageCategoryServiceImpl implements VillageCategoryService {
 	private CounterService counterService;
 
 	@Override
-	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Integer start,
-			Integer end) {
-		// return villageCategoryRepository.getVillageCategories(villageName, isActive,
-		// start, end);
-		return null;
+	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId,
+			Integer start, Integer end) {
+		return villageCategoryRepository.getVillageCategories(villageName, isActive, districtId, start, end);
 	}
 
 	@Override
-	public VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive, long userId) {
+	public VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive, long districtId,
+			long userId) {
 		VillageCategory villageCategory = villageCategoryRepository.findById(villageId);
 
 		if (villageCategory != null) {
 			villageCategory.setVillageName(villageName);
 			villageCategory.setModifiedDate(new Date());
 			villageCategory.setIsActive(isActive);
+			villageCategory.setDistrictId(districtId);
+			villageCategory.setDistrictId(districtId);
 			villageCategory.setUserId(userId);
 
 			villageCategory = villageCategoryRepository.updateVillageCategory(villageCategory);
@@ -67,7 +68,7 @@ public class VillageCategoryServiceImpl implements VillageCategoryService {
 	}
 
 	@Override
-	public VillageCategory createVillageCategory(String villageName, long userId) {
+	public VillageCategory createVillageCategory(String villageName, long districtId, long userId) {
 		VillageCategory villageCategory = new VillageCategory();
 
 		long villageId = counterService.increment(VillageCategory.class.getName());
@@ -75,6 +76,7 @@ public class VillageCategoryServiceImpl implements VillageCategoryService {
 		villageCategory.setVillageId(villageId);
 		villageCategory.setVillageName(villageName);
 		villageCategory.setIsActive(1);
+		villageCategory.setDistrictId(districtId);
 		villageCategory.setCreateDate(new Date());
 		villageCategory.setModifiedDate(new Date());
 		villageCategory.setUserId(userId);

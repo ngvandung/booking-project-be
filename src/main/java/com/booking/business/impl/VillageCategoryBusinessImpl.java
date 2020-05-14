@@ -20,27 +20,27 @@ public class VillageCategoryBusinessImpl implements VillageCategoryBusiness {
 	private VillageCategoryService villageCategoryService;
 
 	@Override
-	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Integer start,
-			Integer end) {
-		return villageCategoryService.getVillageCategories(villageName, isActive, start, end);
+	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId,
+			Integer start, Integer end) {
+		return villageCategoryService.getVillageCategories(villageName, isActive, districtId, start, end);
 	}
 
 	@Override
-	public VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive,
+	public VillageCategory updateVillageCategory(long villageId, String villageName, Integer isActive, long districtId,
 			UserContext userContext) {
 		VillageCategory villageCategory = villageCategoryService.findById(villageId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, villageCategory.getUserId())) {
-			villageCategory = villageCategoryService.updateVillageCategory(villageId, villageName, isActive,
+			villageCategory = villageCategoryService.updateVillageCategory(villageId, villageName, isActive, districtId,
 					userContext.getUser().getUserId());
 		}
 		return villageCategory;
 	}
 
 	@Override
-	public VillageCategory createVillageCategory(String villageName, UserContext userContext) {
+	public VillageCategory createVillageCategory(String villageName, long districtId, UserContext userContext) {
 		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
 
-		return villageCategoryService.createVillageCategory(villageName, userContext.getUser().getUserId());
+		return villageCategoryService.createVillageCategory(villageName, districtId, userContext.getUser().getUserId());
 	}
 
 	@Override

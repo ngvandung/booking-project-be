@@ -36,15 +36,13 @@ public class DistrictCategoryServiceImpl implements DistrictCategoryService {
 	private CounterService counterService;
 
 	@Override
-	public Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Integer start,
+	public Iterable<DistrictCategory> getDistrictCategories(String districtName, Integer isActive, Long cityId, Integer start,
 			Integer end) {
-		// return districtCategoryRepository.getDistrictCategories(districtName,
-		// isActive, start, end);
-		return null;
+		return districtCategoryRepository.getDistrictCategories(districtName, isActive, cityId, start, end);
 	}
 
 	@Override
-	public DistrictCategory updateDistrictCategory(long districtId, String districtName, Integer isActive,
+	public DistrictCategory updateDistrictCategory(long districtId, String districtName, Integer isActive, long cityId,
 			long userId) {
 		DistrictCategory districtCategory = districtCategoryRepository.findById(districtId);
 
@@ -53,6 +51,7 @@ public class DistrictCategoryServiceImpl implements DistrictCategoryService {
 			districtCategory.setModifiedDate(new Date());
 			districtCategory.setIsActive(isActive);
 			districtCategory.setUserId(userId);
+			districtCategory.setCityId(cityId);
 
 			districtCategory = districtCategoryRepository.updateDistrictCategory(districtCategory);
 			if (districtCategory != null) {
@@ -67,7 +66,7 @@ public class DistrictCategoryServiceImpl implements DistrictCategoryService {
 	}
 
 	@Override
-	public DistrictCategory createDistrictCategory(String districtName, long userId) {
+	public DistrictCategory createDistrictCategory(String districtName, long cityId, long userId) {
 		DistrictCategory districtCategory = new DistrictCategory();
 
 		long districtId = counterService.increment(DistrictCategory.class.getName());
@@ -75,6 +74,7 @@ public class DistrictCategoryServiceImpl implements DistrictCategoryService {
 		districtCategory.setDistrictId(districtId);
 		districtCategory.setDistrictName(districtName);
 		districtCategory.setIsActive(1);
+		districtCategory.setCityId(cityId);
 		districtCategory.setCreateDate(new Date());
 		districtCategory.setModifiedDate(new Date());
 		districtCategory.setUserId(userId);

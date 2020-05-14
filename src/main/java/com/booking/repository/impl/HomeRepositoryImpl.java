@@ -6,9 +6,12 @@ package com.booking.repository.impl;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.Home;
 import com.booking.repository.HomeRepository;
@@ -19,6 +22,7 @@ import com.booking.repository.elasticsearch.HomeElasticsearchRepository;
  *
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class HomeRepositoryImpl implements HomeRepository {
 	private static final Logger log = Logger.getLogger(HomeRepositoryImpl.class);
 
@@ -35,7 +39,12 @@ public class HomeRepositoryImpl implements HomeRepository {
 			if (optionalHome.isPresent()) {
 				home = optionalHome.get();
 			} else {
-				home = sessionFactory.getCurrentSession().get(Home.class, homeId);
+				Session session = sessionFactory.openSession();
+				Transaction transaction = null;
+				transaction = session.beginTransaction();
+				home = session.get(Home.class, homeId);
+				transaction.commit();
+				session.close();
 			}
 			return home;
 		} catch (Exception e) {
@@ -46,35 +55,36 @@ public class HomeRepositoryImpl implements HomeRepository {
 
 	@Override
 	public Home updateHome(Home home) {
-		try {
-			sessionFactory.getCurrentSession().update(home);
-			return home;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.update(home);
+		transaction.commit();
+		session.close();
+		return home;
+
 	}
 
 	@Override
 	public Home createHome(Home home) {
-		try {
-			sessionFactory.getCurrentSession().save(home);
-			return home;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		session.save(home);
+		transaction.commit();
+		session.close();
+		return home;
 	}
 
 	@Override
 	public Home deleteHome(long homeId) {
-		try {
-			Home home = sessionFactory.getCurrentSession().get(Home.class, homeId);
-			sessionFactory.getCurrentSession().delete(home);
-			return home;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		Home home = session.get(Home.class, homeId);
+		session.delete(home);
+		transaction.commit();
+		session.close();
+		return home;
 	}
 }
