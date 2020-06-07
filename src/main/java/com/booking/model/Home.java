@@ -25,10 +25,30 @@ public class Home {
 	private long homeId;
 	@Column(name = "name", nullable = false)
 	private String name;
+	@Column(name = "categoryId", nullable = false)
+	private long categoryId;
 	@Column(name = "homeTypeId", nullable = false)
 	private long homeTypeId;
-	@Column(name = "locationId", nullable = false)
-	private long locationId;
+	@Column(name = "typeName", nullable = false)
+	private String typeName;
+	@Column(name = "stateId", nullable = false)
+	private long stateId;
+	@Column(name = "stateName", nullable = false)
+	private String stateName;
+	@Column(name = "cityId", nullable = false)
+	private long cityId;
+	@Column(name = "cityName", nullable = false)
+	private String cityName;
+	@Column(name = "districtId", nullable = false)
+	private long districtId;
+	@Column(name = "districtName", nullable = false)
+	private String districtName;
+	@Column(name = "villageId", nullable = false)
+	private long villageId;
+	@Column(name = "villageName", nullable = false)
+	private String villageName;
+	@Column(name = "linkGoogleMap", nullable = false)
+	private String linkGoogleMap;
 	@Column(name = "price", nullable = false)
 	private double price;
 	@Column(name = "countBedroom", nullable = false)
@@ -68,6 +88,14 @@ public class Home {
 		this.name = name;
 	}
 
+	public long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(long categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public long getHomeTypeId() {
 		return homeTypeId;
 	}
@@ -76,12 +104,84 @@ public class Home {
 		this.homeTypeId = homeTypeId;
 	}
 
-	public long getLocationId() {
-		return locationId;
+	public String getTypeName() {
+		return typeName;
 	}
 
-	public void setLocationId(long locationId) {
-		this.locationId = locationId;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(long stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public long getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(long cityId) {
+		this.cityId = cityId;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(long districtId) {
+		this.districtId = districtId;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public long getVillageId() {
+		return villageId;
+	}
+
+	public void setVillageId(long villageId) {
+		this.villageId = villageId;
+	}
+
+	public String getVillageName() {
+		return villageName;
+	}
+
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+
+	public String getLinkGoogleMap() {
+		return linkGoogleMap;
+	}
+
+	public void setLinkGoogleMap(String linkGoogleMap) {
+		this.linkGoogleMap = linkGoogleMap;
 	}
 
 	public double getPrice() {
@@ -171,4 +271,5 @@ public class Home {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
+
 }

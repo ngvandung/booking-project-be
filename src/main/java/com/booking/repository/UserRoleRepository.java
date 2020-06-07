@@ -13,6 +13,8 @@ import com.booking.model.UserRole;
  */
 public interface UserRoleRepository {
 	public List<UserRole> findByUserId(long userId);
+	
+	public String findUserIdByDiffRoleId(int ...roleId);
 
 	public UserRole updateUserRole(UserRole userRole);
 

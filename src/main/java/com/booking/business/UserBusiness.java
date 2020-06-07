@@ -4,6 +4,7 @@
 package com.booking.business;
 
 import java.util.Date;
+import java.util.List;
 
 import com.booking.model.User;
 import com.booking.util.UserContext;
@@ -17,11 +18,18 @@ public interface UserBusiness {
 			Integer age, Integer isHost, Integer isEnabled, Integer start, Integer end, UserContext userContext);
 
 	public User updateUser(long userId, String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, int isHost, Date birthDay, String description, int isEnabled,
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost, int isEnabled,
+			UserContext userContext);
+
+	public List<User> getUsersByUserRole(String username, String email, String phone, String firstName, String lastName,
+			Integer age, Integer isHost, Integer isEnabled, Integer roleId, Integer start, Integer end,
 			UserContext userContext);
 
 	public User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, int isHost, Date birthDay, String description);
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost);
 
 	public User deleteUser(long userId, UserContext userContext);
+
+	public User activeUser(long userId, UserContext userContext);
+
 }

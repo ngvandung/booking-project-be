@@ -5,12 +5,12 @@ package com.booking.controller;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.booking.business.AuthBusiness;
 import com.booking.model.User;
+import com.booking.model.UserRole;
+import com.booking.service.UserRoleService;
+import com.booking.util.AuthServiceUtil;
 
 /**
  * @author ddung
@@ -30,10 +33,10 @@ import com.booking.model.User;
 @RequestMapping("/api/v1")
 public class AuthController {
 
-	private static final Logger log = Logger.getLogger(AuthController.class);
-
 	@Autowired
 	private AuthBusiness authBusiness;
+	@Autowired
+	private UserRoleService userRoleService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -51,10 +54,15 @@ public class AuthController {
 
 		User _user = authBusiness.login(username, password);
 		if (_user != null) {
+			List<UserRole> userRoles = userRoleService.findByUserId(_user.getUserId());
+			String roleName = AuthServiceUtil.getPermissionValueFromUserRole(userRoles);
 			result.put("code", "200");
 			result.put("message", "Login successfully");
 			result.put("token", Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
 			result.put("username", _user.getUsername());
+			result.put("roleName", roleName);
+			result.put("userId", String.valueOf(_user.getUserId())); 
+			result.put("isHost", String.valueOf(_user.getIsHost()));
 		}
 
 		return result;

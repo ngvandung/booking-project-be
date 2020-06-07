@@ -112,6 +112,10 @@ public class VillageCategoryRepositoryImpl implements VillageCategoryRepository 
 			QueryBuilder queryBuilder = QueryBuilders.termQuery("isActive", isActive);
 			boolQueryBuilder.must(queryBuilder);
 		}
+		if (districtId != null) {
+			QueryBuilder queryBuilder = QueryBuilders.termQuery("districtId", districtId);
+			boolQueryBuilder.must(queryBuilder);
+		}
 
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder)
 				.withPageable(sortedByVillageId).build();

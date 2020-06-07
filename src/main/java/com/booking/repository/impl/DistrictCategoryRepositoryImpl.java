@@ -116,6 +116,10 @@ public class DistrictCategoryRepositoryImpl implements DistrictCategoryRepositor
 			QueryBuilder queryBuilder = QueryBuilders.termQuery("isActive", isActive);
 			boolQueryBuilder.must(queryBuilder);
 		}
+		if (cityId != null) {
+			QueryBuilder queryBuilder = QueryBuilders.termQuery("cityId", cityId);
+			boolQueryBuilder.must(queryBuilder);
+		}
 
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder)
 				.withPageable(sortedByDistrictId).build();

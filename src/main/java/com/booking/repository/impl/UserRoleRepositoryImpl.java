@@ -116,4 +116,55 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 		return userRole;
 	}
 
+	@Override
+	public String findUserIdByDiffRoleId(int... roleId) {
+		List<UserRole> userRoles = new ArrayList<UserRole>();
+		StringBuilder result = new StringBuilder();
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		try {
+			if (session != null) {
+				// start a transaction
+				transaction = session.beginTransaction();
+
+				// get an student object
+				StringBuilder hql = new StringBuilder();
+				hql.append("SELECT UR FROM UserRole UR WHERE 1 = 1 ");
+				if (roleId.length > 0) {
+					StringBuilder condition = new StringBuilder();
+					for (int i = 0; i < roleId.length; i++) {
+						if (!condition.toString().equals("")) {
+							condition.append(" OR");
+						}
+						condition.append(" UR.roleId = :roleId" + i);
+					}
+					hql.append(" AND (");
+					hql.append(condition);
+					hql.append(")");
+				}
+				Query query = session.createQuery(hql.toString());
+				for (int i = 0; i < roleId.length; i++) {
+					query.setParameter("roleId" + i, roleId[i]);
+				}
+				userRoles = (List<UserRole>) query.getResultList();
+
+				// commit transaction
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+		for (int i = userRoles.size() - 1; i >= 0; i--) {
+			if (!result.toString().equals("")) {
+				result.append(",");
+			}
+			result.append(userRoles.get(i).getUserId());
+		}
+		return result.toString();
+	}
+
 }

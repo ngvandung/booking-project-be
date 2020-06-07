@@ -3,8 +3,6 @@
  */
 package com.booking.controller;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -27,10 +25,9 @@ import com.booking.util.UserContext;
 @RestController
 @RequestMapping("/api/v1/admin")
 public class UserRoleController {
-	@RequestMapping(value = "/userRole", method = RequestMethod.PUT)
+	@RequestMapping(value = "/userrole", method = RequestMethod.PUT)
 	@ResponseBody
-	public UserRole updateUser(HttpServletRequest request, HttpSession session, @RequestBody UserRole userRoleModel)
-			throws IOException {
+	public UserRole updateUser(HttpServletRequest request, HttpSession session, @RequestBody UserRole userRoleModel) {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");

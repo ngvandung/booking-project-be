@@ -4,6 +4,7 @@
 package com.booking.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -43,7 +44,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(long userId, String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, int isHost, Date birthDay, String description, int isEnabled) {
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
+			int isEnabled) {
 		User user = userRepository.findByUserId(userId);
 
 		if (user != null) {
@@ -55,9 +57,9 @@ public class UserServiceImpl implements UserService {
 			user.setLastName(lastName);
 			user.setAge(age);
 			user.setAddress(address);
-			user.setIsHost(isHost);
 			user.setBirthDay(birthDay);
 			user.setDescription(description);
+			user.setIsHost(isHost);
 			user.setIsEnabled(isEnabled);
 			user.setModifiedDate(new Date());
 
@@ -85,7 +87,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, int isHost, Date birthDay, String description, int isEnabled) {
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
+			int isEnabled) {
 		User user = new User();
 
 		long userId = counterService.increment(User.class.getName());
@@ -99,9 +102,9 @@ public class UserServiceImpl implements UserService {
 		user.setLastName(lastName);
 		user.setAge(age);
 		user.setAddress(address);
-		user.setIsHost(isHost);
 		user.setBirthDay(birthDay);
 		user.setDescription(description);
+		user.setIsHost(isHost);
 		user.setIsEnabled(isEnabled);
 		user.setModifiedDate(new Date());
 		user.setCreateDate(new Date());
@@ -130,6 +133,26 @@ public class UserServiceImpl implements UserService {
 			log.error(e);
 			return null;
 		}
+	}
+
+	@Override
+	public List<User> getUsersByUserRole(String username, String email, String phone, String firstName, String lastName,
+			Integer age, Integer isHost, Integer isEnabled, Integer roleId, Integer start, Integer end) {
+		return userRepository.getUsersByUserRole(username, email, phone, firstName, lastName, age, isHost, isEnabled,
+				roleId, start, end);
+	}
+
+	@Override
+	public User updateUser(User user) {
+		user = userRepository.updateUser(user);
+		if (user != null) {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(user.getUserId())).withObject(user)
+					.build();
+			String documentId = elasticsearchOperations.index(indexQuery);
+			log.info("documentId: " + documentId);
+		}
+
+		return user;
 	}
 
 }

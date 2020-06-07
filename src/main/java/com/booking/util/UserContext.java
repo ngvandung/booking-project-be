@@ -41,7 +41,7 @@ public class UserContext implements Serializable {
 			for (UserRole userRole : userRoles) {
 				roles.add(roleRepository.findByRoleId(userRole.getRoleId()));
 			}
-			userContext.setPermission(AuthServiceUtil.getPermissionValue(roles));
+			userContext.setPermission(AuthServiceUtil.getPermissionValueFromRole(roles));
 		}
 		return userContext;
 	}

@@ -8,8 +8,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.booking.constant.RoleConstant;
 import com.booking.model.Role;
 import com.booking.model.User;
+import com.booking.model.UserRole;
 
 /**
  * @author ddung
@@ -17,7 +19,7 @@ import com.booking.model.User;
  */
 public class AuthServiceUtil {
 	public enum DefaultRole {
-		ADMIN("ROLE_ADMIN"), USER("ROLE_USER");
+		ADMIN("ROLE_ADMIN"), USER("ROLE_USER"), MANAGER("ROLE_MANAGER"), HOST("ROLE_HOST");
 
 		private String value;
 
@@ -60,17 +62,42 @@ public class AuthServiceUtil {
 		}
 	}
 
-	public static String getPermissionValue(List<Role> roles) {
+	public static String getPermissionValueFromRole(List<Role> roles) {
 		String permission = "";
 		if (roles != null) {
 			for (Role role : roles) {
 				if (role.getRoleName().equals(DefaultRole.ADMIN.toString())) {
 					permission = DefaultRole.ADMIN.toString();
 					break;
+				} else if (role.getRoleName().equals(DefaultRole.MANAGER.toString())) {
+					permission = DefaultRole.MANAGER.toString();
+					break;
+				} else if (role.getRoleName().equals(DefaultRole.HOST.toString())) {
+					permission = DefaultRole.HOST.toString();
+					break;
 				} else if (role.getRoleName().equals(DefaultRole.USER.toString())) {
-					if (permission.isEmpty()) {
-						permission = DefaultRole.USER.toString();
-					}
+					permission = DefaultRole.USER.toString();
+				}
+			}
+		}
+		return permission;
+	}
+
+	public static String getPermissionValueFromUserRole(List<UserRole> userRoles) {
+		String permission = "";
+		if (userRoles != null) {
+			for (UserRole userRole : userRoles) {
+				if (userRole.getRoleId() == RoleConstant.ADMIN) {
+					permission = DefaultRole.ADMIN.toString();
+					break;
+				} else if (userRole.getRoleId() == RoleConstant.MANAGER) {
+					permission = DefaultRole.MANAGER.toString();
+					break;
+				} else if (userRole.getRoleId() == RoleConstant.HOST) {
+					permission = DefaultRole.HOST.toString();
+					break;
+				} else if (userRole.getRoleId() == RoleConstant.USER) {
+					permission = DefaultRole.USER.toString();
 				}
 			}
 		}

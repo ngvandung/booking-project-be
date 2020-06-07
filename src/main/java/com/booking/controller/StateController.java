@@ -39,7 +39,7 @@ public class StateController {
 
 	@RequestMapping(value = "/states", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Iterable<StateCategory> getCityCategories(HttpServletRequest request, HttpSession session,
+	public Iterable<StateCategory> getStateCategories(HttpServletRequest request, HttpSession session,
 			@RequestParam(name = "stateName", required = false) String stateName,
 			@RequestParam(name = "isActive", required = false) Integer isActive,
 			@RequestParam(name = "start", required = false) Integer start,

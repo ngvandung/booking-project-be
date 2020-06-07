@@ -27,30 +27,38 @@ public class User {
 	private String username;
 	@Column(name = "password", nullable = false)
 	private String password;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = true)
 	private String email;
-	@Column(name = "phone", nullable = false)
+	@Column(name = "phone", nullable = true)
 	private String phone;
 	@Column(name = "firstName", nullable = false)
 	private String firstName;
-	@Column(name = "lastName")
+	@Column(name = "lastName", nullable = false)
 	private String lastName;
-	@Column(name = "age", nullable = false)
+	@Column(name = "age", nullable = true)
 	private int age;
-	@Column(name = "address", nullable = false)
+	@Column(name = "address", nullable = true)
 	private String address;
+	@Column(name = "birthDay", nullable = true)
+	private Date birthDay;
+	@Column(name = "description", nullable = true)
+	private String description;
 	@Column(name = "isHost", nullable = false)
 	private int isHost;
-	@Column(name = "birthDay", nullable = false)
-	private Date birthDay;
-	@Column(name = "description", nullable = false)
-	private String description;
 	@Column(name = "isEnabled", nullable = false)
 	private int isEnabled;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
+
+	public int getIsHost() {
+		return isHost;
+	}
+
+	public void setIsHost(int isHost) {
+		this.isHost = isHost;
+	}
 
 	public long getUserId() {
 		return userId;
@@ -122,14 +130,6 @@ public class User {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public int getIsHost() {
-		return isHost;
-	}
-
-	public void setIsHost(int isHost) {
-		this.isHost = isHost;
 	}
 
 	public Date getBirthDay() {

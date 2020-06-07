@@ -6,7 +6,6 @@ package com.booking.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +26,18 @@ import com.booking.util.UserContext;
 @RestController
 @RequestMapping("/api/v1")
 public class CityCategoryController {
+	@RequestMapping(value = "/citys", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Iterable<CityCategory> getCityCategories(HttpServletRequest request, HttpSession session,
+			@RequestParam(name = "cityName", required = false) String cityName,
+			@RequestParam(name = "stateId", required = false) Long stateId,
+			@RequestParam(name = "isActive", required = false) Integer isActive,
+			@RequestParam(name = "start", required = false) Integer start,
+			@RequestParam(name = "end", required = false) Integer end) {
 
-	private static final Logger log = Logger.getLogger(CityCategoryController.class);
+		return CityCategoryBusinessFactoryUtil.getCityCategories(cityName, isActive, stateId, start, end);
+
+	}
 
 	@RequestMapping(value = "/city", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -51,19 +60,6 @@ public class CityCategoryController {
 		userContext = (UserContext) session.getAttribute("userContext");
 		return CityCategoryBusinessFactoryUtil.updateCityCategory(cityCategory.getCityId(), cityCategory.getCityName(),
 				1, cityCategory.getStateId(), userContext);
-
-	}
-
-	@RequestMapping(value = "/citys", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Iterable<CityCategory> getCityCategories(HttpServletRequest request, HttpSession session,
-			@RequestParam(name = "cityName", required = false) String cityName,
-			@RequestParam(name = "isActive", required = false) Integer isActive,
-			@RequestParam(name = "stateId", required = false) Long stateId,
-			@RequestParam(name = "start", required = false) Integer start,
-			@RequestParam(name = "end", required = false) Integer end) {
-
-		return CityCategoryBusinessFactoryUtil.getCityCategories(cityName, isActive, stateId, start, end);
 
 	}
 }

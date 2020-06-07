@@ -6,6 +6,7 @@ package com.booking.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,7 +17,10 @@ import org.springframework.web.servlet.view.JstlView;
 import com.booking.business.impl.AuthBusinessImpl;
 import com.booking.business.impl.CityCategoryBusinessImpl;
 import com.booking.business.impl.DistrictCategoryBusinessImpl;
+import com.booking.business.impl.FileEntryBusinessImpl;
+import com.booking.business.impl.HomeBusinessImpl;
 import com.booking.business.impl.HomeTypeBusinessImpl;
+import com.booking.business.impl.RentHomeBusinessImpl;
 import com.booking.business.impl.StateCategoryBusinessImpl;
 import com.booking.business.impl.UserBusinessImpl;
 import com.booking.business.impl.VillageCategoryBusinessImpl;
@@ -47,6 +51,13 @@ public class AppConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
 	}
+	
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+	    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+	    multipartResolver.setMaxUploadSize(1000000000);
+	    return multipartResolver;
+	}
 
 	// Create bean
 	@Bean
@@ -55,30 +66,45 @@ public class AppConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
+	public FileEntryBusinessImpl fileEntryBusinessImpl() {
+		return new FileEntryBusinessImpl();
+	}
+
+	@Bean
 	public HomeTypeBusinessImpl homeTypeBusinessImpl() {
 		return new HomeTypeBusinessImpl();
 	}
-	
+
+	@Bean
+	public HomeBusinessImpl homeBusinessImpl() {
+		return new HomeBusinessImpl();
+	}
+
+	@Bean
+	public RentHomeBusinessImpl rentHomeBusinessImpl() {
+		return new RentHomeBusinessImpl();
+	}
+
 	@Bean
 	public CityCategoryBusinessImpl cityCategoryBusinessImpl() {
 		return new CityCategoryBusinessImpl();
 	}
-	
+
 	@Bean
 	public DistrictCategoryBusinessImpl districtCategoryBusinessImpl() {
 		return new DistrictCategoryBusinessImpl();
 	}
-	
+
 	@Bean
 	public StateCategoryBusinessImpl stateCategoryBusinessImpl() {
 		return new StateCategoryBusinessImpl();
 	}
-	
+
 	@Bean
 	public VillageCategoryBusinessImpl villageCategoryBusinessImpl() {
 		return new VillageCategoryBusinessImpl();
 	}
-	
+
 	@Bean
 	public AuthBusinessImpl authBusinessImpl() {
 		return new AuthBusinessImpl();

@@ -3,7 +3,7 @@
  */
 package com.booking.business.impl;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,7 +17,7 @@ import com.booking.service.UserService;
  */
 public class AuthBusinessImpl implements AuthBusiness {
 
-	private static final Logger log = Logger.getLogger(AuthBusinessImpl.class);
+	//private static final Logger log = Logger.getLogger(AuthBusinessImpl.class);
 	@Autowired
 	private UserService userService;
 

@@ -174,7 +174,7 @@ public class UserRepositoryImpl implements UserRepository {
 				transaction = session.beginTransaction();
 
 				// get an student object
-				String hql = " FROM User S WHERE S.username = :username";
+				String hql = " FROM User U WHERE U.username = :username";
 				Query query = session.createQuery(hql);
 				query.setParameter("username", username);
 				List<User> users = query.getResultList();
@@ -194,6 +194,94 @@ public class UserRepositoryImpl implements UserRepository {
 		}
 		session.close();
 		return user;
+	}
+
+	@Override
+	public List<User> getUsersByUserRole(String username, String email, String phone, String firstName, String lastName,
+			Integer age, Integer isHost, Integer isEnabled, Integer roleId, Integer start, Integer end) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		List<User> users = null;
+		try {
+			if (session != null) {
+				// start a transaction
+				transaction = session.beginTransaction();
+
+				// get an student object
+				StringBuilder hql = new StringBuilder();
+				hql.append("SELECT U FROM User U INNER JOIN UserRole UR ON U.userId = UR.userId WHERE 1 = 1 ");
+				if (username != null) {
+					hql.append(" AND U.username = :username");
+				}
+				if (email != null) {
+					hql.append(" AND U.email = :email");
+				}
+				if (phone != null) {
+					hql.append(" AND U.phone = :phone");
+				}
+				if (firstName != null) {
+					hql.append(" AND U.firstName = :firstName");
+				}
+				if (lastName != null) {
+					hql.append(" AND U.lastName = :lastName");
+				}
+				if (age != null) {
+					hql.append(" AND U.age = :age");
+				}
+				if (isEnabled != null) {
+					hql.append(" AND U.isEnabled = :isEnabled");
+				}
+				if (isHost != null) {
+					hql.append(" AND U.isHost = :isHost");
+				}
+				if (roleId != null) {
+					hql.append(" AND UR.roleId = :roleId");
+					if (roleId == RoleConstant.USER) {
+						hql.append(" AND U.userId NOT IN (" + userRoleRepository.findUserIdByDiffRoleId(
+								RoleConstant.ADMIN, RoleConstant.MANAGER, RoleConstant.HOST) + ")");
+					}
+				}
+				Query query = session.createQuery(hql.toString());
+				if (username != null) {
+					query.setParameter("username", username);
+				}
+				if (email != null) {
+					query.setParameter("email", email);
+				}
+				if (phone != null) {
+					query.setParameter("phone", phone);
+				}
+				if (firstName != null) {
+					query.setParameter("firstName", firstName);
+				}
+				if (lastName != null) {
+					query.setParameter("lastName", lastName);
+				}
+				if (age != null) {
+					query.setParameter("age", age);
+				}
+				if (isHost != null) {
+					query.setParameter("isHost", isHost);
+				}
+				if (isEnabled != null) {
+					query.setParameter("isEnabled", isEnabled);
+				}
+				if (roleId != null) {
+					query.setParameter("roleId", roleId);
+				}
+				users = query.getResultList();
+
+				// commit transaction
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+		return users;
 	}
 
 }

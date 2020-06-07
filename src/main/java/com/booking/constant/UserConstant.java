@@ -23,4 +23,9 @@ public class UserConstant {
 	public static final String ISENABLED = "isEnabled";
 	public static final String CREATEDATE = "createDate";
 	public static final String MODIFIEDDATE = "modifiedDate";
+	
+	public static final int ACTIVE = 1;
+	public static final int PENDING = 2;
+	public static final int REJECT = 3;
+	public static final int DISABLE = 0;
 }

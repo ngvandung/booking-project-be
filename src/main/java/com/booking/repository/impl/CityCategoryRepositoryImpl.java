@@ -120,6 +120,10 @@ public class CityCategoryRepositoryImpl implements CityCategoryRepository {
 			QueryBuilder queryBuilder = QueryBuilders.termQuery(CityCategoryConstant.ISACTIVE, isActive);
 			boolQueryBuilder.must(queryBuilder);
 		}
+		if (stateId != null) {
+			QueryBuilder queryBuilder = QueryBuilders.termQuery("stateId", stateId);
+			boolQueryBuilder.must(queryBuilder);
+		}
 
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder)
 				.withPageable(sortedByCityId).build();

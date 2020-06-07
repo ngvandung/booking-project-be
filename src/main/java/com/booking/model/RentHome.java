@@ -33,8 +33,8 @@ public class RentHome {
 	private long homeId;
 	@Column(name = "rentUserId", nullable = false)
 	private long rentUserId;
-	@Column(name = "isExpired", nullable = false)
-	private int isExpired;
+	@Column(name = "totalAmount", nullable = false)
+	private double totalAmount;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
@@ -90,12 +90,12 @@ public class RentHome {
 		this.rentUserId = rentUserId;
 	}
 
-	public int getIsExpired() {
-		return isExpired;
+	public double getTotalAmount() {
+		return totalAmount;
 	}
 
-	public void setIsExpired(int isExpired) {
-		this.isExpired = isExpired;
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public Date getCreateDate() {
@@ -121,6 +121,5 @@ public class RentHome {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-
 
 }

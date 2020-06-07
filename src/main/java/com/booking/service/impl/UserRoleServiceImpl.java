@@ -3,6 +3,8 @@
  */
 package com.booking.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +25,12 @@ public class UserRoleServiceImpl implements UserRoleService {
 	@Override
 	public UserRole updateUserRole(int roleId, long userId) {
 		UserRole userRole = userRoleRepository.findByRoleId_UserId(roleId, userId);
-		if (userRole != null) {
+		if (userRole == null) {
+			userRole = new UserRole();
 			userRole.setRoleId(roleId);
-
-			userRole = userRoleRepository.updateUserRole(userRole);
+			userRole.setUserId(userId);
+			
+			userRole = userRoleRepository.createUserRole(userRole);
 		}
 		return userRole;
 	}
@@ -35,6 +39,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 	public UserRole createUserRole(UserRole userRole) {
 		userRoleRepository.createUserRole(userRole);
 		return userRole;
+	}
+
+	@Override
+	public List<UserRole> findByUserId(long userId) {
+		return userRoleRepository.findByUserId(userId);
 	}
 
 }
