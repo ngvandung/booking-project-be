@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.Voting;
 
 /**
@@ -11,6 +13,8 @@ import com.booking.model.Voting;
  */
 public interface VotingRepository {
 	public Voting findById(long votingId);
+
+	public List<Voting> findByClassName_ClassPK(String className, long classPK);
 
 	public Voting updateVoting(Voting voting);
 

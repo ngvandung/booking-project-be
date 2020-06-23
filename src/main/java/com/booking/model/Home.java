@@ -51,14 +51,14 @@ public class Home {
 	private String linkGoogleMap;
 	@Column(name = "price", nullable = false)
 	private double price;
-	@Column(name = "countBedroom", nullable = false)
-	private int countBedroom;
-	@Column(name = "countLivingroom", nullable = false)
-	private int countLivingroom;
-	@Column(name = "countBathroom", nullable = false)
-	private int countBathroom;
-	@Column(name = "countPeople", nullable = false)
-	private int countPeople;
+	@Column(name = "bedroom", nullable = false)
+	private int bedroom;
+	@Column(name = "livingroom", nullable = false)
+	private int livingroom;
+	@Column(name = "bathroom", nullable = false)
+	private int bathroom;
+	@Column(name = "maxGuest", nullable = false)
+	private int maxGuest;
 	@Column(name = "description", nullable = false)
 	private String description;
 	@Column(name = "isActive", nullable = false)
@@ -192,36 +192,36 @@ public class Home {
 		this.price = price;
 	}
 
-	public int getCountBedroom() {
-		return countBedroom;
+	public int getBedroom() {
+		return bedroom;
 	}
 
-	public void setCountBedroom(int countBedroom) {
-		this.countBedroom = countBedroom;
+	public void setBedroom(int bedroom) {
+		this.bedroom = bedroom;
 	}
 
-	public int getCountLivingroom() {
-		return countLivingroom;
+	public int getLivingroom() {
+		return livingroom;
 	}
 
-	public void setCountLivingroom(int countLivingroom) {
-		this.countLivingroom = countLivingroom;
+	public void setLivingroom(int livingroom) {
+		this.livingroom = livingroom;
 	}
 
-	public int getCountBathroom() {
-		return countBathroom;
+	public int getBathroom() {
+		return bathroom;
 	}
 
-	public void setCountBathroom(int countBathroom) {
-		this.countBathroom = countBathroom;
+	public void setBathroom(int bathroom) {
+		this.bathroom = bathroom;
 	}
 
-	public int getCountPeople() {
-		return countPeople;
+	public int getMaxGuest() {
+		return maxGuest;
 	}
 
-	public void setCountPeople(int countPeople) {
-		this.countPeople = countPeople;
+	public void setMaxGuest(int maxGuest) {
+		this.maxGuest = maxGuest;
 	}
 
 	public String getDescription() {

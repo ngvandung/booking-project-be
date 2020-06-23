@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.Comment;
 
 /**
@@ -11,6 +13,8 @@ import com.booking.model.Comment;
  */
 public interface CommentRepository {
 	public Comment findById(long commentId);
+
+	public List<Comment> findByClassName_ClassPK(String className, long classPK);
 
 	public Comment updateComment(Comment comment);
 

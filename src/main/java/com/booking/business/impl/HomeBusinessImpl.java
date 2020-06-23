@@ -31,14 +31,13 @@ public class HomeBusinessImpl implements HomeBusiness {
 	@Override
 	public Home updateHome(long homeId, String name, long categoryId, long homeTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
-			String villageName, String linkGoogleMap, double price, int countBedroom, int countLivingroom,
-			int countBathroom, int countPeople, String description, int isActive, long ownerHomeId,
-			UserContext userContext) {
+			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
+			int maxGuest, String description, int isActive, long ownerHomeId, UserContext userContext) {
 		Home home = homeService.findById(homeId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, home.getUserId())) {
 			return homeService.updateHome(homeId, name, categoryId, homeTypeId, typeName, stateId, stateName, cityId,
-					cityName, districtId, districtName, villageId, villageName, linkGoogleMap, price, countBedroom,
-					countLivingroom, countBathroom, countPeople, description, isActive, ownerHomeId,
+					cityName, districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom,
+					livingroom, bathroom, maxGuest, description, isActive, ownerHomeId,
 					userContext.getUser().getUserId());
 		}
 		return null;
@@ -47,13 +46,13 @@ public class HomeBusinessImpl implements HomeBusiness {
 	@Override
 	public Home createHome(String name, long categoryId, long homeTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
-			String villageName, String linkGoogleMap, double price, int countBedroom, int countLivingroom,
-			int countBathroom, int countPeople, String description, long ownerHomeId, UserContext userContext) {
+			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
+			int maxGuest, String description, long ownerHomeId, UserContext userContext) {
 		PermissionCheckerFactoryUtil.checkHost(userContext);
 
 		return homeService.createHome(name, categoryId, homeTypeId, typeName, stateId, stateName, cityId, cityName,
-				districtId, districtName, villageId, villageName, linkGoogleMap, price, countBedroom, countLivingroom,
-				countBathroom, countPeople, description, ownerHomeId, userContext.getUser().getUserId());
+				districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom, bathroom,
+				maxGuest, description, ownerHomeId, userContext.getUser().getUserId());
 	}
 
 	@Override

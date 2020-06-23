@@ -47,10 +47,30 @@ public class User {
 	private int isHost;
 	@Column(name = "isEnabled", nullable = false)
 	private int isEnabled;
+	@Column(name = "tmnCode", nullable = true)
+	private String tmnCode;
+	@Column(name = "hashSecret", nullable = true)
+	private String hashSecret;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
+
+	public String getTmnCode() {
+		return tmnCode;
+	}
+
+	public void setTmnCode(String tmnCode) {
+		this.tmnCode = tmnCode;
+	}
+
+	public String getHashSecret() {
+		return hashSecret;
+	}
+
+	public void setHashSecret(String hashSecret) {
+		this.hashSecret = hashSecret;
+	}
 
 	public int getIsHost() {
 		return isHost;

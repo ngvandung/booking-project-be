@@ -31,7 +31,7 @@ import com.booking.repository.UserRoleRepository;
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-	private static final Logger log = Logger.getLogger(CustomAuthenticationProvider.class);
+	private static final Logger _log = Logger.getLogger(CustomAuthenticationProvider.class);
 
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;

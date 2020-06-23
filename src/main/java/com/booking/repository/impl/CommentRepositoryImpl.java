@@ -3,12 +3,15 @@
  */
 package com.booking.repository.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,6 +88,36 @@ public class CommentRepositoryImpl implements CommentRepository {
 		transaction.commit();
 		session.close();
 		return comment;
+	}
+
+	@Override
+	public List<Comment> findByClassName_ClassPK(String className, long classPK) {
+		List<Comment> comments = new ArrayList<Comment>();
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		try {
+			if (session != null) {
+				// start a transaction
+				transaction = session.beginTransaction();
+
+				// get an student object
+				String hql = " FROM Comment S WHERE S.className = :className AND S.classPK = :classPK ";
+				Query query = session.createQuery(hql);
+				query.setParameter("className", className);
+				query.setParameter("classPK", classPK);
+				comments = (List<Comment>) query.getResultList();
+
+				// commit transaction
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+		return comments;
 	}
 
 }

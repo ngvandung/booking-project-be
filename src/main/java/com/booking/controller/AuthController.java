@@ -23,6 +23,7 @@ import com.booking.business.AuthBusiness;
 import com.booking.model.User;
 import com.booking.model.UserRole;
 import com.booking.service.UserRoleService;
+import com.booking.service.impl.JWTService;
 import com.booking.util.AuthServiceUtil;
 
 /**
@@ -37,7 +38,9 @@ public class AuthController {
 	private AuthBusiness authBusiness;
 	@Autowired
 	private UserRoleService userRoleService;
-
+	@Autowired
+	private JWTService jwtService;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, String> login(HttpServletRequest request, HttpSession session, @RequestBody User user) {
@@ -59,6 +62,7 @@ public class AuthController {
 			result.put("code", "200");
 			result.put("message", "Login successfully");
 			result.put("token", Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
+			result.put("jwtToken", jwtService.generateTokenLogin(username));
 			result.put("username", _user.getUsername());
 			result.put("roleName", roleName);
 			result.put("userId", String.valueOf(_user.getUserId())); 

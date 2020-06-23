@@ -120,17 +120,17 @@ public class UserRepositoryImpl implements UserRepository {
 	public User findByUserId(long userId) {
 		User user = null;
 
-		Optional<User> optionalUser = userElasticsearchRepository.findById(userId);
-		if (optionalUser.isPresent()) {
-			user = optionalUser.get();
-		} else {
+//		Optional<User> optionalUser = userElasticsearchRepository.findById(userId);
+//		if (optionalUser.isPresent()) {
+//			user = optionalUser.get();
+//		} else {
 			Transaction transaction = null;
 			Session session = sessionFactory.openSession();
 			transaction = session.beginTransaction();
 			user = session.get(User.class, userId);
 			transaction.commit();
 			session.close();
-		}
+//		}
 		return user;
 	}
 

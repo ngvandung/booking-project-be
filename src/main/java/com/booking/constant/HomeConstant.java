@@ -12,4 +12,5 @@ public class HomeConstant {
 	public static final int DISABLE = 0;
 	public static final int DRAFT = 3;
 	public static final int PENDING = 2;
+	public static final int LOCK = 4;
 }

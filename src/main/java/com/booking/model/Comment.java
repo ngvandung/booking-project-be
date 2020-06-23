@@ -25,8 +25,10 @@ public class Comment {
 	private long commentId;
 	@Column(name = "content", nullable = false)
 	private String content;
-	@Column(name = "resourceCommentId", nullable = false)
-	private long resourceCommentId;
+	@Column(name = "classPK", nullable = false)
+	private long classPK;
+	@Column(name = "className", nullable = false)
+	private String className;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
@@ -50,12 +52,20 @@ public class Comment {
 		this.content = content;
 	}
 
-	public long getResourceCommentId() {
-		return resourceCommentId;
+	public long getClassPK() {
+		return classPK;
 	}
 
-	public void setResourceCommentId(long resourceCommentId) {
-		this.resourceCommentId = resourceCommentId;
+	public void setClassPK(long classPK) {
+		this.classPK = classPK;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 	public Date getCreateDate() {

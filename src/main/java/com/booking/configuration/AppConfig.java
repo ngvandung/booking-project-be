@@ -15,18 +15,22 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import com.booking.business.impl.AuthBusinessImpl;
+import com.booking.business.impl.BookingBusinessImpl;
 import com.booking.business.impl.CityCategoryBusinessImpl;
+import com.booking.business.impl.CommentBusinessImpl;
 import com.booking.business.impl.DistrictCategoryBusinessImpl;
 import com.booking.business.impl.FileEntryBusinessImpl;
 import com.booking.business.impl.HomeBusinessImpl;
 import com.booking.business.impl.HomeTypeBusinessImpl;
-import com.booking.business.impl.RentHomeBusinessImpl;
 import com.booking.business.impl.StateCategoryBusinessImpl;
 import com.booking.business.impl.UserBusinessImpl;
 import com.booking.business.impl.VillageCategoryBusinessImpl;
-import com.booking.security.PermissionCheckerFactoryUtil;
+import com.booking.business.impl.VnPayPaymentBusinessImpl;
+import com.booking.business.impl.VotingBusinessImpl;
+import com.booking.scheduler.BookingScheduler;
 import com.booking.util.ApplicationContext;
 import com.booking.util.BeanUtil;
+import com.booking.util.QueryUtil;
 import com.booking.util.UserContext;
 
 /**
@@ -51,12 +55,12 @@ public class AppConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
 	}
-	
+
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {
-	    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-	    multipartResolver.setMaxUploadSize(1000000000);
-	    return multipartResolver;
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setMaxUploadSize(1000000000);
+		return multipartResolver;
 	}
 
 	// Create bean
@@ -65,6 +69,36 @@ public class AppConfig implements WebMvcConfigurer {
 		return new UserBusinessImpl();
 	}
 	
+	@Bean
+	public BookingScheduler bookingScheduler() {
+		return new BookingScheduler();
+	}
+	
+	@Bean
+	public VnPayPaymentBusinessImpl vnPayPaymentBusinessImpl() {
+		return new VnPayPaymentBusinessImpl();
+	}
+	
+	@Bean
+	public BookingBusinessImpl bookingBusinessImpl() {
+		return new BookingBusinessImpl();
+	}
+	
+	@Bean
+	public QueryUtil queryUtil() {
+		return new QueryUtil();
+	}
+
+	@Bean
+	public CommentBusinessImpl commentBusinessImpl() {
+		return new CommentBusinessImpl();
+	}
+
+	@Bean
+	public VotingBusinessImpl votingBusinessImpl() {
+		return new VotingBusinessImpl();
+	}
+
 	@Bean
 	public FileEntryBusinessImpl fileEntryBusinessImpl() {
 		return new FileEntryBusinessImpl();
@@ -78,11 +112,6 @@ public class AppConfig implements WebMvcConfigurer {
 	@Bean
 	public HomeBusinessImpl homeBusinessImpl() {
 		return new HomeBusinessImpl();
-	}
-
-	@Bean
-	public RentHomeBusinessImpl rentHomeBusinessImpl() {
-		return new RentHomeBusinessImpl();
 	}
 
 	@Bean
@@ -123,10 +152,5 @@ public class AppConfig implements WebMvcConfigurer {
 	@Bean
 	public ApplicationContext applicationContext() {
 		return new ApplicationContext();
-	}
-
-	@Bean
-	public PermissionCheckerFactoryUtil permissionCheckerFactoryUtil() {
-		return new PermissionCheckerFactoryUtil();
 	}
 }

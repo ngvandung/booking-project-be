@@ -44,15 +44,15 @@ public class HomeServiceImpl implements HomeService {
 	@Override
 	public Home updateHome(long homeId, String name, long categoryId, long homeTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
-			String villageName, String linkGoogleMap, double price, int countBedroom, int countLivingroom,
-			int countBathroom, int countPeople, String description, int isActive, long ownerHomeId, long userId) {
+			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
+			int maxGuest, String description, int isActive, long ownerHomeId, long userId) {
 		Home home = homeRepository.findById(homeId);
 
 		if (home != null) {
-			home.setCountBathroom(countBathroom);
-			home.setCountBedroom(countBedroom);
-			home.setCountLivingroom(countLivingroom);
-			home.setCountPeople(countPeople);
+			home.setBathroom(bathroom);
+			home.setBedroom(bedroom);
+			home.setLivingroom(livingroom);
+			home.setMaxGuest(maxGuest);
 			home.setDescription(description);
 			home.setHomeTypeId(homeTypeId);
 			home.setTypeName(typeName);
@@ -88,16 +88,16 @@ public class HomeServiceImpl implements HomeService {
 	@Override
 	public Home createHome(String name, long categoryId, long homeTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
-			String villageName, String linkGoogleMap, double price, int countBedroom, int countLivingroom,
-			int countBathroom, int countPeople, String description, long ownerHomeId, long userId) {
+			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
+			int maxGuest, String description, long ownerHomeId, long userId) {
 		Home home = new Home();
 		long homeId = counterService.increment(Home.class.getName());
 
 		home.setHomeId(homeId);
-		home.setCountBathroom(countBathroom);
-		home.setCountBedroom(countBedroom);
-		home.setCountLivingroom(countLivingroom);
-		home.setCountPeople(countPeople);
+		home.setBathroom(bathroom);
+		home.setBedroom(bedroom);
+		home.setLivingroom(livingroom);
+		home.setMaxGuest(maxGuest);
 		home.setDescription(description);
 		home.setHomeTypeId(homeTypeId);
 		home.setTypeName(typeName);

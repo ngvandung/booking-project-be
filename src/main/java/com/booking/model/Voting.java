@@ -25,8 +25,10 @@ public class Voting {
 	private long votingId;
 	@Column(name = "star", nullable = false)
 	private int star;
-	@Column(name = "resourceVotingId", nullable = false)
-	private long resourceVotingId;
+	@Column(name = "classPK", nullable = false)
+	private long classPK;
+	@Column(name = "className", nullable = false)
+	private String className;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
@@ -50,12 +52,20 @@ public class Voting {
 		this.star = star;
 	}
 
-	public long getResourceVotingId() {
-		return resourceVotingId;
+	public long getClassPK() {
+		return classPK;
 	}
 
-	public void setResourceVotingId(long resourceVotingId) {
-		this.resourceVotingId = resourceVotingId;
+	public void setClassPK(long classPK) {
+		this.classPK = classPK;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 	public Date getCreateDate() {

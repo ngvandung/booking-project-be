@@ -35,9 +35,8 @@ public class HomeController {
 		return HomeBusinessFactoryUtil.createHome(home.getName(), home.getCategoryId(), home.getHomeTypeId(),
 				home.getTypeName(), home.getStateId(), home.getStateName(), home.getCityId(), home.getCityName(),
 				home.getDistrictId(), home.getDistrictName(), home.getVillageId(), home.getVillageName(),
-				home.getLinkGoogleMap(), home.getPrice(), home.getCountBedroom(), home.getCountLivingroom(),
-				home.getCountBathroom(), home.getCountPeople(), home.getDescription(), home.getOwnerHomeId(),
-				userContext);
+				home.getLinkGoogleMap(), home.getPrice(), home.getBedroom(), home.getLivingroom(), home.getBathroom(),
+				home.getMaxGuest(), home.getDescription(), userContext.getUser().getUserId(), userContext);
 
 	}
 
@@ -51,9 +50,9 @@ public class HomeController {
 		return HomeBusinessFactoryUtil.updateHome(home.getHomeId(), home.getName(), home.getCategoryId(),
 				home.getHomeTypeId(), home.getTypeName(), home.getStateId(), home.getStateName(), home.getCityId(),
 				home.getCityName(), home.getDistrictId(), home.getDistrictName(), home.getVillageId(),
-				home.getVillageName(), home.getLinkGoogleMap(), home.getPrice(), home.getCountBedroom(),
-				home.getCountLivingroom(), home.getCountBathroom(), home.getCountPeople(), home.getDescription(),
-				home.getIsActive(), home.getOwnerHomeId(), userContext);
+				home.getVillageName(), home.getLinkGoogleMap(), home.getPrice(), home.getBedroom(),
+				home.getLivingroom(), home.getBathroom(), home.getMaxGuest(), home.getDescription(), home.getIsActive(),
+				userContext.getUser().getUserId(), userContext);
 
 	}
 
