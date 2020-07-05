@@ -45,7 +45,7 @@ public class EmailSender {
 					message.setTo(toEmail);
 					message.setFrom(mailSender.getUsername());
 					message.setSubject("Booking Infomation");
-					message.setBcc(mailSender.getUsername());
+					//message.setBcc(mailSender.getUsername());
 					message.setText("Booking successfully: " + name, true);
 				}
 			};

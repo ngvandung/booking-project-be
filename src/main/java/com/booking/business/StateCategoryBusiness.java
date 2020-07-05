@@ -21,4 +21,6 @@ public interface StateCategoryBusiness {
 	public StateCategory deleteStateCategory(long stateId, UserContext userContext);
 
 	public StateCategory findById(long stateId);
+	
+	public void indexing(UserContext userContext);
 }

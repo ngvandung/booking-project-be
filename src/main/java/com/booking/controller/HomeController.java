@@ -3,6 +3,9 @@
  */
 package com.booking.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -36,8 +39,24 @@ public class HomeController {
 				home.getTypeName(), home.getStateId(), home.getStateName(), home.getCityId(), home.getCityName(),
 				home.getDistrictId(), home.getDistrictName(), home.getVillageId(), home.getVillageName(),
 				home.getLinkGoogleMap(), home.getPrice(), home.getBedroom(), home.getLivingroom(), home.getBathroom(),
-				home.getMaxGuest(), home.getDescription(), userContext.getUser().getUserId(), userContext);
+				home.getMaxGuest(), home.getIsWifi(), home.getIsOven(), home.getIsAirConditioning(),
+				home.getIsShampoo(), home.getIsTowels(), home.getIsToothpaste(), home.getIsSoap(),
+				home.getIsHairDryer(), home.getIsMicroWave(), home.getIsFridge(), home.getIsBalcony(),
+				home.getIsWindows(), home.getIsSmartTv(), home.getIsExtraMattress(), home.getDescription(),
+				userContext.getUser().getUserId(), userContext);
+	}
 
+	@RequestMapping(value = "/home/indexing", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> indexing(HttpServletRequest request, HttpSession session) {
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		HomeBusinessFactoryUtil.indexing(userContext);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", 200);
+		return result;
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.PUT)
@@ -51,8 +70,11 @@ public class HomeController {
 				home.getHomeTypeId(), home.getTypeName(), home.getStateId(), home.getStateName(), home.getCityId(),
 				home.getCityName(), home.getDistrictId(), home.getDistrictName(), home.getVillageId(),
 				home.getVillageName(), home.getLinkGoogleMap(), home.getPrice(), home.getBedroom(),
-				home.getLivingroom(), home.getBathroom(), home.getMaxGuest(), home.getDescription(), home.getIsActive(),
-				userContext.getUser().getUserId(), userContext);
+				home.getLivingroom(), home.getBathroom(), home.getMaxGuest(), home.getIsWifi(), home.getIsOven(),
+				home.getIsAirConditioning(), home.getIsShampoo(), home.getIsTowels(), home.getIsToothpaste(),
+				home.getIsSoap(), home.getIsHairDryer(), home.getIsMicroWave(), home.getIsFridge(), home.getIsBalcony(),
+				home.getIsWindows(), home.getIsSmartTv(), home.getIsExtraMattress(), home.getDescription(),
+				home.getIsActive(), userContext.getUser().getUserId(), userContext);
 
 	}
 

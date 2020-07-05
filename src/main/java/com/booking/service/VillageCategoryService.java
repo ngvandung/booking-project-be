@@ -20,4 +20,6 @@ public interface VillageCategoryService {
 	public VillageCategory deleteVillageCategory(long villageId);
 
 	public VillageCategory findById(long villageId);
+	
+	public void indexing();
 }

@@ -51,10 +51,20 @@ public class User {
 	private String tmnCode;
 	@Column(name = "hashSecret", nullable = true)
 	private String hashSecret;
+	@Column(name = "avatar", nullable = true)
+	private String avatar;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 
 	public String getTmnCode() {
 		return tmnCode;

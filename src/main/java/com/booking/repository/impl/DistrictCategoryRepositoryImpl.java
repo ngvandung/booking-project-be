@@ -3,6 +3,7 @@
  */
 package com.booking.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.booking.model.DistrictCategory;
 import com.booking.repository.DistrictCategoryRepository;
 import com.booking.repository.elasticsearch.DistrictCategoryElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 
 /**
  * @author ddung
@@ -125,5 +127,16 @@ public class DistrictCategoryRepositoryImpl implements DistrictCategoryRepositor
 				.withPageable(sortedByDistrictId).build();
 
 		return districtCategoryElasticsearchRepository.search(searchQuery);
+	}
+
+	@Override
+	public List<DistrictCategory> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<DistrictCategory> districtCategories = HibernateUtil.loadAllData(DistrictCategory.class, session);
+		transaction.commit();
+		session.close();
+		return districtCategories;
 	}
 }

@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.Home;
 
 /**
@@ -17,4 +19,8 @@ public interface HomeRepository {
 	public Home createHome(Home home);
 
 	public Home deleteHome(long homeId);
+	
+	public List<Home> findAll();
+	
+	//public List<Home> findHomes();
 }

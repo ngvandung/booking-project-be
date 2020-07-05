@@ -4,6 +4,7 @@
 
 package com.booking.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -27,6 +28,7 @@ import com.booking.constant.CityCategoryConstant;
 import com.booking.model.CityCategory;
 import com.booking.repository.CityCategoryRepository;
 import com.booking.repository.elasticsearch.CityCategoryElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 
 /**
  * @author ddung
@@ -129,6 +131,17 @@ public class CityCategoryRepositoryImpl implements CityCategoryRepository {
 				.withPageable(sortedByCityId).build();
 
 		return cityCategoryElasticsearchRepository.search(searchQuery);
+	}
+
+	@Override
+	public List<CityCategory> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<CityCategory> cityCategories = HibernateUtil.loadAllData(CityCategory.class, session);
+		transaction.commit();
+		session.close();
+		return cityCategories;
 	}
 
 }

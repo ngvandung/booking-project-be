@@ -20,4 +20,6 @@ public interface StateCategoryService {
 	public StateCategory deleteStateCategory(long stateId);
 
 	public StateCategory findById(long stateId);
+	
+	public void indexing();
 }

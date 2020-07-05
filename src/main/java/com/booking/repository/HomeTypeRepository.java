@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.HomeType;
 
 /**
@@ -20,4 +22,6 @@ public interface HomeTypeRepository {
 	public HomeType createHomeType(HomeType homeType);
 
 	public HomeType deleteHomeType(long homeTypeId);
+	
+	public List<HomeType> findAll();
 }

@@ -46,4 +46,8 @@ public class StateCategoryBusinessFactoryUtil {
 	public static StateCategory findById(long stateId) {
 		return getStateCategoryBusiness().findById(stateId);
 	}
+
+	public static void indexing(UserContext userContext) {
+		getStateCategoryBusiness().indexing(userContext);
+	}
 }

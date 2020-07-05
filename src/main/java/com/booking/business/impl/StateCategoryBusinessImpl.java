@@ -53,4 +53,9 @@ public class StateCategoryBusinessImpl implements StateCategoryBusiness {
 	public StateCategory findById(long stateId) {
 		return stateCategoryService.findById(stateId);
 	}
+
+	@Override
+	public void indexing(UserContext userContext) {
+		stateCategoryService.indexing();
+	}
 }

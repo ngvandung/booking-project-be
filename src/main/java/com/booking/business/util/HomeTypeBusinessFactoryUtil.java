@@ -44,4 +44,8 @@ public class HomeTypeBusinessFactoryUtil {
 	public static HomeType findById(long homeTypeId) {
 		return getHomeTypeBusiness().findById(homeTypeId);
 	}
+
+	public static void indexing(UserContext userContext) {
+		getHomeTypeBusiness().indexing(userContext);
+	}
 }

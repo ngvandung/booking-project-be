@@ -5,6 +5,7 @@
 package com.booking.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -40,7 +41,8 @@ public class CityCategoryServiceImpl implements CityCategoryService {
 	private CounterService counterService;
 
 	@Override
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start, Integer end) {
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start,
+			Integer end) {
 		return cityCategoryRepository.getCityCategories(cityName, isActive, stateId, start, end);
 	}
 
@@ -105,6 +107,17 @@ public class CityCategoryServiceImpl implements CityCategoryService {
 	@Override
 	public CityCategory findById(long cityId) {
 		return cityCategoryRepository.findById(cityId);
+	}
+
+	@Override
+	public void indexing() {
+		List<CityCategory> cityCategories = cityCategoryRepository.findAll();
+		for (int i = cityCategories.size() - 1; i >= 0; i--) {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(cityCategories.get(i).getCityId()))
+					.withObject(cityCategories.get(i)).build();
+			String documentId = elasticsearchOperations.index(indexQuery);
+			log.info("documentId: " + documentId);
+		}
 	}
 
 }

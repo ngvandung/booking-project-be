@@ -56,4 +56,9 @@ public class DistrictCategoryBusinessImpl implements DistrictCategoryBusiness {
 		return districtCategoryService.findById(districtId);
 	}
 
+	@Override
+	public void indexing(UserContext userContext) {
+		districtCategoryService.indexing();
+	}
+
 }

@@ -20,4 +20,6 @@ public interface DistrictCategoryService {
 	public DistrictCategory deleteDistrictCategory(long districtId);
 
 	public DistrictCategory findById(long districtId);
+	
+	public void indexing();
 }

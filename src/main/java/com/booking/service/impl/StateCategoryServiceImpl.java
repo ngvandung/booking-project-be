@@ -4,6 +4,7 @@
 package com.booking.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -99,5 +100,16 @@ public class StateCategoryServiceImpl implements StateCategoryService {
 	@Override
 	public StateCategory findById(long stateId) {
 		return stateCategoryRepository.findById(stateId);
+	}
+
+	@Override
+	public void indexing() {
+		List<StateCategory> stateCategories = stateCategoryRepository.findAll();
+		for(int i = stateCategories.size() - 1; i >= 0; i--) {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(stateCategories.get(i).getStateId()))
+					.withObject(stateCategories.get(i)).build();
+			String documentId = elasticsearchOperations.index(indexQuery);
+			log.info("documentId: " + documentId);
+		}
 	}
 }

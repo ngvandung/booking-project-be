@@ -59,6 +59,34 @@ public class Home {
 	private int bathroom;
 	@Column(name = "maxGuest", nullable = false)
 	private int maxGuest;
+	@Column(name = "isWifi", nullable = false)
+	private int isWifi;
+	@Column(name = "isOven", nullable = false)
+	private int isOven;
+	@Column(name = "isAirConditioning", nullable = false)
+	private int isAirConditioning;
+	@Column(name = "isShampoo", nullable = false)
+	private int isShampoo;
+	@Column(name = "isTowels", nullable = false)
+	private int isTowels;
+	@Column(name = "isToothpaste", nullable = false)
+	private int isToothpaste;
+	@Column(name = "isSoap", nullable = false)
+	private int isSoap;
+	@Column(name = "isHairDryer", nullable = false)
+	private int isHairDryer;
+	@Column(name = "isMicroWave", nullable = false)
+	private int isMicroWave;
+	@Column(name = "isFridge", nullable = false)
+	private int isFridge;
+	@Column(name = "isBalcony", nullable = false)
+	private int isBalcony;
+	@Column(name = "isWindows", nullable = false)
+	private int isWindows;
+	@Column(name = "isSmartTv", nullable = false)
+	private int isSmartTv;
+	@Column(name = "isExtraMattress", nullable = false)
+	private int isExtraMattress;
 	@Column(name = "description", nullable = false)
 	private String description;
 	@Column(name = "isActive", nullable = false)
@@ -222,6 +250,118 @@ public class Home {
 
 	public void setMaxGuest(int maxGuest) {
 		this.maxGuest = maxGuest;
+	}
+
+	public int getIsWifi() {
+		return isWifi;
+	}
+
+	public void setIsWifi(int isWifi) {
+		this.isWifi = isWifi;
+	}
+
+	public int getIsOven() {
+		return isOven;
+	}
+
+	public void setIsOven(int isOven) {
+		this.isOven = isOven;
+	}
+
+	public int getIsAirConditioning() {
+		return isAirConditioning;
+	}
+
+	public void setIsAirConditioning(int isAirConditioning) {
+		this.isAirConditioning = isAirConditioning;
+	}
+
+	public int getIsShampoo() {
+		return isShampoo;
+	}
+
+	public void setIsShampoo(int isShampoo) {
+		this.isShampoo = isShampoo;
+	}
+
+	public int getIsTowels() {
+		return isTowels;
+	}
+
+	public void setIsTowels(int isTowels) {
+		this.isTowels = isTowels;
+	}
+
+	public int getIsToothpaste() {
+		return isToothpaste;
+	}
+
+	public void setIsToothpaste(int isToothpaste) {
+		this.isToothpaste = isToothpaste;
+	}
+
+	public int getIsSoap() {
+		return isSoap;
+	}
+
+	public void setIsSoap(int isSoap) {
+		this.isSoap = isSoap;
+	}
+
+	public int getIsHairDryer() {
+		return isHairDryer;
+	}
+
+	public void setIsHairDryer(int isHairDryer) {
+		this.isHairDryer = isHairDryer;
+	}
+
+	public int getIsMicroWave() {
+		return isMicroWave;
+	}
+
+	public void setIsMicroWave(int isMicroWave) {
+		this.isMicroWave = isMicroWave;
+	}
+
+	public int getIsFridge() {
+		return isFridge;
+	}
+
+	public void setIsFridge(int isFridge) {
+		this.isFridge = isFridge;
+	}
+
+	public int getIsBalcony() {
+		return isBalcony;
+	}
+
+	public void setIsBalcony(int isBalcony) {
+		this.isBalcony = isBalcony;
+	}
+
+	public int getIsWindows() {
+		return isWindows;
+	}
+
+	public void setIsWindows(int isWindows) {
+		this.isWindows = isWindows;
+	}
+
+	public int getIsSmartTv() {
+		return isSmartTv;
+	}
+
+	public void setIsSmartTv(int isSmartTv) {
+		this.isSmartTv = isSmartTv;
+	}
+
+	public int getIsExtraMattress() {
+		return isExtraMattress;
+	}
+
+	public void setIsExtraMattress(int isExtraMattress) {
+		this.isExtraMattress = isExtraMattress;
 	}
 
 	public String getDescription() {

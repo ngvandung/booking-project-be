@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.booking.business.UserBusiness;
 import com.booking.constant.RoleConstant;
 import com.booking.constant.UserConstant;
+import com.booking.exception.ForbiddenException;
 import com.booking.model.User;
 import com.booking.model.UserRole;
 import com.booking.security.PermissionCheckerFactoryUtil;
@@ -43,7 +44,7 @@ public class UserBusinessImpl implements UserBusiness {
 	@Override
 	public User updateUser(long userId, String username, String password, String email, String phone, String firstName,
 			String lastName, int age, String address, Date birthDay, String description, Integer isHost, int isEnabled,
-			UserContext userContext) {
+			String hashSecret, String tmnCode, UserContext userContext) {
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, userId)) {
 			User user = userService.findByUserId(userId);
 
@@ -53,7 +54,7 @@ public class UserBusinessImpl implements UserBusiness {
 			}
 
 			return userService.updateUser(userId, username, password, email, phone, firstName, lastName, age, address,
-					birthDay, description, isHost, isEnabled);
+					birthDay, description, isHost, isEnabled, hashSecret, tmnCode);
 
 		}
 		return null;
@@ -61,7 +62,8 @@ public class UserBusinessImpl implements UserBusiness {
 
 	@Override
 	public User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, Date birthDay, String description, Integer isHost) {
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
+			String avatar) {
 
 		User tmp = userService.findByUserName(username);
 
@@ -76,7 +78,7 @@ public class UserBusinessImpl implements UserBusiness {
 		}
 
 		User user = userService.createUser(username, passwordEncoder.encode(password), email, phone, firstName,
-				lastName, age, address, birthDay, description, isHost, isEnabled);
+				lastName, age, address, birthDay, description, isHost, avatar, isEnabled);
 
 		if (user != null && isHost == 1) {
 			isEnabled = UserConstant.PENDING;
@@ -122,5 +124,46 @@ public class UserBusinessImpl implements UserBusiness {
 		}
 
 		return user;
+	}
+
+	@Override
+	public User findById(long userId, UserContext userContext) {
+		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
+
+		return userService.findByUserId(userId);
+	}
+
+	@Override
+	public User changePassword(long userId, String currentPassword, String newPassword, String confirmPassword,
+			UserContext userContext) {
+		boolean isTrue = false;
+		User user = userService.findByUserId(userId);
+		if (PermissionCheckerFactoryUtil.isOwner(userContext, user.getUserId())) {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+				if (newPassword.equals(confirmPassword) && !currentPassword.equals(newPassword)) {
+					user.setPassword(passwordEncoder.encode(newPassword));
+
+					user = userService.updateUser(user);
+					if (user != null) {
+						isTrue = true;
+					}
+				}
+			}
+		}
+		if (!isTrue) {
+			throw new ForbiddenException();
+		} else {
+			return user;
+		}
+	}
+
+	@Override
+	public User uploadAvatar(long userId, String avatar, UserContext userContext) {
+		User user = userService.findByUserId(userId);
+		if (PermissionCheckerFactoryUtil.isOwner(userContext, user.getUserId())) {
+			return userService.uploadAvatar(userId, avatar);
+		}
+		return null;
 	}
 }

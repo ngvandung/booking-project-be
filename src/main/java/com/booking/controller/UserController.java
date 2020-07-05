@@ -3,11 +3,14 @@
  */
 package com.booking.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.booking.business.util.UserBusinessFactoryUtil;
 import com.booking.model.User;
@@ -80,7 +84,23 @@ public class UserController {
 
 		return UserBusinessFactoryUtil.createUser(user.getUsername(), user.getPassword(), user.getEmail(),
 				user.getPhone(), user.getFirstName(), user.getLastName(), user.getAge(), user.getAddress(),
-				user.getBirthDay(), user.getDescription(), user.getIsHost());
+				user.getBirthDay(), user.getDescription(), user.getIsHost(), user.getAvatar());
+
+	}
+
+	@RequestMapping(value = "/user/{userId}/avatar", method = RequestMethod.POST)
+	@ResponseBody
+	public User uploadAvatar(HttpServletRequest request, HttpSession session, @PathVariable("userId") long userId,
+			@RequestParam("file") MultipartFile file) throws IOException {
+
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("data:image/png;base64,");
+		sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(file.getBytes(), false)));
+
+		return UserBusinessFactoryUtil.uploadAvatar(userId, sb.toString(), userContext);
 
 	}
 
@@ -94,8 +114,21 @@ public class UserController {
 		return UserBusinessFactoryUtil.updateUser(userModel.getUserId(), userModel.getUsername(),
 				userModel.getPassword(), userModel.getEmail(), userModel.getPhone(), userModel.getFirstName(),
 				userModel.getLastName(), userModel.getAge(), userModel.getAddress(), userModel.getBirthDay(),
-				userModel.getDescription(), userModel.getIsHost(), userModel.getIsEnabled(), userContext);
+				userModel.getDescription(), userModel.getIsHost(), userModel.getIsEnabled(), userModel.getHashSecret(),
+				userModel.getTmnCode(), userContext);
 
+	}
+
+	@RequestMapping(value = "/user/{userId}", method = RequestMethod.POST)
+	@ResponseBody
+	public User changePassword(HttpServletRequest request, HttpSession session, @PathVariable("userId") long userId,
+			@RequestParam("currentPassword") String currentPassword, @RequestParam("newPassword") String newPassword,
+			@RequestParam("confirmPassword") String confirmPassword) {
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		return UserBusinessFactoryUtil.changePassword(userId, currentPassword, newPassword, confirmPassword,
+				userContext);
 	}
 
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
@@ -106,6 +139,16 @@ public class UserController {
 		userContext = (UserContext) session.getAttribute("userContext");
 
 		return UserBusinessFactoryUtil.deleteUser(userId, userContext);
+	}
+
+	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public User getDetailUser(HttpServletRequest request, HttpSession session, @PathVariable("userId") Long userId) {
+
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		return UserBusinessFactoryUtil.findById(userId, userContext);
 	}
 
 	@RequestMapping(value = "/user/active/{userId}", method = RequestMethod.PUT)

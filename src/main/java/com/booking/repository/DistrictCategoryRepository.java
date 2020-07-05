@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.DistrictCategory;
 
 /**
@@ -20,4 +22,6 @@ public interface DistrictCategoryRepository {
 	public DistrictCategory createDistrictCategory(DistrictCategory districtCategory);
 
 	public DistrictCategory deleteDistrictCategory(long districtCategoryId);
+	
+	public List<DistrictCategory> findAll();
 }

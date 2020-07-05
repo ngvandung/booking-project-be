@@ -47,4 +47,8 @@ public class VillageCategoryBusinessFactoryUtil {
 	public static VillageCategory findById(long villageId) {
 		return getVillageCategoryBusiness().findById(villageId);
 	}
+
+	public static void indexing(UserContext userContext) {
+		getVillageCategoryBusiness().indexing(userContext);
+	}
 }

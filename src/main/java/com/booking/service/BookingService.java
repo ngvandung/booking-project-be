@@ -31,4 +31,6 @@ public interface BookingService {
 
 	public List<Booking> findBookings(String className, Long classPK, Double totalAmount, Integer numberOfGuest,
 			String bookingStatus, Long userId);
+
+	public List<Booking> checkTime(Long classPK, String className, Date fromDate, String bookingStatus);
 }

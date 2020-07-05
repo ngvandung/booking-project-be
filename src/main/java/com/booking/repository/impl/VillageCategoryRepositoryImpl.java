@@ -3,6 +3,7 @@
  */
 package com.booking.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.booking.model.VillageCategory;
 import com.booking.repository.VillageCategoryRepository;
 import com.booking.repository.elasticsearch.VillageCategoryElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 
 /**
  * @author ddung
@@ -94,8 +96,8 @@ public class VillageCategoryRepositoryImpl implements VillageCategoryRepository 
 	}
 
 	@Override
-	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId, Integer start,
-			Integer end) {
+	public Iterable<VillageCategory> getVillageCategories(String villageName, Integer isActive, Long districtId,
+			Integer start, Integer end) {
 		if (start == null || end == null) {
 			start = 0;
 			end = 15;
@@ -121,5 +123,16 @@ public class VillageCategoryRepositoryImpl implements VillageCategoryRepository 
 				.withPageable(sortedByVillageId).build();
 
 		return villageCategoryElasticsearchRepository.search(searchQuery);
+	}
+
+	@Override
+	public List<VillageCategory> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<VillageCategory> villageCategories = HibernateUtil.loadAllData(VillageCategory.class, session);
+		transaction.commit();
+		session.close();
+		return villageCategories;
 	}
 }

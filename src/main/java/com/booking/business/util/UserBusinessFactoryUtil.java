@@ -37,20 +37,25 @@ public class UserBusinessFactoryUtil {
 	}
 
 	public static User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, Date birthDay, String description, Integer isHost) {
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
+			String avatar) {
 		return getUserBusiness().createUser(username, password, email, phone, firstName, lastName, age, address,
-				birthDay, description, isHost);
+				birthDay, description, isHost, avatar);
 	}
 
 	public static User updateUser(long userId, String username, String password, String email, String phone,
 			String firstName, String lastName, int age, String address, Date birthDay, String description,
-			Integer isHost, int isEnabled, UserContext userContext) {
+			Integer isHost, int isEnabled, String hashSecret, String tmnCode, UserContext userContext) {
 		return getUserBusiness().updateUser(userId, username, password, email, phone, firstName, lastName, age, address,
-				birthDay, description, isHost, isEnabled, userContext);
+				birthDay, description, isHost, isEnabled, hashSecret, tmnCode, userContext);
 	}
 
 	public static User deleteUser(long userId, UserContext userContext) {
 		return getUserBusiness().deleteUser(userId, userContext);
+	}
+
+	public static User findById(long userId, UserContext userContext) {
+		return getUserBusiness().findById(userId, userContext);
 	}
 
 	public static List<User> getUsersByUserRole(String username, String email, String phone, String firstName,
@@ -62,5 +67,14 @@ public class UserBusinessFactoryUtil {
 
 	public static User activeUser(long userId, UserContext userContext) {
 		return getUserBusiness().activeUser(userId, userContext);
+	}
+
+	public static User changePassword(long userId, String currentPassword, String newPassword, String confirmPassword,
+			UserContext userContext) {
+		return getUserBusiness().changePassword(userId, currentPassword, newPassword, confirmPassword, userContext);
+	}
+
+	public static User uploadAvatar(long userId, String avatar, UserContext userContext) {
+		return getUserBusiness().uploadAvatar(userId, avatar, userContext);
 	}
 }

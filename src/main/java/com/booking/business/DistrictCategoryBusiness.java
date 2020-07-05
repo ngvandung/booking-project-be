@@ -22,4 +22,6 @@ public interface DistrictCategoryBusiness {
 	public DistrictCategory deleteDistrictCategory(long districtId, UserContext userContext);
 
 	public DistrictCategory findById(long districtId);
+	
+	public void indexing(UserContext userContext);
 }

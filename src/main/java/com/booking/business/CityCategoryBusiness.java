@@ -21,4 +21,6 @@ public interface CityCategoryBusiness {
 	public CityCategory deleteCityCategory(long cityId, UserContext userContext);
 
 	public CityCategory findById(long cityId);
+	
+	public void indexing(UserContext userContext);
 }

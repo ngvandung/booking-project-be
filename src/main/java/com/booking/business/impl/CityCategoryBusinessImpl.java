@@ -22,12 +22,14 @@ public class CityCategoryBusinessImpl implements CityCategoryBusiness {
 	private CityCategoryService cityCategoryService;
 
 	@Override
-	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start, Integer end) {
+	public Iterable<CityCategory> getCityCategories(String cityName, Integer isActive, Long stateId, Integer start,
+			Integer end) {
 		return cityCategoryService.getCityCategories(cityName, isActive, stateId, start, end);
 	}
 
 	@Override
-	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long stateId, UserContext userContext) {
+	public CityCategory updateCityCategory(long cityId, String cityName, Integer isActive, long stateId,
+			UserContext userContext) {
 		CityCategory cityCategory = cityCategoryService.findById(cityId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, cityCategory.getUserId())) {
 			cityCategory = cityCategoryService.updateCityCategory(cityId, cityName, isActive, stateId,
@@ -53,6 +55,11 @@ public class CityCategoryBusinessImpl implements CityCategoryBusiness {
 	@Override
 	public CityCategory findById(long cityId) {
 		return cityCategoryService.findById(cityId);
+	}
+
+	@Override
+	public void indexing(UserContext userContext) {
+		cityCategoryService.indexing();
 	}
 
 }

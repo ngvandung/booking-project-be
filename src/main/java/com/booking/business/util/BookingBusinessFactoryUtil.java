@@ -62,4 +62,8 @@ public class BookingBusinessFactoryUtil {
 		return getBookingBusiness().findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus, userId);
 	}
 
+	public static List<Booking> checkTime(Long classPK, String className, String fromDate) throws ParseException {
+		return getBookingBusiness().checkTime(classPK, className, fromDate);
+	}
+
 }

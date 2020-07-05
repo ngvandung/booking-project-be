@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.CityCategory;
 
 /**
@@ -21,4 +23,5 @@ public interface CityCategoryRepository {
 
 	public CityCategory deleteCityCategory(long cityId);
 
+	public List<CityCategory> findAll();
 }

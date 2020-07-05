@@ -152,10 +152,10 @@ public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 				//Da thanh toan
 				booking.setBookingStatus(BookingConstant.RENTING);
 				booking = bookingService.updateBooking(booking);
-				//Lock trang thai khong cho nguoi khac thue
+				//Lock trang thai khong cho nguoi khac thue - sai nghiep vu, khong dung thuc te
 				Home home = homeService.findById(classPK);
-				home.setIsActive(HomeConstant.LOCK);
-				home = homeService.updateHome(home);
+				//home.setIsActive(HomeConstant.LOCK);
+				//home = homeService.updateHome(home);
 				//Send mail to renting user - Can dua email vao queue de tranh delay
 				EmailSender.sendEmail(booking.getEmail(), home.getName());
 				

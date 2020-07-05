@@ -25,6 +25,16 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>5.2.4.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.2.4.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>5.2.4.RELEASE</version>
+		</dependency>
 		<!-- javax.servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -136,19 +146,9 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>5.2.5.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>5.2.5.RELEASE</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
+			<version>1.5.0-b01</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -4,6 +4,8 @@
 package com.booking.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -50,6 +52,21 @@ public class HomeTypeController {
 		userContext = (UserContext) session.getAttribute("userContext");
 
 		return HomeTypeBusinessFactoryUtil.createHomeType(homeType.getTypeName(), userContext);
+
+	}
+
+	@RequestMapping(value = "/hometype/indexing", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> indexing(HttpServletRequest request, HttpSession session) {
+
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		HomeTypeBusinessFactoryUtil.indexing(userContext);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", 200);
+		return result;
 
 	}
 

@@ -47,4 +47,8 @@ public class DistrictCategoryBusinessFactoryUtil {
 	public static DistrictCategory findById(long districtId) {
 		return getDistrictCategoryBusiness().findById(districtId);
 	}
+	
+	public static void indexing(UserContext userContext) {
+		getDistrictCategoryBusiness().indexing(userContext);
+	}
 }

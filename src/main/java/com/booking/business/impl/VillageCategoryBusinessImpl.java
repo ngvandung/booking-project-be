@@ -54,4 +54,9 @@ public class VillageCategoryBusinessImpl implements VillageCategoryBusiness {
 	public VillageCategory findById(long villageId) {
 		return villageCategoryService.findById(villageId);
 	}
+
+	@Override
+	public void indexing(UserContext userContext) {
+		villageCategoryService.indexing();	
+	}
 }

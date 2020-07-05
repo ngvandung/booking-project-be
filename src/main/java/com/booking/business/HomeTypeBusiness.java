@@ -20,4 +20,6 @@ public interface HomeTypeBusiness {
 	public HomeType deleteHomeType(long homeTypeId, UserContext userContext);
 
 	public HomeType findById(long homeTypeId);
+	
+	public void indexing(UserContext userContext);
 }

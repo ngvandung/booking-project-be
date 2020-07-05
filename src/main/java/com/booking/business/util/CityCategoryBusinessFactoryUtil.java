@@ -46,4 +46,8 @@ public class CityCategoryBusinessFactoryUtil {
 	public static CityCategory findById(long cityId) {
 		return getCityCategoryBusiness().findById(cityId);
 	}
+
+	public static void indexing(UserContext userContext) {
+		getCityCategoryBusiness().indexing(userContext);
+	}
 }

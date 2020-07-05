@@ -19,6 +19,7 @@ import com.booking.business.BookingBusiness;
 import com.booking.business.VnPayPaymentBusiness;
 import com.booking.constant.BookingConstant;
 import com.booking.exception.BadRequestException;
+import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
 import com.booking.model.Home;
 import com.booking.model.User;
@@ -59,17 +60,21 @@ public class BookingBusinessImpl implements BookingBusiness {
 			String bankCode, String language, UserContext userContext) throws IOException {
 
 		Map<String, Object> result = new HashMap<String, Object>();
+		QueryUtil queryUtil = BeanUtil.getBean(QueryUtil.class);
+		Map<String, Object> map = queryUtil.getByClassPK_ClassName(classPK, className);
+		
+		//Neu nguoi thue la chu nha thi khong duoc thue
+		if(Long.valueOf(String.valueOf(map.get("ownerId"))) == classPK) {
+			throw new ForbiddenException();
+		}
 
 		// Neu doi tuong nay dang cho thue thi khong duoc thue nua
-		List<Booking> bookings = bookingService.findBookings(className, classPK, null, null, BookingConstant.RENTING,
-				null);
+		List<Booking> bookings = bookingService.checkTime(classPK, className, fromDate, BookingConstant.RENTING);
 		if (bookings != null && !bookings.isEmpty()) {
 			throw new BadRequestException();
 		}
 
 		double totalAmount = 0;
-		QueryUtil queryUtil = BeanUtil.getBean(QueryUtil.class);
-		Map<String, Object> map = queryUtil.getByClassPK_ClassName(classPK, className);
 		if (map != null && map.size() > 0) {
 			double bookingTime = RentUtil.calculateRentTime(fromDate, toDate);
 			double price = Double.valueOf(String.valueOf(map.get("price")));
@@ -82,7 +87,7 @@ public class BookingBusinessImpl implements BookingBusiness {
 		} catch (Exception e) {
 			// nothing to do
 		}
-		
+
 		String ipAddress = ConfigVnPay.getIpAddress(request);
 		Booking booking = bookingService.createBooking(numberOfGuest, fromDate, toDate, classPK, className, totalAmount,
 				BookingConstant.PAYING, fullName, email, phone, stateId, stateName, ipAddress, _userId);
@@ -135,6 +140,12 @@ public class BookingBusinessImpl implements BookingBusiness {
 	public List<Booking> findBookings(String className, Long classPK, Double totalAmount, Integer numberOfGuest,
 			String bookingStatus, Long userId) {
 		return bookingService.findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus, userId);
+	}
+
+	@Override
+	public List<Booking> checkTime(Long classPK, String className, String fromDate) throws ParseException {
+		Date date = DateFormat.formatDate(fromDate);
+		return bookingService.checkTime(classPK, className, date, BookingConstant.RENTING);
 	}
 
 }

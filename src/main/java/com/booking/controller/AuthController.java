@@ -62,7 +62,7 @@ public class AuthController {
 			result.put("code", "200");
 			result.put("message", "Login successfully");
 			result.put("token", Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
-			result.put("jwtToken", jwtService.generateTokenLogin(username));
+			result.put("jwtToken", jwtService.generateTokenLogin(username, password));
 			result.put("username", _user.getUsername());
 			result.put("roleName", roleName);
 			result.put("userId", String.valueOf(_user.getUserId())); 

@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.booking.business.VotingBusiness;
+import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
 import com.booking.model.Home;
 import com.booking.model.Voting;
@@ -42,6 +43,8 @@ public class VotingBusinessImpl implements VotingBusiness {
 		Voting voting = findById(votingId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, voting.getUserId())) {
 			voting = votingService.updateVoting(votingId, star, classPK, className, userContext.getUser().getUserId());
+		} else {
+			throw new ForbiddenException();
 		}
 		return voting;
 	}
@@ -55,6 +58,8 @@ public class VotingBusinessImpl implements VotingBusiness {
 			List<Booking> bookings = bookingService.findBookings(className, classPK, null, null, null, userId);
 			if (bookings != null && !bookings.isEmpty()) {
 				return votingService.createVoting(star, classPK, className, userId);
+			} else {
+				throw new ForbiddenException();
 			}
 		}
 		return null;
@@ -65,6 +70,8 @@ public class VotingBusinessImpl implements VotingBusiness {
 		Voting voting = findById(votingId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, voting.getUserId())) {
 			voting = votingService.deleteVoting(votingId);
+		} else {
+			throw new ForbiddenException();
 		}
 		return voting;
 	}

@@ -27,6 +27,8 @@ public class QueryUtil {
 			Home home = homeService.findById(classPK);
 			result.put("classPK", home.getHomeId());
 			result.put("price", home.getPrice());
+			result.put("className", Home.class.getName());
+			result.put("ownerId", home.getOwnerHomeId());
 		}
 		return result;
 	}

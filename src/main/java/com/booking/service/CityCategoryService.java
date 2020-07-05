@@ -20,4 +20,6 @@ public interface CityCategoryService {
 	public CityCategory deleteCityCategory(long cityId);
 
 	public CityCategory findById(long cityId);
+	
+	public void indexing();
 }

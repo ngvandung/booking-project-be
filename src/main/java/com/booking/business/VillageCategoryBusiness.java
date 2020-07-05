@@ -22,4 +22,6 @@ public interface VillageCategoryBusiness {
 	public VillageCategory deleteVillageCategory(long villageId, UserContext userContext);
 
 	public VillageCategory findById(long villageId);
+	
+	public void indexing(UserContext userContext);
 }

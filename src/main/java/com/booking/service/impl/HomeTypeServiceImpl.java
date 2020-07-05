@@ -4,6 +4,7 @@
 package com.booking.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -99,6 +100,17 @@ public class HomeTypeServiceImpl implements HomeTypeService {
 	@Override
 	public Iterable<HomeType> getHomeTypes(String typeName, Integer start, Integer end) {
 		return homeTypeRepository.getHomeTypes(typeName, start, end);
+	}
+
+	@Override
+	public void indexing() {
+		List<HomeType> homeTypes = homeTypeRepository.findAll();
+		for (int i = homeTypes.size() - 1; i >= 0; i--) {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(homeTypes.get(i).getHomeTypeId()))
+					.withObject(homeTypes.get(i)).build();
+			String documentId = elasticsearchOperations.index(indexQuery);
+			log.info("documentId: " + documentId);
+		}
 	}
 
 }

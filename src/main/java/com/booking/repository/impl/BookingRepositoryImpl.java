@@ -180,4 +180,55 @@ public class BookingRepositoryImpl implements BookingRepository {
 		session.close();
 		return bookings;
 	}
+
+	@Override
+	public List<Booking> checkTime(Long classPK, String className, Date fromDate, String bookingStatus) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		List<Booking> bookings = null;
+		try {
+			if (session != null) {
+				transaction = session.beginTransaction();
+
+				String hql = " FROM Booking U WHERE 1 = 1";
+				StringBuilder condition = new StringBuilder();
+				if (className != null) {
+					condition.append(" AND U.className = :className");
+				}
+				if (classPK != null) {
+					condition.append(" AND U.classPK = :classPK");
+				}
+				if (bookingStatus != null) {
+					condition.append(" AND U.bookingStatus = :bookingStatus");
+				}
+				if (fromDate != null) {
+					condition.append(" AND (U.fromDate < :fromDate AND U.toDate > :fromDate)");
+				}
+				hql += condition.toString();
+				Query query = session.createQuery(hql);
+				if (className != null) {
+					query.setParameter("className", className);
+				}
+				if (classPK != null) {
+					query.setParameter("classPK", classPK);
+				}
+				if (fromDate != null) {
+					query.setParameter("fromDate", fromDate);
+				}
+				if (bookingStatus != null) {
+					query.setParameter("bookingStatus", bookingStatus);
+				}
+				bookings = query.getResultList();
+
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+		return bookings;
+	}
 }

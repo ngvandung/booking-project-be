@@ -3,6 +3,8 @@
  */
 package com.booking.repository;
 
+import java.util.List;
+
 import com.booking.model.StateCategory;
 
 /**
@@ -20,4 +22,6 @@ public interface StateCategoryRepository {
 	public StateCategory createStateCategory(StateCategory stateCategory);
 
 	public StateCategory deleteStateCategory(long stateId);
+	
+	public List<StateCategory> findAll();
 }

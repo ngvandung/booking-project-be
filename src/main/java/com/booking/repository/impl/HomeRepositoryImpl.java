@@ -3,6 +3,7 @@
  */
 package com.booking.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.booking.model.Home;
 import com.booking.repository.HomeRepository;
 import com.booking.repository.elasticsearch.HomeElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 
 /**
  * @author ddung
@@ -87,4 +89,45 @@ public class HomeRepositoryImpl implements HomeRepository {
 		session.close();
 		return home;
 	}
+
+	@Override
+	public List<Home> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<Home> homes = HibernateUtil.loadAllData(Home.class, session);
+		transaction.commit();
+		session.close();
+		return homes;
+	}
+
+//	@Override
+//	public List<Home> findHomes() {
+//		List<Home> homes = new ArrayList<Home>();
+//		Session session = sessionFactory.openSession();
+//		Transaction transaction = null;
+//		try {
+//			if (session != null) {
+//				// start a transaction
+//				transaction = session.beginTransaction();
+//
+//				// get an student object
+//				String hql = " FROM Home H LEFT JOIN Booking WHERE S.className = :className AND S.classPK = :classPK ";
+//				Query query = session.createQuery(hql);
+//				query.setParameter("className", className);
+//				query.setParameter("classPK", classPK);
+//				homes = (List<Comment>) query.getResultList();
+//
+//				// commit transaction
+//				transaction.commit();
+//			}
+//		} catch (Exception e) {
+//			if (transaction != null) {
+//				transaction.rollback();
+//			}
+//			log.error(e);
+//		}
+//		session.close();
+//		return comments;
+//	}
 }

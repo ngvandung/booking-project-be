@@ -3,6 +3,9 @@
  */
 package com.booking.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -37,6 +40,21 @@ public class DistrictController {
 
 		return DistrictCategoryBusinessFactoryUtil.createDistrictCategory(districtCategory.getDistrictName(),
 				districtCategory.getCityId(), userContext);
+
+	}
+
+	@RequestMapping(value = "/district/indexing", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> indexing(HttpServletRequest request, HttpSession session) {
+
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		DistrictCategoryBusinessFactoryUtil.indexing(userContext);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", 200);
+		return result;
 
 	}
 

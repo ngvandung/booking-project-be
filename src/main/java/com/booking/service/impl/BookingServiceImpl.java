@@ -144,4 +144,9 @@ public class BookingServiceImpl implements BookingService {
 		return bookingRepository.findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus, userId);
 	}
 
+	@Override
+	public List<Booking> checkTime(Long classPK, String className, Date fromDate, String bookingStatus) {
+		return bookingRepository.checkTime(classPK, className, fromDate, bookingStatus);
+	}
+
 }

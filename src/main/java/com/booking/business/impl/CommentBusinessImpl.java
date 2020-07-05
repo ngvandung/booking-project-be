@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.booking.business.CommentBusiness;
+import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
 import com.booking.model.Comment;
 import com.booking.model.Home;
@@ -39,6 +40,8 @@ public class CommentBusinessImpl implements CommentBusiness {
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, comment.getUserId())) {
 			comment = commentService.updateComment(commentId, content, classPK, className,
 					userContext.getUser().getUserId());
+		} else {
+			throw new ForbiddenException();
 		}
 		return comment;
 	}
@@ -52,6 +55,8 @@ public class CommentBusinessImpl implements CommentBusiness {
 			List<Booking> bookings = bookingService.findBookings(className, classPK, null, null, null, userId);
 			if (bookings != null && !bookings.isEmpty()) {
 				return commentService.createComment(content, classPK, className, userId);
+			} else {
+				throw new ForbiddenException();
 			}
 		}
 		return null;
@@ -62,6 +67,8 @@ public class CommentBusinessImpl implements CommentBusiness {
 		Comment comment = findById(commentId);
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, comment.getUserId())) {
 			comment = commentService.deleteComment(commentId);
+		} else {
+			throw new ForbiddenException();
 		}
 		return comment;
 	}

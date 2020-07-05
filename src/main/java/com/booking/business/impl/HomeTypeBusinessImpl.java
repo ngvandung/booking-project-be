@@ -51,4 +51,9 @@ public class HomeTypeBusinessImpl implements HomeTypeBusiness {
 		return homeTypeService.findById(homeTypeId);
 	}
 
+	@Override
+	public void indexing(UserContext userContext) {
+		homeTypeService.indexing();
+	}
+
 }

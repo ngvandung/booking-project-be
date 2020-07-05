@@ -4,6 +4,7 @@
 package com.booking.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -105,5 +106,17 @@ public class VillageCategoryServiceImpl implements VillageCategoryService {
 	@Override
 	public VillageCategory findById(long villageId) {
 		return villageCategoryRepository.findById(villageId);
+	}
+
+	@Override
+	public void indexing() {
+		List<VillageCategory> villageCategories = villageCategoryRepository.findAll();
+		for (int i = villageCategories.size() - 1; i >= 0; i--) {
+			IndexQuery indexQuery = new IndexQueryBuilder()
+					.withId(String.valueOf(villageCategories.get(i).getVillageId()))
+					.withObject(villageCategories.get(i)).build();
+			String documentId = elasticsearchOperations.index(indexQuery);
+			log.info("documentId: " + documentId);
+		}
 	}
 }

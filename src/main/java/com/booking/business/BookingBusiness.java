@@ -36,4 +36,6 @@ public interface BookingBusiness {
 
 	public List<Booking> findBookings(String className, Long classPK, Double totalAmount, Integer numberOfGuest,
 			String bookingStatus, Long userId);
+	
+	public List<Booking> checkTime(Long classPK, String className, String fromDate) throws ParseException;
 }

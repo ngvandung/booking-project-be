@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(long userId, String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
-			int isEnabled) {
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost, int isEnabled,
+			String hashSecret, String tmnCode) {
 		User user = userRepository.findByUserId(userId);
 
 		if (user != null) {
@@ -62,6 +62,8 @@ public class UserServiceImpl implements UserService {
 			user.setIsHost(isHost);
 			user.setIsEnabled(isEnabled);
 			user.setModifiedDate(new Date());
+			user.setHashSecret(hashSecret);
+			user.setTmnCode(tmnCode);
 
 			user = userRepository.updateUser(user);
 			if (user != null) {
@@ -87,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost, String avatar,
 			int isEnabled) {
 		User user = new User();
 
@@ -108,6 +110,7 @@ public class UserServiceImpl implements UserService {
 		user.setIsEnabled(isEnabled);
 		user.setModifiedDate(new Date());
 		user.setCreateDate(new Date());
+		user.setAvatar(avatar);
 
 		user = userRepository.createUser(user);
 		if (user != null) {
@@ -152,6 +155,22 @@ public class UserServiceImpl implements UserService {
 			log.info("documentId: " + documentId);
 		}
 
+		return user;
+	}
+
+	@Override
+	public User uploadAvatar(long userId, String avatar) {
+		User user = userRepository.findByUserId(userId);
+		if (user != null) {
+			user.setAvatar(avatar);
+			user = userRepository.updateUser(user);
+			if (user != null) {
+				IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(user.getUserId()))
+						.withObject(user).build();
+				String documentId = elasticsearchOperations.index(indexQuery);
+				log.info("documentId: " + documentId);
+			}
+		}
 		return user;
 	}
 

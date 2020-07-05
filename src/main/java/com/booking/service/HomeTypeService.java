@@ -20,4 +20,6 @@ public interface HomeTypeService {
 	public HomeType createHomeType(String typeName, long userId);
 
 	public HomeType deleteHomeType(long homeTypeId);
+	
+	public void indexing();
 }

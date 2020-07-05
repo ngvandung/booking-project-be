@@ -5,6 +5,7 @@ package com.booking.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,16 @@ public class BookingController {
 
 		return BookingBusinessFactoryUtil.findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus,
 				userId);
+	}
+
+	@RequestMapping(value = "/validate/home", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Booking> checkTime(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(name = "classPK", required = false) Long classPK,
+			@RequestParam(name = "fromDate", required = false) String fromDate)
+			throws UnsupportedEncodingException, IOException, ParseException {
+
+		return BookingBusinessFactoryUtil.checkTime(classPK, Home.class.getName(), fromDate);
 	}
 
 	@RequestMapping(value = "/booking/home", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

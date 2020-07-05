@@ -26,13 +26,14 @@ public class JWTService {
 	public static final String SECRET_KEY = "@dungnv0910#akaDdt#jwtsecretkeybydungnv||booking";
 	public static final int EXPIRE_TIME = 86400000;
 
-	public String generateTokenLogin(String username) {
+	public String generateTokenLogin(String username, String password) {
 		String token = null;
 		try {
 			// Create HMAC signer
 			JWSSigner signer = new MACSigner(generateShareSecret());
 			JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
 			builder.claim("username", username);
+			builder.claim("password", password);
 			builder.expirationTime(generateExpirationDate());
 			JWTClaimsSet claimsSet = builder.build();
 			SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
@@ -87,7 +88,7 @@ public class JWTService {
 		String password = null;
 		try {
 			JWTClaimsSet claims = getClaimsFromToken(token);
-			password = claims.getStringClaim("username");
+			password = claims.getStringClaim("password");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

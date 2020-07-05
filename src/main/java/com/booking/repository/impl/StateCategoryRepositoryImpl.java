@@ -3,7 +3,11 @@
  */
 package com.booking.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.log4j.Logger;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.booking.model.StateCategory;
 import com.booking.repository.StateCategoryRepository;
 import com.booking.repository.elasticsearch.StateCategoryElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 
 /**
  * @author ddung
@@ -114,5 +119,16 @@ public class StateCategoryRepositoryImpl implements StateCategoryRepository {
 				.withPageable(sortedByStateId).build();
 
 		return stateCategoryElasticsearchRepository.search(searchQuery);
+	}
+
+	@Override
+	public List<StateCategory> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<StateCategory> data = HibernateUtil.loadAllData(StateCategory.class, session);
+		transaction.commit();
+		session.close();
+		return data;
 	}
 }

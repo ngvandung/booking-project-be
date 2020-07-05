@@ -3,6 +3,7 @@
  */
 package com.booking.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.booking.model.HomeType;
 import com.booking.repository.HomeTypeRepository;
 import com.booking.repository.elasticsearch.HomeTypeElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 
 /**
  * @author ddung
@@ -114,5 +116,16 @@ public class HomeTypeRepositoryImpl implements HomeTypeRepository {
 				.withPageable(sortedByHomeTypeId).build();
 
 		return homeTypeElasticsearchRepository.search(searchQuery);
+	}
+
+	@Override
+	public List<HomeType> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<HomeType> homeTypes = HibernateUtil.loadAllData(HomeType.class, session);
+		transaction.commit();
+		session.close();
+		return homeTypes;
 	}
 }
