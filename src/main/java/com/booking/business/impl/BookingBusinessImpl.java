@@ -23,6 +23,7 @@ import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
 import com.booking.model.Home;
 import com.booking.model.User;
+import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.service.BookingService;
 import com.booking.service.HomeService;
 import com.booking.service.UserService;
@@ -62,14 +63,25 @@ public class BookingBusinessImpl implements BookingBusiness {
 		Map<String, Object> result = new HashMap<String, Object>();
 		QueryUtil queryUtil = BeanUtil.getBean(QueryUtil.class);
 		Map<String, Object> map = queryUtil.getByClassPK_ClassName(classPK, className);
-		
-		//Neu nguoi thue la chu nha thi khong duoc thue
-		if(Long.valueOf(String.valueOf(map.get("ownerId"))) == classPK) {
-			throw new ForbiddenException();
+
+		long _userId = 0;
+		try {
+			_userId = userContext.getUser().getUserId();
+		} catch (Exception e) {
+			// nothing to do
+			System.out.println(e);
+		}
+
+		// Neu nguoi thue la chu nha thi khong duoc thue
+		if (_userId != 0) {
+			if (Long.valueOf(String.valueOf(map.get("ownerId"))) == _userId) {
+				throw new ForbiddenException();
+			}
 		}
 
 		// Neu doi tuong nay dang cho thue thi khong duoc thue nua
-		List<Booking> bookings = bookingService.checkTime(classPK, className, fromDate, BookingConstant.RENTING);
+		List<Booking> bookings = bookingService.checkTime(classPK, className, fromDate, toDate,
+				BookingConstant.RENTING);
 		if (bookings != null && !bookings.isEmpty()) {
 			throw new BadRequestException();
 		}
@@ -79,13 +91,8 @@ public class BookingBusinessImpl implements BookingBusiness {
 			double bookingTime = RentUtil.calculateRentTime(fromDate, toDate);
 			double price = Double.valueOf(String.valueOf(map.get("price")));
 			totalAmount = bookingTime * price;
-		}
-
-		long _userId = 0;
-		try {
-			_userId = userContext.getUser().getUserId();
-		} catch (Exception e) {
-			// nothing to do
+		} else {
+			throw new BadRequestException();
 		}
 
 		String ipAddress = ConfigVnPay.getIpAddress(request);
@@ -143,9 +150,29 @@ public class BookingBusinessImpl implements BookingBusiness {
 	}
 
 	@Override
-	public List<Booking> checkTime(Long classPK, String className, String fromDate) throws ParseException {
-		Date date = DateFormat.formatDate(fromDate);
-		return bookingService.checkTime(classPK, className, date, BookingConstant.RENTING);
+	public List<Booking> checkTime(Long classPK, String className, String fromDate, String toDate)
+			throws ParseException {
+		Date _fromDate = DateFormat.formatDate(fromDate);
+		Date _toDate = DateFormat.formatDate(toDate);
+		return bookingService.checkTime(classPK, className, _fromDate, _toDate, BookingConstant.RENTING);
+	}
+
+	@Override
+	public List<Map<String, Object>> findMyBookings(long userId, String className, String bookingStatus,
+			UserContext userContext) {
+		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
+
+		return bookingService.findMyBookings(userId, className, bookingStatus);
+	}
+
+	@Override
+	public List<Map<String, Object>> findDetailBookings(long ownerId, Long classPK, String className,
+			String bookingStatus, UserContext userContext) {
+		if (PermissionCheckerFactoryUtil.isOwner(userContext, ownerId)) {
+			return bookingService.findDetailBookings(ownerId, classPK, className, bookingStatus);
+		} else {
+			throw new ForbiddenException();
+		}
 	}
 
 }

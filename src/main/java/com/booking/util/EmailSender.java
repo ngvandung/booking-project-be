@@ -3,10 +3,12 @@
  */
 package com.booking.util;
 
+import java.io.File;
 import java.util.Properties;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.codec.CharEncoding;
 import org.apache.log4j.Logger;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,7 +24,7 @@ public class EmailSender {
 
 	private static final Logger _log = Logger.getLogger(EmailSender.class);
 
-	public static boolean sendEmail(String toEmail, String name) {
+	public static boolean sendEmail(String toEmail, String name, String pathQRCodeImg) {
 		boolean result = false;
 		try {
 			JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -41,11 +43,14 @@ public class EmailSender {
 			mailSender.setJavaMailProperties(javaMailProperties);
 			MimeMessagePreparator preparator = new MimeMessagePreparator() {
 				public void prepare(MimeMessage mimeMessage) throws Exception {
-					MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+					MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
 					message.setTo(toEmail);
 					message.setFrom(mailSender.getUsername());
 					message.setSubject("Booking Infomation");
-					//message.setBcc(mailSender.getUsername());
+					if (!pathQRCodeImg.equals("")) {
+						File file = new File(pathQRCodeImg);
+						message.addAttachment("QRCODE", file);
+					}
 					message.setText("Booking successfully: " + name, true);
 				}
 			};
@@ -57,4 +62,5 @@ public class EmailSender {
 
 		return result;
 	}
+
 }

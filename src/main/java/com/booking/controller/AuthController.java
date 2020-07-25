@@ -66,7 +66,6 @@ public class AuthController {
 			result.put("username", _user.getUsername());
 			result.put("roleName", roleName);
 			result.put("userId", String.valueOf(_user.getUserId())); 
-			result.put("isHost", String.valueOf(_user.getIsHost()));
 		}
 
 		return result;

@@ -75,7 +75,7 @@ public class VotingServiceImpl implements VotingService {
 		voting.setModifiedDate(new Date());
 		voting.setCreateDate(new Date());
 
-		voting = votingRepository.updateVoting(voting);
+		voting = votingRepository.createVoting(voting);
 		if (voting != null) {
 			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(voting.getVotingId()))
 					.withObject(voting).build();

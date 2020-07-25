@@ -3,8 +3,10 @@
  */
 package com.booking.repository.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
@@ -17,8 +19,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.Booking;
+import com.booking.model.Home;
 import com.booking.repository.BookingRepository;
 import com.booking.repository.elasticsearch.BookingElasticsearchRepository;
+import com.booking.util.RentUtil;
 
 /**
  * @author ddung
@@ -182,7 +186,7 @@ public class BookingRepositoryImpl implements BookingRepository {
 	}
 
 	@Override
-	public List<Booking> checkTime(Long classPK, String className, Date fromDate, String bookingStatus) {
+	public List<Booking> checkTime(Long classPK, String className, Date fromDate, Date toDate, String bookingStatus) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		List<Booking> bookings = null;
@@ -202,7 +206,8 @@ public class BookingRepositoryImpl implements BookingRepository {
 					condition.append(" AND U.bookingStatus = :bookingStatus");
 				}
 				if (fromDate != null) {
-					condition.append(" AND (U.fromDate < :fromDate AND U.toDate > :fromDate)");
+					condition.append(
+							" AND ((U.fromDate < :fromDate AND U.toDate > :fromDate) OR (U.fromDate < :toDate AND U.toDate > :toDate))");
 				}
 				hql += condition.toString();
 				Query query = session.createQuery(hql);
@@ -214,6 +219,9 @@ public class BookingRepositoryImpl implements BookingRepository {
 				}
 				if (fromDate != null) {
 					query.setParameter("fromDate", fromDate);
+				}
+				if (toDate != null) {
+					query.setParameter("toDate", toDate);
 				}
 				if (bookingStatus != null) {
 					query.setParameter("bookingStatus", bookingStatus);
@@ -230,5 +238,93 @@ public class BookingRepositoryImpl implements BookingRepository {
 		}
 		session.close();
 		return bookings;
+	}
+
+	@Override
+	public List<Map<String, Object>> findMyBookings(long userId, String className, String bookingStatus) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		try {
+			if (session != null) {
+				transaction = session.beginTransaction();
+
+				String hql = " FROM Booking U INNER JOIN";
+				if (className.equals(Home.class.getName())) {
+					hql += " Home H ON U.classPK = H.homeId";
+				}
+				hql += " WHERE 1 = 1 AND U.userId = :userId AND U.className = :className";
+				if (bookingStatus != null) {
+					hql += " AND U.bookingStatus = :bookingStatus";
+				}
+				Query query = session.createQuery(hql);
+				query.setParameter("userId", userId);
+				query.setParameter("className", className);
+				if (bookingStatus != null) {
+					query.setParameter("bookingStatus", bookingStatus);
+				}
+				result = RentUtil.convertObjectToMap((List<Object[]>) query.getResultList());
+
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> findDetailBookings(long ownerId, Long classPK, String className,
+			String bookingStatus) {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		try {
+			if (session != null) {
+				transaction = session.beginTransaction();
+
+				StringBuilder hql = new StringBuilder();
+				if (className.equals(Home.class.getName())) {
+					hql.append(
+							"FROM Home H INNER JOIN Booking B ON H.homeId = B.classPK AND B.className = :className WHERE H.ownerHomeId = :ownerHomeId");
+				}
+
+				if (bookingStatus != null) {
+					hql.append(" AND B.bookingStatus = :bookingStatus");
+				}
+				if (classPK != null) {
+					hql.append(" AND B.classPK = :classPK");
+				}
+
+				Query query = session.createQuery(hql.toString());
+
+				if (bookingStatus != null) {
+					query.setParameter("bookingStatus", bookingStatus);
+				}
+				if (classPK != null) {
+					query.setParameter("classPK", classPK);
+				}
+				query.setParameter("className", className);
+				if (className.equals(Home.class.getName())) {
+					query.setParameter("ownerHomeId", ownerId);
+				}
+
+				result = RentUtil.convertObjectToMap((List<Object[]>) query.getResultList());
+
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+
+		return result;
 	}
 }

@@ -28,7 +28,7 @@ public class CounterServiceImpl implements CounterService {
 		if (counter == null) {
 			counter = new Counter();
 			counter.setClazz(clazz);
-			counter.setCounter(1);
+			counter.setCounter(1L);
 			counter = counterRepository.createCounter(counter);
 
 			if (counter != null) {

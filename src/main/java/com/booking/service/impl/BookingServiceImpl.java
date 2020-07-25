@@ -5,6 +5,7 @@ package com.booking.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -145,8 +146,19 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> checkTime(Long classPK, String className, Date fromDate, String bookingStatus) {
-		return bookingRepository.checkTime(classPK, className, fromDate, bookingStatus);
+	public List<Booking> checkTime(Long classPK, String className, Date fromDate, Date toDate, String bookingStatus) {
+		return bookingRepository.checkTime(classPK, className, fromDate, toDate, bookingStatus);
+	}
+
+	@Override
+	public List<Map<String, Object>> findMyBookings(long userId, String className, String bookingStatus) {
+		return bookingRepository.findMyBookings(userId, className, bookingStatus);
+	}
+
+	@Override
+	public List<Map<String, Object>> findDetailBookings(long ownerId, Long classPK, String className,
+			String bookingStatus) {
+		return bookingRepository.findDetailBookings(ownerId, classPK, className, bookingStatus);
 	}
 
 }

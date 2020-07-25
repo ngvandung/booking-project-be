@@ -22,33 +22,33 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class VillageCategory {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long villageId;
+	private Long villageId;
 	@Column(name = "villageName", nullable = false)
 	private String villageName;
 	@Column(name = "isActive", nullable = false)
-	private int isActive;
+	private Integer isActive;
 	@Column(name = "districtId", nullable = false)
-	private long districtId;
+	private Long districtId;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getDistrictId() {
+	public Long getDistrictId() {
 		return districtId;
 	}
 
-	public void setDistrictId(long districtId) {
+	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
 	}
 
-	public long getVillageId() {
+	public Long getVillageId() {
 		return villageId;
 	}
 
-	public void setVillageId(long villageId) {
+	public void setVillageId(Long villageId) {
 		this.villageId = villageId;
 	}
 
@@ -60,11 +60,11 @@ public class VillageCategory {
 		this.villageName = villageName;
 	}
 
-	public int getIsActive() {
+	public Integer getIsActive() {
 		return isActive;
 	}
 
-	public void setIsActive(int isActive) {
+	public void setIsActive(Integer isActive) {
 		this.isActive = isActive;
 	}
 
@@ -84,11 +84,11 @@ public class VillageCategory {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

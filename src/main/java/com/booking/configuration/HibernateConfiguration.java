@@ -19,6 +19,8 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//import com.zaxxer.hikari.HikariDataSource;
+
 /**
  * @author ddung
  *
@@ -47,6 +49,11 @@ public class HibernateConfiguration {
 		dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
 		dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
 		dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+//		dataSource.setValidationTimeout(3000);
+//		dataSource.setConnectionTimeout(60000);
+//		dataSource.setIdleTimeout(60000);
+//		dataSource.setMaxLifetime(60000);
+//		dataSource.setMaximumPoolSize(10);
 		return dataSource;
 	}
 

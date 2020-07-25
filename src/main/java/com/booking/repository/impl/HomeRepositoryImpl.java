@@ -3,13 +3,16 @@
  */
 package com.booking.repository.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,7 @@ import com.booking.model.Home;
 import com.booking.repository.HomeRepository;
 import com.booking.repository.elasticsearch.HomeElasticsearchRepository;
 import com.booking.util.HibernateUtil;
+import com.booking.util.RentUtil;
 
 /**
  * @author ddung
@@ -101,33 +105,46 @@ public class HomeRepositoryImpl implements HomeRepository {
 		return homes;
 	}
 
-//	@Override
-//	public List<Home> findHomes() {
-//		List<Home> homes = new ArrayList<Home>();
-//		Session session = sessionFactory.openSession();
-//		Transaction transaction = null;
-//		try {
-//			if (session != null) {
-//				// start a transaction
-//				transaction = session.beginTransaction();
-//
-//				// get an student object
-//				String hql = " FROM Home H LEFT JOIN Booking WHERE S.className = :className AND S.classPK = :classPK ";
-//				Query query = session.createQuery(hql);
-//				query.setParameter("className", className);
-//				query.setParameter("classPK", classPK);
-//				homes = (List<Comment>) query.getResultList();
-//
-//				// commit transaction
-//				transaction.commit();
-//			}
-//		} catch (Exception e) {
-//			if (transaction != null) {
-//				transaction.rollback();
-//			}
-//			log.error(e);
-//		}
-//		session.close();
-//		return comments;
-//	}
+	@Override
+	public List<Map<String, Object>> findMyHomes(Long ownerHomeId, String flag) {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		try {
+			if (session != null) {
+				transaction = session.beginTransaction();
+
+				StringBuilder hql = new StringBuilder();
+				hql.append("SELECT DISTINCT H, B.classPK FROM Home H LEFT JOIN Booking B ON H.homeId = B.classPK WHERE 1 = 1");
+				if (ownerHomeId != null) {
+					hql.append(" AND H.ownerHomeId = :ownerHomeId");
+				}
+				if(flag != null) {
+					if(flag.equals("yes")) {
+						hql.append(" AND B.classPK IS NOT NULL");
+					}
+				}
+				//hql.append(" GROUP BY H.homeId")
+
+				Query query = session.createQuery(hql.toString());
+
+				if (ownerHomeId != null) {
+					query.setParameter("ownerHomeId", ownerHomeId);
+				}
+
+				result = RentUtil.convertObjectToMap((List<Object[]>) query.getResultList());
+
+				transaction.commit();
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			log.error(e);
+		}
+		session.close();
+
+		return result;
+	}
+
 }

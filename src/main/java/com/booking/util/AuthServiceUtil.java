@@ -110,8 +110,6 @@ public class AuthServiceUtil {
 
 		ApplicationContext.setUserContext(userContext);
 
-		request.setAttribute("userContext", userContext);
-
 		session.setAttribute("isSignin", true);
 
 		session.setAttribute("userContext", userContext);

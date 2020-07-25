@@ -22,7 +22,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class HomeType {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long homeTypeId;
+	private Long homeTypeId;
 	@Column(name = "typeName", nullable = false)
 	private String typeName;
 	@Column(name = "createDate", nullable = false)
@@ -30,13 +30,13 @@ public class HomeType {
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getHomeTypeId() {
+	public Long getHomeTypeId() {
 		return homeTypeId;
 	}
 
-	public void setHomeTypeId(long homeTypeId) {
+	public void setHomeTypeId(Long homeTypeId) {
 		this.homeTypeId = homeTypeId;
 	}
 
@@ -64,11 +64,11 @@ public class HomeType {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 }

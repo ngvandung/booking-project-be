@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.booking.constant.HomeConstant;
 import com.booking.model.Home;
 import com.booking.service.HomeService;
 
@@ -25,10 +26,12 @@ public class QueryUtil {
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (className.equals(HOME)) {
 			Home home = homeService.findById(classPK);
-			result.put("classPK", home.getHomeId());
-			result.put("price", home.getPrice());
-			result.put("className", Home.class.getName());
-			result.put("ownerId", home.getOwnerHomeId());
+			if (home.getIsActive() == HomeConstant.ACTIVE) {
+				result.put("classPK", home.getHomeId());
+				result.put("price", home.getPrice());
+				result.put("className", Home.class.getName());
+				result.put("ownerId", home.getOwnerHomeId());
+			}
 		}
 		return result;
 	}

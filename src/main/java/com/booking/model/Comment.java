@@ -22,11 +22,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Comment {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long commentId;
-	@Column(name = "content", nullable = false)
+	private Long commentId;
+	@Column(name = "content", columnDefinition = "LONGTEXT", nullable = false)
 	private String content;
 	@Column(name = "classPK", nullable = false)
-	private long classPK;
+	private Long classPK;
 	@Column(name = "className", nullable = false)
 	private String className;
 	@Column(name = "createDate", nullable = false)
@@ -34,13 +34,13 @@ public class Comment {
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getCommentId() {
+	public Long getCommentId() {
 		return commentId;
 	}
 
-	public void setCommentId(long commentId) {
+	public void setCommentId(Long commentId) {
 		this.commentId = commentId;
 	}
 
@@ -52,11 +52,11 @@ public class Comment {
 		this.content = content;
 	}
 
-	public long getClassPK() {
+	public Long getClassPK() {
 		return classPK;
 	}
 
-	public void setClassPK(long classPK) {
+	public void setClassPK(Long classPK) {
 		this.classPK = classPK;
 	}
 
@@ -84,11 +84,11 @@ public class Comment {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 }

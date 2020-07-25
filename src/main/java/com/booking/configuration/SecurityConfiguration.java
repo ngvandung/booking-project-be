@@ -45,8 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/**").permitAll().antMatchers("/api/v1/admin/**").hasRole("ADMIN")
-				.anyRequest().authenticated().and().httpBasic();
+		http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().antMatchers("/api/v1/admin/**")
+				.hasRole("ADMIN").anyRequest().authenticated().and().httpBasic();
 	}
 
 	@Bean
@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		r.setHierarchy("ROLE_ADMIN >  ROLE_USER");
 		return r;
 	}
-	
+
 	@Bean
 	public AuthenticationManager customAuthenticationManager() throws Exception {
 		return authenticationManager();

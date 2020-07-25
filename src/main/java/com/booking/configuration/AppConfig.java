@@ -28,6 +28,7 @@ import com.booking.business.impl.VillageCategoryBusinessImpl;
 import com.booking.business.impl.VnPayPaymentBusinessImpl;
 import com.booking.business.impl.VotingBusinessImpl;
 import com.booking.scheduler.BookingScheduler;
+import com.booking.scheduler.MessageQueueScheduler;
 import com.booking.util.ApplicationContext;
 import com.booking.util.BeanUtil;
 import com.booking.util.QueryUtil;
@@ -72,6 +73,11 @@ public class AppConfig implements WebMvcConfigurer {
 	@Bean
 	public BookingScheduler bookingScheduler() {
 		return new BookingScheduler();
+	}
+	
+	@Bean
+	public MessageQueueScheduler messageQueueScheduler() {
+		return new MessageQueueScheduler();
 	}
 	
 	@Bean

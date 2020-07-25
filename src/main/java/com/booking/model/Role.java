@@ -16,15 +16,15 @@ import javax.persistence.Table;
 @Table(name = "role")
 public class Role {
 	@Id
-	private int roleId;
+	private Integer roleId;
 	@Column(name = "roleName", nullable = false)
 	private String roleName;
 
-	public int getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(int roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 

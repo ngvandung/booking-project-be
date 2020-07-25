@@ -22,7 +22,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class StateCategory {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long stateId;
+	private Long stateId;
 	@Column(name = "stateName", nullable = false)
 	private String stateName;
 	@Column(name = "isActive", nullable = false)
@@ -32,13 +32,13 @@ public class StateCategory {
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getStateId() {
+	public Long getStateId() {
 		return stateId;
 	}
 
-	public void setStateId(long stateId) {
+	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
 
@@ -74,11 +74,11 @@ public class StateCategory {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 }

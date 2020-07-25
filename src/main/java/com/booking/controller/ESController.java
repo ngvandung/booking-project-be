@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.booking.constant.PrivateConstant;
+import com.booking.constant.SystemConstant;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.util.BeanUtil;
 import com.booking.util.UserContext;
@@ -50,7 +50,7 @@ public class ESController {
 		String body = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
 		JSONObject jsonBody = (JSONObject) parser.parse(body);
 		String indice = (String) jsonBody.get("indice");
-		if (Arrays.stream(PrivateConstant.PRIVATES).parallel().anyMatch(indice::contains)) {
+		if (Arrays.stream(SystemConstant.PRIVATES).parallel().anyMatch(indice::contains)) {
 			UserContext userContext = BeanUtil.getBean(UserContext.class);
 			userContext = (UserContext) session.getAttribute("userContext");
 			PermissionCheckerFactoryUtil.checkAdministrator(userContext);

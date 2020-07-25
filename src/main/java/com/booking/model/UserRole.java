@@ -17,23 +17,23 @@ import javax.persistence.Table;
 @IdClass(UserRoleId.class)
 public class UserRole {
 	@Id
-	private int roleId;
+	private Integer roleId;
 	@Id
-	private long userId;
+	private Long userId;
 
-	public int getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(int roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 }

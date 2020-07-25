@@ -22,19 +22,19 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Booking {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long bookingId;
+	private Long bookingId;
 	@Column(name = "numberOfGuest", nullable = false)
-	private int numberOfGuest;
+	private Integer numberOfGuest;
 	@Column(name = "fromDate", nullable = false)
 	private Date fromDate;
 	@Column(name = "toDate", nullable = false)
 	private Date toDate;
 	@Column(name = "classPK", nullable = false)
-	private long classPK;
+	private Long classPK;
 	@Column(name = "className", nullable = false)
 	private String className;
 	@Column(name = "totalAmount", nullable = false)
-	private double totalAmount;
+	private Double totalAmount;
 	@Column(name = "bookingStatus", nullable = false)
 	private String bookingStatus;
 	@Column(name = "email", nullable = false)
@@ -44,31 +44,33 @@ public class Booking {
 	@Column(name = "fullName", nullable = false)
 	private String fullName;
 	@Column(name = "stateId", nullable = false)
-	private long stateId;
+	private Long stateId;
 	@Column(name = "stateName", nullable = false)
 	private String stateName;
 	@Column(name = "ipAddress", nullable = false)
 	private String ipAddress;
+	@Column(name = "qrCode", columnDefinition = "LONGTEXT", nullable = true)
+	private String qrCode;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getBookingId() {
+	public Long getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(long bookingId) {
+	public void setBookingId(Long bookingId) {
 		this.bookingId = bookingId;
 	}
 
-	public int getNumberOfGuest() {
+	public Integer getNumberOfGuest() {
 		return numberOfGuest;
 	}
 
-	public void setNumberOfGuest(int numberOfGuest) {
+	public void setNumberOfGuest(Integer numberOfGuest) {
 		this.numberOfGuest = numberOfGuest;
 	}
 
@@ -88,11 +90,11 @@ public class Booking {
 		this.toDate = toDate;
 	}
 
-	public long getClassPK() {
+	public Long getClassPK() {
 		return classPK;
 	}
 
-	public void setClassPK(long classPK) {
+	public void setClassPK(Long classPK) {
 		this.classPK = classPK;
 	}
 
@@ -104,11 +106,11 @@ public class Booking {
 		this.className = className;
 	}
 
-	public double getTotalAmount() {
+	public Double getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(double totalAmount) {
+	public void setTotalAmount(Double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
@@ -144,11 +146,11 @@ public class Booking {
 		this.fullName = fullName;
 	}
 
-	public long getStateId() {
+	public Long getStateId() {
 		return stateId;
 	}
 
-	public void setStateId(long stateId) {
+	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
 
@@ -168,6 +170,14 @@ public class Booking {
 		this.ipAddress = ipAddress;
 	}
 
+	public String getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(String qrCode) {
+		this.qrCode = qrCode;
+	}
+
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -184,11 +194,11 @@ public class Booking {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

@@ -30,12 +30,12 @@ public interface UserBusiness {
 
 	public User deleteUser(long userId, UserContext userContext);
 
-	public User activeUser(long userId, UserContext userContext);
+	public User actionUser(long userId, int status, UserContext userContext);
 
 	public User findById(long userId, UserContext userContext);
 
 	public User changePassword(long userId, String currentPassword, String newPassword, String confirmPassword,
 			UserContext userContext);
-	
+
 	public User uploadAvatar(long userId, String avatar, UserContext userContext);
 }

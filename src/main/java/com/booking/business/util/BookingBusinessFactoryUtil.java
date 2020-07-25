@@ -62,8 +62,18 @@ public class BookingBusinessFactoryUtil {
 		return getBookingBusiness().findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus, userId);
 	}
 
-	public static List<Booking> checkTime(Long classPK, String className, String fromDate) throws ParseException {
-		return getBookingBusiness().checkTime(classPK, className, fromDate);
+	public static List<Booking> checkTime(Long classPK, String className, String fromDate, String toDate)
+			throws ParseException {
+		return getBookingBusiness().checkTime(classPK, className, fromDate, toDate);
 	}
 
+	public static List<Map<String, Object>> findMyBookings(long userId, String className, String bookingStatus,
+			UserContext userContext) {
+		return getBookingBusiness().findMyBookings(userId, className, bookingStatus, userContext);
+	}
+
+	public static List<Map<String, Object>> findDetailBookings(long ownerId, Long classPK, String className,
+			String bookingStatus, UserContext userContext) {
+		return getBookingBusiness().findDetailBookings(ownerId, classPK, className, bookingStatus, userContext);
+	}
 }

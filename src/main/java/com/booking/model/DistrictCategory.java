@@ -22,33 +22,33 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class DistrictCategory {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long districtId;
+	private Long districtId;
 	@Column(name = "districtName", nullable = false)
 	private String districtName;
 	@Column(name = "isActive", nullable = false)
 	private int isActive;
 	@Column(name = "cityId", nullable = false)
-	private long cityId;
+	private Long cityId;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getCityId() {
+	public Long getCityId() {
 		return cityId;
 	}
 
-	public void setCityId(long cityId) {
+	public void setCityId(Long cityId) {
 		this.cityId = cityId;
 	}
 
-	public long getDistrictId() {
+	public Long getDistrictId() {
 		return districtId;
 	}
 
-	public void setDistrictId(long districtId) {
+	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
 	}
 
@@ -84,11 +84,11 @@ public class DistrictCategory {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

@@ -65,8 +65,8 @@ public class UserBusinessFactoryUtil {
 				roleId, start, end, userContext);
 	}
 
-	public static User activeUser(long userId, UserContext userContext) {
-		return getUserBusiness().activeUser(userId, userContext);
+	public static User actionUser(long userId, int status, UserContext userContext) {
+		return getUserBusiness().actionUser(userId, status, userContext);
 	}
 
 	public static User changePassword(long userId, String currentPassword, String newPassword, String confirmPassword,

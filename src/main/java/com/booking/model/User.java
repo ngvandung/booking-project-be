@@ -22,7 +22,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class User {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long userId;
+	private Long userId;
 	@Column(name = "username", nullable = false)
 	private String username;
 	@Column(name = "password", nullable = false)
@@ -36,7 +36,7 @@ public class User {
 	@Column(name = "lastName", nullable = false)
 	private String lastName;
 	@Column(name = "age", nullable = true)
-	private int age;
+	private Integer age;
 	@Column(name = "address", nullable = true)
 	private String address;
 	@Column(name = "birthDay", nullable = true)
@@ -44,14 +44,14 @@ public class User {
 	@Column(name = "description", nullable = true)
 	private String description;
 	@Column(name = "isHost", nullable = false)
-	private int isHost;
+	private Integer isHost;
 	@Column(name = "isEnabled", nullable = false)
-	private int isEnabled;
+	private Integer isEnabled;
 	@Column(name = "tmnCode", nullable = true)
 	private String tmnCode;
 	@Column(name = "hashSecret", nullable = true)
 	private String hashSecret;
-	@Column(name = "avatar", nullable = true)
+	@Column(name = "avatar", columnDefinition="LONGTEXT", nullable = true)
 	private String avatar;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
@@ -82,19 +82,19 @@ public class User {
 		this.hashSecret = hashSecret;
 	}
 
-	public int getIsHost() {
+	public Integer getIsHost() {
 		return isHost;
 	}
 
-	public void setIsHost(int isHost) {
+	public void setIsHost(Integer isHost) {
 		this.isHost = isHost;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -146,11 +146,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
@@ -178,11 +178,11 @@ public class User {
 		this.description = description;
 	}
 
-	public int getIsEnabled() {
+	public Integer getIsEnabled() {
 		return isEnabled;
 	}
 
-	public void setIsEnabled(int isEnabled) {
+	public void setIsEnabled(Integer isEnabled) {
 		this.isEnabled = isEnabled;
 	}
 

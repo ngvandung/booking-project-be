@@ -3,6 +3,9 @@
  */
 package com.booking.business.util;
 
+import java.util.List;
+import java.util.Map;
+
 import com.booking.business.HomeBusiness;
 import com.booking.model.Home;
 import com.booking.util.BeanUtil;
@@ -29,43 +32,45 @@ public class HomeBusinessFactoryUtil {
 		return getHomeBusiness().findById(homeId);
 	}
 
-	public static Home updateHome(long homeId, String name, long categoryId, long homeTypeId, String typeName,
-			long stateId, String stateName, long cityId, String cityName, long districtId, String districtName,
-			long villageId, String villageName, String linkGoogleMap, double price, int bedroom, int livingroom,
-			int bathroom, int maxGuest, int isWifi, int isOven, int isAirConditioning, int isShampoo, int isTowels,
-			int isToothpaste, int isSoap, int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows,
-			int isSmartTv, int isExtraMattress, String description, int isActive, long ownerHomeId,
-			UserContext userContext) {
-		return getHomeBusiness().updateHome(homeId, name, categoryId, homeTypeId, typeName, stateId, stateName, cityId,
-				cityName, districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom,
-				bathroom, maxGuest, isWifi, isOven, isAirConditioning, isShampoo, isTowels, isToothpaste, isSoap,
-				isHairDryer, isMicroWave, isFridge, isBalcony, isWindows, isSmartTv, isExtraMattress, description,
-				isActive, ownerHomeId, userContext);
-	}
-
-	public static Home createHome(String name, long categoryId, long homeTypeId, String typeName, long stateId,
+	public static Home updateHome(long homeId, String name, long homeTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
 			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
 			int maxGuest, int isWifi, int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste,
 			int isSoap, int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
-			int isExtraMattress, String description, long ownerHomeId, UserContext userContext) {
-		return getHomeBusiness().createHome(name, categoryId, homeTypeId, typeName, stateId, stateName, cityId,
-				cityName, districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom,
-				bathroom, maxGuest, isWifi, isOven, isAirConditioning, isShampoo, isTowels, isToothpaste, isSoap,
-				isHairDryer, isMicroWave, isFridge, isBalcony, isWindows, isSmartTv, isExtraMattress, description,
+			int isExtraMattress, String description, int isActive, long ownerHomeId, UserContext userContext) {
+		return getHomeBusiness().updateHome(homeId, name, homeTypeId, typeName, stateId, stateName, cityId, cityName,
+				districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom, bathroom,
+				maxGuest, isWifi, isOven, isAirConditioning, isShampoo, isTowels, isToothpaste, isSoap, isHairDryer,
+				isMicroWave, isFridge, isBalcony, isWindows, isSmartTv, isExtraMattress, description, isActive,
 				ownerHomeId, userContext);
+	}
+
+	public static Home createHome(String name, long homeTypeId, String typeName, long stateId, String stateName,
+			long cityId, String cityName, long districtId, String districtName, long villageId, String villageName,
+			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest, int isWifi,
+			int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste, int isSoap,
+			int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
+			int isExtraMattress, String description, long ownerHomeId, UserContext userContext) {
+		return getHomeBusiness().createHome(name, homeTypeId, typeName, stateId, stateName, cityId, cityName,
+				districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom, bathroom,
+				maxGuest, isWifi, isOven, isAirConditioning, isShampoo, isTowels, isToothpaste, isSoap, isHairDryer,
+				isMicroWave, isFridge, isBalcony, isWindows, isSmartTv, isExtraMattress, description, ownerHomeId,
+				userContext);
 	}
 
 	public static Home deleteHome(long homeId, UserContext userContext) {
 		return getHomeBusiness().deleteHome(homeId, userContext);
 	}
 
-	public static Home activeHome(long homeId, UserContext userContext) {
-		return getHomeBusiness().activeHome(homeId, userContext);
+	public static Home actionHome(long homeId, int status, UserContext userContext) {
+		return getHomeBusiness().actionHome(homeId, status, userContext);
 	}
 
 	public static void indexing(UserContext userContext) {
 		getHomeBusiness().indexing(userContext);
-		;
+	}
+
+	public static List<Map<String, Object>> findMyHomes(Long ownerHomeId, String flag, UserContext userContext) {
+		return getHomeBusiness().findMyHomes(ownerHomeId, flag, userContext);
 	}
 }

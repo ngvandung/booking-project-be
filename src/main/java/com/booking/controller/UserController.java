@@ -95,7 +95,7 @@ public class UserController {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("data:image/png;base64,");
 		sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(file.getBytes(), false)));
@@ -141,7 +141,7 @@ public class UserController {
 		return UserBusinessFactoryUtil.deleteUser(userId, userContext);
 	}
 
-	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
 	@ResponseBody
 	public User getDetailUser(HttpServletRequest request, HttpSession session, @PathVariable("userId") Long userId) {
 
@@ -151,13 +151,14 @@ public class UserController {
 		return UserBusinessFactoryUtil.findById(userId, userContext);
 	}
 
-	@RequestMapping(value = "/user/active/{userId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/user/action/{userId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public User activeUser(HttpServletRequest request, HttpSession session, @PathVariable("userId") Long userId) {
+	public User activeUser(HttpServletRequest request, HttpSession session, @PathVariable("userId") Long userId,
+			@RequestParam("status") int status) {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
-		return UserBusinessFactoryUtil.activeUser(userId, userContext);
+		return UserBusinessFactoryUtil.actionUser(userId, status, userContext);
 	}
 }

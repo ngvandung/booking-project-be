@@ -38,7 +38,7 @@ import com.booking.util.UserContext;
 @RestController
 @RequestMapping("/api/v1")
 public class BookingController {
-	@RequestMapping(value = "/bookings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/bookings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Booking> bookingHome(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(name = "className", required = false) String className,
@@ -46,21 +46,32 @@ public class BookingController {
 			@RequestParam(name = "numberOfGuest", required = false) Integer numberOfGuest,
 			@RequestParam(name = "totalAmount", required = false) Double totalAmount,
 			@RequestParam(name = "userId", required = false) Long userId,
-			@RequestParam(name = "bookingStatus", required = false) String bookingStatus)
-			throws UnsupportedEncodingException, IOException {
+			@RequestParam(name = "bookingStatus", required = false) String bookingStatus) {
 
 		return BookingBusinessFactoryUtil.findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus,
 				userId);
 	}
 
-	@RequestMapping(value = "/validate/home", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/bookings/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Map<String, Object>> findMyBookings(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session, @RequestParam("className") String className, @RequestParam("userId") Long userId,
+			@RequestParam(name = "bookingStatus", required = false) String bookingStatus) {
+
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		return BookingBusinessFactoryUtil.findMyBookings(userId, className, bookingStatus, userContext);
+	}
+
+	@RequestMapping(value = "/validate/home", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Booking> checkTime(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(name = "classPK", required = false) Long classPK,
-			@RequestParam(name = "fromDate", required = false) String fromDate)
-			throws UnsupportedEncodingException, IOException, ParseException {
+			@RequestParam(name = "fromDate", required = false) String fromDate,
+			@RequestParam(name = "toDate", required = false) String toDate) throws ParseException {
 
-		return BookingBusinessFactoryUtil.checkTime(classPK, Home.class.getName(), fromDate);
+		return BookingBusinessFactoryUtil.checkTime(classPK, Home.class.getName(), fromDate, toDate);
 	}
 
 	@RequestMapping(value = "/booking/home", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,9 +92,22 @@ public class BookingController {
 	@RequestMapping(value = "/vnpay/confirm/{bookingId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, Object> confirmPayment(HttpServletRequest request, HttpServletResponse response,
-			HttpSession session, @PathVariable("bookingId") long bookingId)
-			throws UnsupportedEncodingException, IOException {
+			HttpSession session, @PathVariable("bookingId") long bookingId) throws UnsupportedEncodingException {
 
 		return VnPayPaymentBusinessFactoryUtil.confirm(request, bookingId);
 	}
+
+	@RequestMapping(value = "/booking/detail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Map<String, Object>> findDetailBookings(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session, @RequestParam(name = "classPK", required = false) Long classPK,
+			@RequestParam("className") String className, @RequestParam("ownerId") Long ownerId,
+			@RequestParam(name = "bookingStatus", required = false) String bookingStatus) throws ParseException {
+
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		return BookingBusinessFactoryUtil.findDetailBookings(ownerId, classPK, className, bookingStatus, userContext);
+	}
+
 }

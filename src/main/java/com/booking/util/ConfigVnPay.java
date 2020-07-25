@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ConfigVnPay {
 	public static final String vnp_PayUrl = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-	public static final String vnp_Returnurl = "http://localhost:8081/vnpay/response";
+	public static final String vnp_Returnurl = "http://localhost:8080/vnpay/response";
 	public static final String vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
 
 	public static String md5(String message) {

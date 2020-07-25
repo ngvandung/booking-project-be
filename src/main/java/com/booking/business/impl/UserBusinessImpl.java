@@ -113,12 +113,12 @@ public class UserBusinessImpl implements UserBusiness {
 	}
 
 	@Override
-	public User activeUser(long userId, UserContext userContext) {
+	public User actionUser(long userId, int status, UserContext userContext) {
 		PermissionCheckerFactoryUtil.checkManager(userContext);
 
 		User user = userService.findByUserId(userId);
 		if (user != null) {
-			user.setIsEnabled(UserConstant.ACTIVE);
+			user.setIsEnabled(status);
 
 			user = userService.updateUser(user);
 		}

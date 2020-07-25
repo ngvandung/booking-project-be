@@ -5,6 +5,7 @@ package com.booking.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -43,11 +44,11 @@ public class HomeServiceImpl implements HomeService {
 	}
 
 	@Override
-	public Home updateHome(long homeId, String name, long categoryId, long homeTypeId, String typeName, long stateId,
-			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
-			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
-			int maxGuest, int isWifi, int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste,
-			int isSoap, int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
+	public Home updateHome(long homeId, String name, long homeTypeId, String typeName, long stateId, String stateName,
+			long cityId, String cityName, long districtId, String districtName, long villageId, String villageName,
+			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest, int isWifi,
+			int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste, int isSoap,
+			int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
 			int isExtraMattress, String description, int isActive, long ownerHomeId, long userId) {
 		Home home = homeRepository.findById(homeId);
 
@@ -74,7 +75,6 @@ public class HomeServiceImpl implements HomeService {
 			home.setOwnerHomeId(ownerHomeId);
 			home.setPrice(price);
 			home.setUserId(userId);
-			home.setCategoryId(categoryId);
 			home.setIsWifi(isWifi);
 			home.setIsOven(isOven);
 			home.setIsAirConditioning(isAirConditioning);
@@ -103,11 +103,11 @@ public class HomeServiceImpl implements HomeService {
 	}
 
 	@Override
-	public Home createHome(String name, long categoryId, long homeTypeId, String typeName, long stateId,
-			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
-			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
-			int maxGuest, int isWifi, int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste,
-			int isSoap, int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
+	public Home createHome(String name, long homeTypeId, String typeName, long stateId, String stateName, long cityId,
+			String cityName, long districtId, String districtName, long villageId, String villageName,
+			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest, int isWifi,
+			int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste, int isSoap,
+			int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
 			int isExtraMattress, String description, long ownerHomeId, long userId) {
 		Home home = new Home();
 		long homeId = counterService.increment(Home.class.getName());
@@ -136,7 +136,6 @@ public class HomeServiceImpl implements HomeService {
 		home.setOwnerHomeId(ownerHomeId);
 		home.setPrice(price);
 		home.setUserId(userId);
-		home.setCategoryId(categoryId);
 		home.setIsWifi(isWifi);
 		home.setIsOven(isOven);
 		home.setIsAirConditioning(isAirConditioning);
@@ -194,6 +193,11 @@ public class HomeServiceImpl implements HomeService {
 			String documentId = elasticsearchOperations.index(indexQuery);
 			log.info("documentId: " + documentId);
 		}
+	}
+
+	@Override
+	public List<Map<String, Object>> findMyHomes(Long ownerHomeId, String flag) {
+		return homeRepository.findMyHomes(ownerHomeId, flag);
 	}
 
 }

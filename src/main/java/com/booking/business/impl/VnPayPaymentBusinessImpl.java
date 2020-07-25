@@ -3,6 +3,7 @@
  */
 package com.booking.business.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,19 +21,23 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.booking.business.VnPayPaymentBusiness;
 import com.booking.constant.BookingConstant;
-import com.booking.constant.HomeConstant;
 import com.booking.model.Booking;
 import com.booking.model.Home;
 import com.booking.model.User;
 import com.booking.service.BookingService;
 import com.booking.service.HomeService;
+import com.booking.service.MessageQueueService;
 import com.booking.service.UserService;
 import com.booking.util.ConfigVnPay;
-import com.booking.util.EmailSender;
+import com.booking.util.ZXingHelper;
 
 /**
  * @author ddung
@@ -40,12 +45,18 @@ import com.booking.util.EmailSender;
  */
 public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 
+	private String realPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+	private String pathFolder = realPath.substring(realPath.lastIndexOf("C:"), realPath.lastIndexOf("/booking"))
+			+ "/publics/booking/";
+
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private HomeService homeService;
 	@Autowired
 	private BookingService bookingService;
+	@Autowired
+	private MessageQueueService messageQueueService;
 
 	@Override
 	public Map<String, Object> payment(HttpServletRequest request, HttpServletResponse response, String vnpOrderInfo,
@@ -147,30 +158,52 @@ public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 		User user = userService.findByUserId(userId);
 		String signValue = ConfigVnPay.hashAllFields(fields, user.getHashSecret());
 		Map<String, Object> result = new HashMap<String, Object>();
-		if(vnp_SecureHash.equals(signValue)) {
-			if(((String)fields.get("vnp_ResponseCode")).equals("00")) {
-				//Da thanh toan
+		if (vnp_SecureHash.equals(signValue)) {
+			if (((String) fields.get("vnp_ResponseCode")).equals("00")) {
+				String pathQRCodeImg = pathFolder + File.separator + "images" + File.separator + "qrCode_"
+						+ System.currentTimeMillis() + ".png";
+				// Create QRCode
+				try {
+					StringBuilder contentQRCode = new StringBuilder();
+					contentQRCode.append("Email: " + booking.getEmail() + " - Phone: " + booking.getPhone());
+					if (booking.getClassName().equals(Home.class.getName())) {
+						contentQRCode.append(" - House: " + booking.getClassPK());
+					}
+					contentQRCode.append(" - Total Amount: " + booking.getTotalAmount());
+
+					byte[] bs = ZXingHelper.getQRCodeImage(contentQRCode.toString(), 500, 500);
+
+					FileUtils.writeByteArrayToFile(new File(pathQRCodeImg), bs);
+
+					StringBuilder sb = new StringBuilder();
+					sb.append("data:image/png;base64,");
+					sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bs, false)));
+					booking.setQrCode(sb.toString());
+				} catch (Exception e) {
+				}
+				// Da thanh toan
 				booking.setBookingStatus(BookingConstant.RENTING);
 				booking = bookingService.updateBooking(booking);
-				//Lock trang thai khong cho nguoi khac thue - sai nghiep vu, khong dung thuc te
+
+				// Add vao queue de gui email cho nguoi thue
 				Home home = homeService.findById(classPK);
-				//home.setIsActive(HomeConstant.LOCK);
-				//home = homeService.updateHome(home);
-				//Send mail to renting user - Can dua email vao queue de tranh delay
-				EmailSender.sendEmail(booking.getEmail(), home.getName());
-				
+				JSONObject jPayload = new JSONObject();
+				jPayload.put("toEmail", booking.getEmail());
+				jPayload.put("homeName", home.getName());
+				jPayload.put("pathQRCode", pathQRCodeImg);
+				messageQueueService.createMessageQueue("", 0L, "email", jPayload.toJSONString());
+
 				result.put("status", 200);
 				result.put("message", "successfully");
-			}
-			else {
+			} else {
 				result.put("status", 400);
 				result.put("message", "Payment Failed");
 			}
-		}else {
+		} else {
 			result.put("status", 400);
 			result.put("message", "failed");
 		}
-		
+
 		return result;
 	}
 

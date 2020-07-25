@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "file_entry")
 public class FileEntry {
 	@Id
-	private long fileEntryId;
+	private Long fileEntryId;
 	@Column(name = "fileEntryName", nullable = false)
 	private String fileEntryName;
 	@Column(name = "absolutePath", nullable = false)
@@ -26,17 +26,17 @@ public class FileEntry {
 	@Column(name = "extension", nullable = false)
 	private String extension;
 	@Column(name = "size", nullable = false)
-	private long size;
+	private Long size;
 	@Column(name = "className", nullable = false)
 	private String className;
 	@Column(name = "classPK", nullable = false)
-	private long classPK;
+	private Long classPK;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
 	public String getClassName() {
 		return className;
@@ -46,19 +46,19 @@ public class FileEntry {
 		this.className = className;
 	}
 
-	public long getClassPK() {
+	public Long getClassPK() {
 		return classPK;
 	}
 
-	public void setClassPK(long classPK) {
+	public void setClassPK(Long classPK) {
 		this.classPK = classPK;
 	}
 
-	public long getFileEntryId() {
+	public Long getFileEntryId() {
 		return fileEntryId;
 	}
 
-	public void setFileEntryId(long fileEntryId) {
+	public void setFileEntryId(Long fileEntryId) {
 		this.fileEntryId = fileEntryId;
 	}
 
@@ -86,11 +86,11 @@ public class FileEntry {
 		this.extension = extension;
 	}
 
-	public long getSize() {
+	public Long getSize() {
 		return size;
 	}
 
-	public void setSize(long size) {
+	public void setSize(Long size) {
 		this.size = size;
 	}
 
@@ -110,11 +110,11 @@ public class FileEntry {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

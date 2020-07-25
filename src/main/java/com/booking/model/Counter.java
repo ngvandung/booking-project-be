@@ -18,7 +18,7 @@ public class Counter {
 	@Id
 	private String clazz;
 	@Column(name = "counter", nullable = false)
-	private long counter;
+	private Long counter;
 
 	public String getClazz() {
 		return clazz;
@@ -28,11 +28,11 @@ public class Counter {
 		this.clazz = clazz;
 	}
 
-	public long getCounter() {
+	public Long getCounter() {
 		return counter;
 	}
 
-	public void setCounter(long counter) {
+	public void setCounter(Long counter) {
 		this.counter = counter;
 	}
 

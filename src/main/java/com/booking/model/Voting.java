@@ -22,11 +22,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Voting {
 	@Id
 	@org.springframework.data.annotation.Id
-	private long votingId;
+	private Long votingId;
 	@Column(name = "star", nullable = false)
-	private int star;
+	private Integer star;
 	@Column(name = "classPK", nullable = false)
-	private long classPK;
+	private Long classPK;
 	@Column(name = "className", nullable = false)
 	private String className;
 	@Column(name = "createDate", nullable = false)
@@ -34,29 +34,29 @@ public class Voting {
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
 	@Column(name = "userId", nullable = false)
-	private long userId;
+	private Long userId;
 
-	public long getVotingId() {
+	public Long getVotingId() {
 		return votingId;
 	}
 
-	public void setVotingId(long votingId) {
+	public void setVotingId(Long votingId) {
 		this.votingId = votingId;
 	}
 
-	public int getStar() {
+	public Integer getStar() {
 		return star;
 	}
 
-	public void setStar(int star) {
+	public void setStar(Integer star) {
 		this.star = star;
 	}
 
-	public long getClassPK() {
+	public Long getClassPK() {
 		return classPK;
 	}
 
-	public void setClassPK(long classPK) {
+	public void setClassPK(Long classPK) {
 		this.classPK = classPK;
 	}
 
@@ -84,11 +84,11 @@ public class Voting {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 }
