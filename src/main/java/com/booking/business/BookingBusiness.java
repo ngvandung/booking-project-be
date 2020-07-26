@@ -45,4 +45,8 @@ public interface BookingBusiness {
 
 	public List<Map<String, Object>> findDetailBookings(long ownerId, Long classPK, String className,
 			String bookingStatus, UserContext userContext);
+
+	public Booking cancelRequestBooking(long bookingId, UserContext userContext);
+
+	public Booking cancelActionBooking(long bookingId, String bookingStatus, UserContext userContext);
 }

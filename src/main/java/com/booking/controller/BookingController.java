@@ -89,6 +89,26 @@ public class BookingController {
 				"billpayment", "NCB", "vn", userContext);
 	}
 
+	@RequestMapping(value = "/booking/cancelrequest/{bookingId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Booking cancelRequestBooking(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@PathVariable("bookingId") long bookingId) {
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		return BookingBusinessFactoryUtil.cancelRequestBooking(bookingId, userContext);
+	}
+
+	@RequestMapping(value = "/booking/cancelaction/{bookingId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Booking bookingHome(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@PathVariable("bookingId") long bookingId, @RequestParam("bookingStatus") String bookingStatus) {
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		return BookingBusinessFactoryUtil.cancelActionBooking(bookingId, bookingStatus, userContext);
+	}
+
 	@RequestMapping(value = "/vnpay/confirm/{bookingId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, Object> confirmPayment(HttpServletRequest request, HttpServletResponse response,

@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.booking.business.BookingBusiness;
@@ -40,6 +41,8 @@ import com.booking.util.UserContext;
  */
 public class BookingBusinessImpl implements BookingBusiness {
 
+	private static final Logger _log = Logger.getLogger(BookingBusinessImpl.class);
+			
 	@Autowired
 	private BookingService bookingService;
 	@Autowired
@@ -170,6 +173,52 @@ public class BookingBusinessImpl implements BookingBusiness {
 			String bookingStatus, UserContext userContext) {
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, ownerId)) {
 			return bookingService.findDetailBookings(ownerId, classPK, className, bookingStatus);
+		} else {
+			throw new ForbiddenException();
+		}
+	}
+
+	@Override
+	public Booking cancelRequestBooking(long bookingId, UserContext userContext) {
+		Booking booking = bookingService.findById(bookingId);
+		if (PermissionCheckerFactoryUtil.isOwner(userContext, booking.getUserId())) {
+			if (booking.getBookingStatus().equals(BookingConstant.RENTING)) {
+				booking.setBookingStatus(BookingConstant.CANCEL_PENDING);
+				booking.setModifiedDate(new Date());
+				booking.setUserId(userContext.getUser().getUserId());
+
+				return bookingService.updateBooking(booking);
+			} else {
+				throw new BadRequestException();
+			}
+		} else {
+			throw new ForbiddenException();
+		}
+
+	}
+
+	@Override
+	public Booking cancelActionBooking(long bookingId, String bookingStatus, UserContext userContext) {
+		Booking booking = bookingService.findById(bookingId);
+		// Validate owner
+		long ownerId = 0;
+		if (booking.getClassName().equals(Home.class.getName())) {
+			Home home = homeService.findById(booking.getClassPK());
+			ownerId = home.getOwnerHomeId();
+		}
+
+		if (PermissionCheckerFactoryUtil.isOwner(userContext, ownerId)) {
+			if (booking.getBookingStatus().equals(BookingConstant.CANCEL_PENDING)) {
+				booking.setBookingStatus(bookingStatus);
+				booking.setModifiedDate(new Date());
+				
+				//TODO: Hoan tien cho khach hàng
+				//........
+
+				return bookingService.updateBooking(booking);
+			} else {
+				throw new BadRequestException();
+			}
 		} else {
 			throw new ForbiddenException();
 		}

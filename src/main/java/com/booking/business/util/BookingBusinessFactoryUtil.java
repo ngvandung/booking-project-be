@@ -76,4 +76,12 @@ public class BookingBusinessFactoryUtil {
 			String bookingStatus, UserContext userContext) {
 		return getBookingBusiness().findDetailBookings(ownerId, classPK, className, bookingStatus, userContext);
 	}
+
+	public static Booking cancelRequestBooking(long bookingId, UserContext userContext) {
+		return getBookingBusiness().cancelRequestBooking(bookingId, userContext);
+	}
+
+	public static Booking cancelActionBooking(long bookingId, String bookingStatus, UserContext userContext) {
+		return getBookingBusiness().cancelActionBooking(bookingId, bookingStatus, userContext);
+	}
 }

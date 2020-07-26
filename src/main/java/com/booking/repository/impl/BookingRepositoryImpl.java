@@ -103,10 +103,9 @@ public class BookingRepositoryImpl implements BookingRepository {
 			if (session != null) {
 				transaction = session.beginTransaction();
 
-				String hql = " FROM Booking U WHERE U.toDate < :now AND U.bookingStatus = :bookingStatus";
+				String hql = " FROM Booking U WHERE U.toDate < :now AND U.bookingStatus IN (" + bookingStatus + ")";
 				Query query = session.createQuery(hql);
 				query.setParameter("now", now);
-				query.setParameter("bookingStatus", bookingStatus);
 				bookings = query.getResultList();
 
 				transaction.commit();

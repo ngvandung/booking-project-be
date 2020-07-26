@@ -10,7 +10,7 @@
 <link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css>
 <link href=<c:url value='/static/css/app.9f40721f.css' />  rel=preload as=style>
 <link href=<c:url value='/static/css/chunk-vendors.43378290.css' /> rel=preload as=style>
-<link href=<c:url value='/static/js/app.f5ca8ff0.js' /> rel=preload as=script>
+<link href=<c:url value='/static/js/app.1b08bb89.js' /> rel=preload as=script>
 <link href=<c:url value='/static/js/chunk-vendors.8c38899c.js' /> rel=preload as=script>
 <link href=<c:url value='/static/css/chunk-vendors.43378290.css' /> rel=stylesheet>
 <link href=<c:url value='/static/css/app.9f40721f.css' /> rel=stylesheet>
@@ -19,6 +19,6 @@
             continue.</strong></noscript>
 <div id=app></div>
 <script type=text/javascript src=<c:url value='/static/js/chunk-vendors.8c38899c.js' />></script>
-<script type=text/javascript src=<c:url value='/static/js/app.f5ca8ff0.js' />></script>
+<script type=text/javascript src=<c:url value='/static/js/app.1b08bb89.js' />></script>
 
 

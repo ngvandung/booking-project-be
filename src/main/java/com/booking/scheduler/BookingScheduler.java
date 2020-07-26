@@ -76,8 +76,10 @@ public class BookingScheduler {
 		Date now = new Date();
 		_log.info("Booking Scheduler: " + DateFormat.formatDateToString_ddMMyyyy_HHmmss(now));
 
-		List<Booking> bookings = bookingService.findByToDate(now, BookingConstant.RENTING);
-		for (Booking booking : bookings) {
+		String condition = "'" + BookingConstant.RENTING + "','" + BookingConstant.CANCEL_FAILED + "','"
+				+ BookingConstant.CANCEL_PENDING + "'";
+		List<Booking> bookings = bookingService.findByToDate(now, condition);
+		bookings.parallelStream().forEach(booking -> {
 			// update status booking
 			booking.setBookingStatus("done");
 			bookingService.updateBooking(booking);
@@ -85,7 +87,7 @@ public class BookingScheduler {
 			long classPK = booking.getClassPK();
 			String className = booking.getClassName();
 			open(classPK, className);
-		}
+		});
 	}
 
 	// update status product
