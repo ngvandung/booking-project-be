@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.booking.business.util.HomeTypeBusinessFactoryUtil;
-import com.booking.model.HomeType;
+import com.booking.business.util.HouseTypeBusinessFactoryUtil;
+import com.booking.model.HouseType;
 import com.booking.util.BeanUtil;
 import com.booking.util.UserContext;
 
@@ -30,39 +30,39 @@ import com.booking.util.UserContext;
  */
 @RestController
 @RequestMapping("/api/v1")
-public class HomeTypeController {
-	@RequestMapping(value = "/hometypes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+public class HouseTypeController {
+	@RequestMapping(value = "/housetypes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Iterable<HomeType> getHomeTypes(HttpServletRequest request, HttpSession session,
+	public Iterable<HouseType> getHouseTypes(HttpServletRequest request, HttpSession session,
 			@RequestParam(name = "typeName", required = false) String typeName,
 			@RequestParam(name = "start", required = false) Integer start,
 			@RequestParam(name = "end", required = false) Integer end) {
 
-		Iterable<HomeType> homeTypes = HomeTypeBusinessFactoryUtil.getHomeTypes(typeName, start, end);
+		Iterable<HouseType> houseTypes = HouseTypeBusinessFactoryUtil.getHouseTypes(typeName, start, end);
 
-		return homeTypes;
+		return houseTypes;
 	}
 
-	@RequestMapping(value = "/hometype", method = RequestMethod.POST)
+	@RequestMapping(value = "/housetype", method = RequestMethod.POST)
 	@ResponseBody
-	public HomeType createHomeType(HttpServletRequest request, HttpSession session, @RequestBody HomeType homeType)
+	public HouseType createHouseType(HttpServletRequest request, HttpSession session, @RequestBody HouseType houseType)
 			throws IOException {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
-		return HomeTypeBusinessFactoryUtil.createHomeType(homeType.getTypeName(), userContext);
+		return HouseTypeBusinessFactoryUtil.createHouseType(houseType.getTypeName(), userContext);
 
 	}
 
-	@RequestMapping(value = "/hometype/indexing", method = RequestMethod.POST)
+	@RequestMapping(value = "/housetype/indexing", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> indexing(HttpServletRequest request, HttpSession session) {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
-		HomeTypeBusinessFactoryUtil.indexing(userContext);
+		HouseTypeBusinessFactoryUtil.indexing(userContext);
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("status", 200);
@@ -70,27 +70,27 @@ public class HomeTypeController {
 
 	}
 
-	@RequestMapping(value = "/hometype", method = RequestMethod.PUT)
+	@RequestMapping(value = "/housetype", method = RequestMethod.PUT)
 	@ResponseBody
-	public HomeType updateHomeType(HttpServletRequest request, HttpSession session, @RequestBody HomeType homeType)
+	public HouseType updateHouseType(HttpServletRequest request, HttpSession session, @RequestBody HouseType houseType)
 			throws IOException {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
-		return HomeTypeBusinessFactoryUtil.updateHomeType(homeType.getHomeTypeId(), homeType.getTypeName(),
+		return HouseTypeBusinessFactoryUtil.updateHouseType(houseType.getHouseTypeId(), houseType.getTypeName(),
 				userContext);
 
 	}
 
-	@RequestMapping(value = "/hometype/{homeTypeId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/housetype/{houseTypeId}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public HomeType deleteHomeType(HttpServletRequest request, HttpSession session,
-			@PathVariable("homeTypeId") Long homeTypeId) throws IOException {
+	public HouseType deleteHouseType(HttpServletRequest request, HttpSession session,
+			@PathVariable("houseTypeId") Long houseTypeId) throws IOException {
 
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
-		return HomeTypeBusinessFactoryUtil.deleteHomeType(homeTypeId, userContext);
+		return HouseTypeBusinessFactoryUtil.deleteHouseType(houseTypeId, userContext);
 	}
 }

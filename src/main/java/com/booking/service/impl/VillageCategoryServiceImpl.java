@@ -111,12 +111,11 @@ public class VillageCategoryServiceImpl implements VillageCategoryService {
 	@Override
 	public void indexing() {
 		List<VillageCategory> villageCategories = villageCategoryRepository.findAll();
-		for (int i = villageCategories.size() - 1; i >= 0; i--) {
-			IndexQuery indexQuery = new IndexQueryBuilder()
-					.withId(String.valueOf(villageCategories.get(i).getVillageId()))
-					.withObject(villageCategories.get(i)).build();
+		villageCategories.parallelStream().forEach(village -> {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(village.getVillageId()))
+					.withObject(village).build();
 			String documentId = elasticsearchOperations.index(indexQuery);
 			log.info("documentId: " + documentId);
-		}
+		});
 	}
 }

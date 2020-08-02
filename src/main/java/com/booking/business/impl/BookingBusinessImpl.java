@@ -4,6 +4,7 @@
 package com.booking.business.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,11 +23,11 @@ import com.booking.constant.BookingConstant;
 import com.booking.exception.BadRequestException;
 import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.model.User;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.service.BookingService;
-import com.booking.service.HomeService;
+import com.booking.service.HouseService;
 import com.booking.service.UserService;
 import com.booking.util.BeanUtil;
 import com.booking.util.ConfigVnPay;
@@ -42,11 +43,11 @@ import com.booking.util.UserContext;
 public class BookingBusinessImpl implements BookingBusiness {
 
 	private static final Logger _log = Logger.getLogger(BookingBusinessImpl.class);
-			
+
 	@Autowired
 	private BookingService bookingService;
 	@Autowired
-	private HomeService homeService;
+	private HouseService houseService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -102,11 +103,11 @@ public class BookingBusinessImpl implements BookingBusiness {
 		Booking booking = bookingService.createBooking(numberOfGuest, fromDate, toDate, classPK, className, totalAmount,
 				BookingConstant.PAYING, fullName, email, phone, stateId, stateName, ipAddress, _userId);
 		if (booking != null) {
-			if (className.equals(Home.class.getName())) {
-				Home home = homeService.findById(classPK);
+			if (className.equals(House.class.getName())) {
+				House house = houseService.findById(classPK);
 
 				// Thanh toan vnpay
-				long userId = home.getUserId();
+				long userId = house.getUserId();
 				User user = userService.findByUserId(userId);
 				String vnp_TmnCode = user.getTmnCode();
 				String vnp_hashSecret = user.getHashSecret();
@@ -194,34 +195,50 @@ public class BookingBusinessImpl implements BookingBusiness {
 		} else {
 			throw new ForbiddenException();
 		}
-
 	}
 
 	@Override
-	public Booking cancelActionBooking(long bookingId, String bookingStatus, UserContext userContext) {
+	public Map<String, Object> cancelActionBooking(HttpServletRequest request, HttpServletResponse response,
+			long bookingId, String bookingStatus, UserContext userContext)
+			throws UnsupportedEncodingException, IOException {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "01");
+		result.put("message", "failed");
+		result.put("data", "");
+
 		Booking booking = bookingService.findById(bookingId);
 		// Validate owner
 		long ownerId = 0;
-		if (booking.getClassName().equals(Home.class.getName())) {
-			Home home = homeService.findById(booking.getClassPK());
-			ownerId = home.getOwnerHomeId();
+		if (booking.getClassName().equals(House.class.getName())) {
+			House house = houseService.findById(booking.getClassPK());
+			ownerId = house.getOwnerHouseId();
 		}
 
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, ownerId)) {
 			if (booking.getBookingStatus().equals(BookingConstant.CANCEL_PENDING)) {
 				booking.setBookingStatus(bookingStatus);
 				booking.setModifiedDate(new Date());
-				
-				//TODO: Hoan tien cho khach hàng
-				//........
 
-				return bookingService.updateBooking(booking);
+				booking = bookingService.updateBooking(booking);
+				if (booking != null) {
+					User user = userService.findByUserId(booking.getUserId());
+					String vnp_TmnCode = user.getTmnCode();
+					String vnp_hashSecret = user.getHashSecret();
+					double totalAmount = booking.getTotalAmount();
+
+					result = vnPayPaymentBusiness.payment(request, response,
+							"Hoan tien don hang: " + DateFormat.formatDateToString_ddMMyyyy_HHmmss(new Date()),
+							"billpayment", "NCB", "vn", vnp_TmnCode, vnp_hashSecret, totalAmount,
+							booking.getBookingId());
+				}
 			} else {
 				throw new BadRequestException();
 			}
 		} else {
 			throw new ForbiddenException();
 		}
+		return result;
 	}
 
 }

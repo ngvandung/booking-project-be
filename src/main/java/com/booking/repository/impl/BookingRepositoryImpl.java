@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.booking.model.Booking;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.repository.BookingRepository;
 import com.booking.repository.elasticsearch.BookingElasticsearchRepository;
 import com.booking.util.RentUtil;
@@ -249,8 +249,8 @@ public class BookingRepositoryImpl implements BookingRepository {
 				transaction = session.beginTransaction();
 
 				String hql = " FROM Booking U INNER JOIN";
-				if (className.equals(Home.class.getName())) {
-					hql += " Home H ON U.classPK = H.homeId";
+				if (className.equals(House.class.getName())) {
+					hql += " House H ON U.classPK = H.houseId";
 				}
 				hql += " WHERE 1 = 1 AND U.userId = :userId AND U.className = :className";
 				if (bookingStatus != null) {
@@ -287,9 +287,9 @@ public class BookingRepositoryImpl implements BookingRepository {
 				transaction = session.beginTransaction();
 
 				StringBuilder hql = new StringBuilder();
-				if (className.equals(Home.class.getName())) {
+				if (className.equals(House.class.getName())) {
 					hql.append(
-							"FROM Home H INNER JOIN Booking B ON H.homeId = B.classPK AND B.className = :className WHERE H.ownerHomeId = :ownerHomeId");
+							"FROM House H INNER JOIN Booking B ON H.houseId = B.classPK AND B.className = :className WHERE H.ownerHouseId = :ownerHouseId");
 				}
 
 				if (bookingStatus != null) {
@@ -308,8 +308,8 @@ public class BookingRepositoryImpl implements BookingRepository {
 					query.setParameter("classPK", classPK);
 				}
 				query.setParameter("className", className);
-				if (className.equals(Home.class.getName())) {
-					query.setParameter("ownerHomeId", ownerId);
+				if (className.equals(House.class.getName())) {
+					query.setParameter("ownerHouseId", ownerId);
 				}
 
 				result = RentUtil.convertObjectToMap((List<Object[]>) query.getResultList());

@@ -62,7 +62,7 @@ public class MessageQueueScheduler {
 					JsonNode jPayload = mapper.readValue(payload, JsonNode.class);
 					boolean hasBoolean = EmailSender.sendEmail(
 							String.valueOf(jPayload.get("toEmail")).replace("\"", "").trim(),
-							String.valueOf(jPayload.get("homeName")).replace("\"", "").trim(),
+							String.valueOf(jPayload.get("houseName")).replace("\"", "").trim(),
 							String.valueOf(jPayload.get("pathQRCode")).replace("\"", "").trim());
 
 					if (hasBoolean) {

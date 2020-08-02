@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.booking.model.Home;
-import com.booking.repository.HomeRepository;
-import com.booking.repository.elasticsearch.HomeElasticsearchRepository;
+import com.booking.model.House;
+import com.booking.repository.HouseRepository;
+import com.booking.repository.elasticsearch.HouseElasticsearchRepository;
 import com.booking.util.HibernateUtil;
 import com.booking.util.RentUtil;
 
@@ -29,30 +29,30 @@ import com.booking.util.RentUtil;
  */
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class HomeRepositoryImpl implements HomeRepository {
-	private static final Logger log = Logger.getLogger(HomeRepositoryImpl.class);
+public class HouseRepositoryImpl implements HouseRepository {
+	private static final Logger log = Logger.getLogger(HouseRepositoryImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	@Autowired
-	private HomeElasticsearchRepository homeElasticsearchRepository;
+	private HouseElasticsearchRepository houseElasticsearchRepository;
 
 	@Override
-	public Home findById(long homeId) {
-		Home home = null;
+	public House findById(long houseId) {
+		House house = null;
 		try {
-			Optional<Home> optionalHome = homeElasticsearchRepository.findById(homeId);
-			if (optionalHome.isPresent()) {
-				home = optionalHome.get();
+			Optional<House> optionalHouse = houseElasticsearchRepository.findById(houseId);
+			if (optionalHouse.isPresent()) {
+				house = optionalHouse.get();
 			} else {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = null;
 				transaction = session.beginTransaction();
-				home = session.get(Home.class, homeId);
+				house = session.get(House.class, houseId);
 				transaction.commit();
 				session.close();
 			}
-			return home;
+			return house;
 		} catch (Exception e) {
 			log.error(e);
 			return null;
@@ -60,53 +60,53 @@ public class HomeRepositoryImpl implements HomeRepository {
 	}
 
 	@Override
-	public Home updateHome(Home home) {
+	public House updateHouse(House house) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		session.update(home);
+		session.update(house);
 		transaction.commit();
 		session.close();
-		return home;
+		return house;
 
 	}
 
 	@Override
-	public Home createHome(Home home) {
+	public House createHouse(House house) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		session.save(home);
+		session.save(house);
 		transaction.commit();
 		session.close();
-		return home;
+		return house;
 	}
 
 	@Override
-	public Home deleteHome(long homeId) {
+	public House deleteHouse(long houseId) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		Home home = session.get(Home.class, homeId);
-		session.delete(home);
+		House house = session.get(House.class, houseId);
+		session.delete(house);
 		transaction.commit();
 		session.close();
-		return home;
+		return house;
 	}
 
 	@Override
-	public List<Home> findAll() {
+	public List<House> findAll() {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		List<Home> homes = HibernateUtil.loadAllData(Home.class, session);
+		List<House> houses = HibernateUtil.loadAllData(House.class, session);
 		transaction.commit();
 		session.close();
-		return homes;
+		return houses;
 	}
 
 	@Override
-	public List<Map<String, Object>> findMyHomes(Long ownerHomeId, String flag) {
+	public List<Map<String, Object>> findMyHouses(Long ownerHouseId, String flag) {
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
@@ -115,9 +115,9 @@ public class HomeRepositoryImpl implements HomeRepository {
 				transaction = session.beginTransaction();
 
 				StringBuilder hql = new StringBuilder();
-				hql.append("SELECT DISTINCT H, B.classPK FROM Home H LEFT JOIN Booking B ON H.homeId = B.classPK WHERE 1 = 1");
-				if (ownerHomeId != null) {
-					hql.append(" AND H.ownerHomeId = :ownerHomeId");
+				hql.append("SELECT DISTINCT H, B.classPK FROM House H LEFT JOIN Booking B ON H.houseId = B.classPK WHERE 1 = 1");
+				if (ownerHouseId != null) {
+					hql.append(" AND H.ownerHouseId = :ownerHouseId");
 				}
 				if(flag != null) {
 					if(flag.equals("yes")) {
@@ -128,8 +128,8 @@ public class HomeRepositoryImpl implements HomeRepository {
 
 				Query query = session.createQuery(hql.toString());
 
-				if (ownerHomeId != null) {
-					query.setParameter("ownerHomeId", ownerHomeId);
+				if (ownerHouseId != null) {
+					query.setParameter("ownerHouseId", ownerHouseId);
 				}
 
 				result = RentUtil.convertObjectToMap((List<Object[]>) query.getResultList());

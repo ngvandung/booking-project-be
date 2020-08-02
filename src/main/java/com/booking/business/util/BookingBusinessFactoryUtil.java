@@ -81,7 +81,8 @@ public class BookingBusinessFactoryUtil {
 		return getBookingBusiness().cancelRequestBooking(bookingId, userContext);
 	}
 
-	public static Booking cancelActionBooking(long bookingId, String bookingStatus, UserContext userContext) {
-		return getBookingBusiness().cancelActionBooking(bookingId, bookingStatus, userContext);
+	public static Map<String, Object> cancelActionBooking(HttpServletRequest request, HttpServletResponse response, long bookingId,
+			String bookingStatus, UserContext userContext) throws UnsupportedEncodingException, IOException {
+		return getBookingBusiness().cancelActionBooking(request, response, bookingId, bookingStatus, userContext);
 	}
 }

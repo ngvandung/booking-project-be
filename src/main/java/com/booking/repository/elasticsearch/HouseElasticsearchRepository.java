@@ -6,13 +6,13 @@ package com.booking.repository.elasticsearch;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
-import com.booking.model.Home;
+import com.booking.model.House;
 
 /**
  * @author ddung
  *
  */
 @Repository
-public interface HomeElasticsearchRepository extends ElasticsearchRepository<Home, Long> {
+public interface HouseElasticsearchRepository extends ElasticsearchRepository<House, Long> {
 
 }

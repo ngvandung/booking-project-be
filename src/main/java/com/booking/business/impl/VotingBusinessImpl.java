@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.booking.business.VotingBusiness;
 import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.model.Voting;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.service.BookingService;
@@ -54,7 +54,7 @@ public class VotingBusinessImpl implements VotingBusiness {
 		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
 
 		long userId = userContext.getUser().getUserId();
-		if (className.equals(Home.class.getName())) {
+		if (className.equals(House.class.getName())) {
 			List<Booking> bookings = bookingService.findBookings(className, classPK, null, null, null, userId);
 			if (bookings != null && !bookings.isEmpty()) {
 				return votingService.createVoting(star, classPK, className, userId);

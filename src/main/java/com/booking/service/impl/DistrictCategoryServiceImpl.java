@@ -109,13 +109,11 @@ public class DistrictCategoryServiceImpl implements DistrictCategoryService {
 	@Override
 	public void indexing() {
 		List<DistrictCategory> districtCategories = districtCategoryRepository.findAll();
-		for (int i = districtCategories.size() - 1; i >= 0; i--) {
-			IndexQuery indexQuery = new IndexQueryBuilder()
-					.withId(String.valueOf(districtCategories.get(i).getDistrictId()))
-					.withObject(districtCategories.get(i)).build();
+		districtCategories.parallelStream().forEach(district -> {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(district.getDistrictId()))
+					.withObject(district).build();
 			String documentId = elasticsearchOperations.index(indexQuery);
 			log.info("documentId: " + documentId);
-		}
-
+		});
 	}
 }

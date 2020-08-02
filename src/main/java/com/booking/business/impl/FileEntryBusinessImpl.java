@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.booking.business.FileEntryBusiness;
-import com.booking.business.util.HomeBusinessFactoryUtil;
+import com.booking.business.util.HouseBusinessFactoryUtil;
 import com.booking.model.FileEntry;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.service.FileEntryService;
 import com.booking.util.UserContext;
@@ -100,9 +100,9 @@ public class FileEntryBusinessImpl implements FileEntryBusiness {
 	@Override
 	public List<FileEntry> updateFileEntry(MultipartFile[] files, String className, long classPK,
 			UserContext userContext) throws IOException {
-		Home home = HomeBusinessFactoryUtil.findById(classPK);
+		House house = HouseBusinessFactoryUtil.findById(classPK);
 		List<FileEntry> fileEntries = new ArrayList<FileEntry>();
-		if (PermissionCheckerFactoryUtil.isOwner(userContext, home.getUserId())) {
+		if (PermissionCheckerFactoryUtil.isOwner(userContext, house.getUserId())) {
 			if (fileEntryService.deleteFileEntry(className, classPK)) {
 				for (int i = 0; i < files.length; i++) {
 					MultipartFile file = files[i];

@@ -1,6 +1,6 @@
 /**
- * 
- */
+* 
+*/
 package com.booking.model;
 
 import java.util.Date;
@@ -17,16 +17,16 @@ import org.springframework.data.elasticsearch.annotations.Document;
  *
  */
 @Entity
-@Table(name = "home")
-@Document(indexName = "home", type = "Home")
-public class Home {
+@Table(name = "house")
+@Document(indexName = "house", type = "House")
+public class House {
 	@Id
 	@org.springframework.data.annotation.Id
-	private Long homeId;
+	private Long houseId;
 	@Column(name = "name", nullable = false)
 	private String name;
-	@Column(name = "homeTypeId", nullable = false)
-	private Long homeTypeId;
+	@Column(name = "houseTypeId", nullable = false)
+	private Long houseTypeId;
 	@Column(name = "typeName", nullable = false)
 	private String typeName;
 	@Column(name = "stateId", nullable = false)
@@ -45,7 +45,7 @@ public class Home {
 	private Long villageId;
 	@Column(name = "villageName", nullable = false)
 	private String villageName;
-	@Column(name = "linkGoogleMap", columnDefinition="LONGTEXT", nullable = false)
+	@Column(name = "linkGoogleMap", columnDefinition = "LONGTEXT", nullable = false)
 	private String linkGoogleMap;
 	@Column(name = "price", nullable = false)
 	private Double price;
@@ -85,12 +85,12 @@ public class Home {
 	private Integer isSmartTv;
 	@Column(name = "isExtraMattress", nullable = true)
 	private Integer isExtraMattress;
-	@Column(name = "description", nullable = true)
+	@Column(name = "description", columnDefinition = "LONGTEXT", nullable = true)
 	private String description;
 	@Column(name = "isActive", nullable = false)
 	private Integer isActive;
-	@Column(name = "ownerHomeId", nullable = false)
-	private Long ownerHomeId;
+	@Column(name = "ownerHouseId", nullable = false)
+	private Long ownerHouseId;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
@@ -98,12 +98,12 @@ public class Home {
 	@Column(name = "userId", nullable = false)
 	private Long userId;
 
-	public Long getHomeId() {
-		return homeId;
+	public Long getHouseId() {
+		return houseId;
 	}
 
-	public void setHomeId(Long homeId) {
-		this.homeId = homeId;
+	public void setHouseId(Long houseId) {
+		this.houseId = houseId;
 	}
 
 	public String getName() {
@@ -114,12 +114,12 @@ public class Home {
 		this.name = name;
 	}
 
-	public Long getHomeTypeId() {
-		return homeTypeId;
+	public Long getHouseTypeId() {
+		return houseTypeId;
 	}
 
-	public void setHomeTypeId(Long homeTypeId) {
-		this.homeTypeId = homeTypeId;
+	public void setHouseTypeId(Long houseTypeId) {
+		this.houseTypeId = houseTypeId;
 	}
 
 	public String getTypeName() {
@@ -370,12 +370,12 @@ public class Home {
 		this.isActive = isActive;
 	}
 
-	public Long getOwnerHomeId() {
-		return ownerHomeId;
+	public Long getOwnerHouseId() {
+		return ownerHouseId;
 	}
 
-	public void setOwnerHomeId(Long ownerHomeId) {
-		this.ownerHomeId = ownerHomeId;
+	public void setOwnerHouseId(Long ownerHouseId) {
+		this.ownerHouseId = ownerHouseId;
 	}
 
 	public Date getCreateDate() {

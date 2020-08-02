@@ -48,5 +48,6 @@ public interface BookingBusiness {
 
 	public Booking cancelRequestBooking(long bookingId, UserContext userContext);
 
-	public Booking cancelActionBooking(long bookingId, String bookingStatus, UserContext userContext);
+	public Map<String, Object> cancelActionBooking(HttpServletRequest request, HttpServletResponse response,
+			long bookingId, String bookingStatus, UserContext userContext) throws UnsupportedEncodingException, IOException;
 }

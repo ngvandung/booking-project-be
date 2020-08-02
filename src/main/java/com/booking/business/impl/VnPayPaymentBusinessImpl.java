@@ -30,10 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.booking.business.VnPayPaymentBusiness;
 import com.booking.constant.BookingConstant;
 import com.booking.model.Booking;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.model.User;
 import com.booking.service.BookingService;
-import com.booking.service.HomeService;
+import com.booking.service.HouseService;
 import com.booking.service.MessageQueueService;
 import com.booking.service.UserService;
 import com.booking.util.ConfigVnPay;
@@ -52,7 +52,7 @@ public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private HomeService homeService;
+	private HouseService houseService;
 	@Autowired
 	private BookingService bookingService;
 	@Autowired
@@ -151,9 +151,9 @@ public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 		long classPK = booking.getClassPK();
 		String className = booking.getClassName();
 		long userId = 0;
-		if (className.equals(Home.class.getName())) {
-			Home home = homeService.findById(classPK);
-			userId = home.getUserId();
+		if (className.equals(House.class.getName())) {
+			House house = houseService.findById(classPK);
+			userId = house.getUserId();
 		}
 		User user = userService.findByUserId(userId);
 		String signValue = ConfigVnPay.hashAllFields(fields, user.getHashSecret());
@@ -166,7 +166,7 @@ public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 				try {
 					StringBuilder contentQRCode = new StringBuilder();
 					contentQRCode.append("Email: " + booking.getEmail() + " - Phone: " + booking.getPhone());
-					if (booking.getClassName().equals(Home.class.getName())) {
+					if (booking.getClassName().equals(House.class.getName())) {
 						contentQRCode.append(" - House: " + booking.getClassPK());
 					}
 					contentQRCode.append(" - Total Amount: " + booking.getTotalAmount());
@@ -186,10 +186,10 @@ public class VnPayPaymentBusinessImpl implements VnPayPaymentBusiness {
 				booking = bookingService.updateBooking(booking);
 
 				// Add vao queue de gui email cho nguoi thue
-				Home home = homeService.findById(classPK);
+				House house = houseService.findById(classPK);
 				JSONObject jPayload = new JSONObject();
 				jPayload.put("toEmail", booking.getEmail());
-				jPayload.put("homeName", home.getName());
+				jPayload.put("houseName", house.getName());
 				jPayload.put("pathQRCode", pathQRCodeImg);
 				messageQueueService.createMessageQueue("", 0L, "email", jPayload.toJSONString());
 

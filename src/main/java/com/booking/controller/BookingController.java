@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.booking.business.util.BookingBusinessFactoryUtil;
 import com.booking.business.util.VnPayPaymentBusinessFactoryUtil;
 import com.booking.model.Booking;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.util.BeanUtil;
 import com.booking.util.DateFormat;
 import com.booking.util.UserContext;
@@ -40,7 +40,7 @@ import com.booking.util.UserContext;
 public class BookingController {
 	@RequestMapping(value = "/bookings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<Booking> bookingHome(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+	public List<Booking> bookingHouse(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(name = "className", required = false) String className,
 			@RequestParam(name = "classPK", required = false) Long classPK,
 			@RequestParam(name = "numberOfGuest", required = false) Integer numberOfGuest,
@@ -64,25 +64,25 @@ public class BookingController {
 		return BookingBusinessFactoryUtil.findMyBookings(userId, className, bookingStatus, userContext);
 	}
 
-	@RequestMapping(value = "/validate/home", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/validate/house", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Booking> checkTime(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(name = "classPK", required = false) Long classPK,
 			@RequestParam(name = "fromDate", required = false) String fromDate,
 			@RequestParam(name = "toDate", required = false) String toDate) throws ParseException {
 
-		return BookingBusinessFactoryUtil.checkTime(classPK, Home.class.getName(), fromDate, toDate);
+		return BookingBusinessFactoryUtil.checkTime(classPK, House.class.getName(), fromDate, toDate);
 	}
 
-	@RequestMapping(value = "/booking/home", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/booking/house", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Map<String, Object> bookingHome(HttpServletRequest request, HttpServletResponse response,
+	public Map<String, Object> bookingHouse(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session, @RequestBody Booking booking) throws UnsupportedEncodingException, IOException {
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
 		return BookingBusinessFactoryUtil.createBooking(request, response, booking.getNumberOfGuest(),
-				booking.getFromDate(), booking.getToDate(), booking.getClassPK(), Home.class.getName(),
+				booking.getFromDate(), booking.getToDate(), booking.getClassPK(), House.class.getName(),
 				booking.getFullName(), booking.getEmail(), booking.getPhone(), booking.getStateId(),
 				booking.getStateName(),
 				"Thanh toan don hang thoi gian: " + DateFormat.formatDateToString_ddMMyyyy_HHmmss(new Date()),
@@ -101,12 +101,13 @@ public class BookingController {
 
 	@RequestMapping(value = "/booking/cancelaction/{bookingId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Booking bookingHome(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			@PathVariable("bookingId") long bookingId, @RequestParam("bookingStatus") String bookingStatus) {
+	public Map<String, Object> bookingHouse(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session, @PathVariable("bookingId") long bookingId,
+			@RequestParam("bookingStatus") String bookingStatus) throws UnsupportedEncodingException, IOException {
 		UserContext userContext = BeanUtil.getBean(UserContext.class);
 		userContext = (UserContext) session.getAttribute("userContext");
 
-		return BookingBusinessFactoryUtil.cancelActionBooking(bookingId, bookingStatus, userContext);
+		return BookingBusinessFactoryUtil.cancelActionBooking(request, response, bookingId, bookingStatus, userContext);
 	}
 
 	@RequestMapping(value = "/vnpay/confirm/{bookingId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

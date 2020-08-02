@@ -7,7 +7,7 @@ package com.booking.constant;
  * @author ddung
  *
  */
-public class HomeConstant {
+public class HouseConstant {
 	public static final int ACTIVE = 1;
 	public static final int DISABLE = 0;
 	public static final int DRAFT = 3;

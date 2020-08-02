@@ -22,9 +22,9 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.booking.model.HomeType;
-import com.booking.repository.HomeTypeRepository;
-import com.booking.repository.elasticsearch.HomeTypeElasticsearchRepository;
+import com.booking.model.HouseType;
+import com.booking.repository.HouseTypeRepository;
+import com.booking.repository.elasticsearch.HouseTypeElasticsearchRepository;
 import com.booking.util.HibernateUtil;
 
 /**
@@ -33,30 +33,30 @@ import com.booking.util.HibernateUtil;
  */
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class HomeTypeRepositoryImpl implements HomeTypeRepository {
-	private static final Logger log = Logger.getLogger(HomeTypeRepositoryImpl.class);
+public class HouseTypeRepositoryImpl implements HouseTypeRepository {
+	private static final Logger log = Logger.getLogger(HouseTypeRepositoryImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	@Autowired
-	private HomeTypeElasticsearchRepository homeTypeElasticsearchRepository;
+	private HouseTypeElasticsearchRepository houseTypeElasticsearchRepository;
 
 	@Override
-	public HomeType findById(long homeTypeId) {
-		HomeType homeType = null;
+	public HouseType findById(long houseTypeId) {
+		HouseType houseType = null;
 		try {
-			Optional<HomeType> optionalHomeType = homeTypeElasticsearchRepository.findById(homeTypeId);
-			if (optionalHomeType.isPresent()) {
-				homeType = optionalHomeType.get();
+			Optional<HouseType> optionalHouseType = houseTypeElasticsearchRepository.findById(houseTypeId);
+			if (optionalHouseType.isPresent()) {
+				houseType = optionalHouseType.get();
 			} else {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = null;
 				transaction = session.beginTransaction();
-				homeType = session.get(HomeType.class, homeTypeId);
+				houseType = session.get(HouseType.class, houseTypeId);
 				transaction.commit();
 				session.close();
 			}
-			return homeType;
+			return houseType;
 		} catch (Exception e) {
 			log.error(e);
 			return null;
@@ -64,46 +64,46 @@ public class HomeTypeRepositoryImpl implements HomeTypeRepository {
 	}
 
 	@Override
-	public HomeType updateHomeType(HomeType homeType) {
+	public HouseType updateHouseType(HouseType houseType) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		session.update(homeType);
+		session.update(houseType);
 		transaction.commit();
 		session.close();
-		return homeType;
+		return houseType;
 	}
 
 	@Override
-	public HomeType createHomeType(HomeType homeType) {
+	public HouseType createHouseType(HouseType houseType) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		session.save(homeType);
+		session.save(houseType);
 		transaction.commit();
 		session.close();
-		return homeType;
+		return houseType;
 	}
 
 	@Override
-	public HomeType deleteHomeType(long homeTypeId) {
+	public HouseType deleteHouseType(long houseTypeId) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		HomeType homeType = session.get(HomeType.class, homeTypeId);
-		session.delete(homeType);
+		HouseType houseType = session.get(HouseType.class, houseTypeId);
+		session.delete(houseType);
 		transaction.commit();
 		session.close();
-		return homeType;
+		return houseType;
 	}
 
 	@Override
-	public Iterable<HomeType> getHomeTypes(String typeName, Integer start, Integer end) {
+	public Iterable<HouseType> getHouseTypes(String typeName, Integer start, Integer end) {
 		if (start == null || end == null) {
 			start = 0;
 			end = 15;
 		}
-		Pageable sortedByHomeTypeId = PageRequest.of(start, end, Sort.by("homeTypeId"));
+		Pageable sortedByHouseTypeId = PageRequest.of(start, end, Sort.by("houseTypeId"));
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(QueryBuilders.matchAllQuery());
@@ -113,19 +113,19 @@ public class HomeTypeRepositoryImpl implements HomeTypeRepository {
 		}
 
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder)
-				.withPageable(sortedByHomeTypeId).build();
+				.withPageable(sortedByHouseTypeId).build();
 
-		return homeTypeElasticsearchRepository.search(searchQuery);
+		return houseTypeElasticsearchRepository.search(searchQuery);
 	}
 
 	@Override
-	public List<HomeType> findAll() {
+	public List<HouseType> findAll() {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		transaction = session.beginTransaction();
-		List<HomeType> homeTypes = HibernateUtil.loadAllData(HomeType.class, session);
+		List<HouseType> houseTypes = HibernateUtil.loadAllData(HouseType.class, session);
 		transaction.commit();
 		session.close();
-		return homeTypes;
+		return houseTypes;
 	}
 }

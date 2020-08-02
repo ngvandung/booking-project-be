@@ -13,11 +13,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.booking.constant.BookingConstant;
-import com.booking.constant.HomeConstant;
+import com.booking.constant.HouseConstant;
 import com.booking.model.Booking;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.service.BookingService;
-import com.booking.service.HomeService;
+import com.booking.service.HouseService;
 import com.booking.util.DateFormat;
 
 /**
@@ -33,15 +33,15 @@ public class BookingScheduler {
 	@Autowired
 	private BookingService bookingService;
 	@Autowired
-	private HomeService homeService;
+	private HouseService houseService;
 
 	public BookingScheduler() {
 	}
 
-	public BookingScheduler(BookingService bookingService, HomeService homeService) {
+	public BookingScheduler(BookingService bookingService, HouseService houseService) {
 		super();
 		this.bookingService = bookingService;
-		this.homeService = homeService;
+		this.houseService = houseService;
 	}
 
 	public BookingScheduler(BookingService bookingService) {
@@ -49,9 +49,9 @@ public class BookingScheduler {
 		this.bookingService = bookingService;
 	}
 
-	public BookingScheduler(HomeService homeService) {
+	public BookingScheduler(HouseService houseService) {
 		super();
-		this.homeService = homeService;
+		this.houseService = houseService;
 	}
 
 	public BookingService getBookingService() {
@@ -62,12 +62,12 @@ public class BookingScheduler {
 		this.bookingService = bookingService;
 	}
 
-	public HomeService getHomeService() {
-		return homeService;
+	public HouseService getHouseService() {
+		return houseService;
 	}
 
-	public void setHomeService(HomeService homeService) {
-		this.homeService = homeService;
+	public void setHouseService(HouseService houseService) {
+		this.houseService = houseService;
 	}
 
 	// @Async
@@ -92,10 +92,10 @@ public class BookingScheduler {
 
 	// update status product
 	private void open(long classPK, String className) {
-		if (className.equals(Home.class.getName())) {
-			Home home = homeService.findById(classPK);
-			home.setIsActive(HomeConstant.ACTIVE);
-			homeService.updateHome(home);
+		if (className.equals(House.class.getName())) {
+			House house = houseService.findById(classPK);
+			house.setIsActive(HouseConstant.ACTIVE);
+			houseService.updateHouse(house);
 		}
 	}
 }

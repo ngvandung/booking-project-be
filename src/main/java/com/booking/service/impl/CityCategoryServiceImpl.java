@@ -112,12 +112,12 @@ public class CityCategoryServiceImpl implements CityCategoryService {
 	@Override
 	public void indexing() {
 		List<CityCategory> cityCategories = cityCategoryRepository.findAll();
-		for (int i = cityCategories.size() - 1; i >= 0; i--) {
-			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(cityCategories.get(i).getCityId()))
-					.withObject(cityCategories.get(i)).build();
+		cityCategories.parallelStream().forEach(city -> {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(city.getCityId())).withObject(city)
+					.build();
 			String documentId = elasticsearchOperations.index(indexQuery);
 			log.info("documentId: " + documentId);
-		}
+		});
 	}
 
 }

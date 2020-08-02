@@ -11,7 +11,7 @@ import com.booking.business.CommentBusiness;
 import com.booking.exception.ForbiddenException;
 import com.booking.model.Booking;
 import com.booking.model.Comment;
-import com.booking.model.Home;
+import com.booking.model.House;
 import com.booking.security.PermissionCheckerFactoryUtil;
 import com.booking.service.BookingService;
 import com.booking.service.CommentService;
@@ -51,7 +51,7 @@ public class CommentBusinessImpl implements CommentBusiness {
 		PermissionCheckerFactoryUtil.checkAuthentication(userContext);
 
 		long userId = userContext.getUser().getUserId();
-		if (className.equals(Home.class.getName())) {
+		if (className.equals(House.class.getName())) {
 			List<Booking> bookings = bookingService.findBookings(className, classPK, null, null, null, userId);
 			if (bookings != null && !bookings.isEmpty()) {
 				return commentService.createComment(content, classPK, className, userId);

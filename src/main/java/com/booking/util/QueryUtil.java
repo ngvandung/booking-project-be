@@ -8,9 +8,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.booking.constant.HomeConstant;
-import com.booking.model.Home;
-import com.booking.service.HomeService;
+import com.booking.constant.HouseConstant;
+import com.booking.model.House;
+import com.booking.service.HouseService;
 
 /**
  * @author ddung
@@ -18,19 +18,19 @@ import com.booking.service.HomeService;
  */
 public class QueryUtil {
 
-	private final static String HOME = Home.class.getName();
+	private final static String HOUSE = House.class.getName();
 	@Autowired
-	private HomeService homeService;
+	private HouseService houseService;
 
 	public Map<String, Object> getByClassPK_ClassName(long classPK, String className) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		if (className.equals(HOME)) {
-			Home home = homeService.findById(classPK);
-			if (home.getIsActive() == HomeConstant.ACTIVE) {
-				result.put("classPK", home.getHomeId());
-				result.put("price", home.getPrice());
-				result.put("className", Home.class.getName());
-				result.put("ownerId", home.getOwnerHomeId());
+		if (className.equals(HOUSE)) {
+			House house = houseService.findById(classPK);
+			if (house.getIsActive() == HouseConstant.ACTIVE) {
+				result.put("classPK", house.getHouseId());
+				result.put("price", house.getPrice());
+				result.put("className", House.class.getName());
+				result.put("ownerId", house.getOwnerHouseId());
 			}
 		}
 		return result;

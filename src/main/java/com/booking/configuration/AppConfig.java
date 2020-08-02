@@ -20,8 +20,8 @@ import com.booking.business.impl.CityCategoryBusinessImpl;
 import com.booking.business.impl.CommentBusinessImpl;
 import com.booking.business.impl.DistrictCategoryBusinessImpl;
 import com.booking.business.impl.FileEntryBusinessImpl;
-import com.booking.business.impl.HomeBusinessImpl;
-import com.booking.business.impl.HomeTypeBusinessImpl;
+import com.booking.business.impl.HouseTypeBusinessImpl;
+import com.booking.business.impl.HouseBusinessImpl;
 import com.booking.business.impl.StateCategoryBusinessImpl;
 import com.booking.business.impl.UserBusinessImpl;
 import com.booking.business.impl.VillageCategoryBusinessImpl;
@@ -111,13 +111,13 @@ public class AppConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public HomeTypeBusinessImpl homeTypeBusinessImpl() {
-		return new HomeTypeBusinessImpl();
+	public HouseTypeBusinessImpl houseTypeBusinessImpl() {
+		return new HouseTypeBusinessImpl();
 	}
 
 	@Bean
-	public HomeBusinessImpl homeBusinessImpl() {
-		return new HomeBusinessImpl();
+	public HouseBusinessImpl houseBusinessImpl() {
+		return new HouseBusinessImpl();
 	}
 
 	@Bean

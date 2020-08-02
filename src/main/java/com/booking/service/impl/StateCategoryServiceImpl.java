@@ -105,11 +105,11 @@ public class StateCategoryServiceImpl implements StateCategoryService {
 	@Override
 	public void indexing() {
 		List<StateCategory> stateCategories = stateCategoryRepository.findAll();
-		for(int i = stateCategories.size() - 1; i >= 0; i--) {
-			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(stateCategories.get(i).getStateId()))
-					.withObject(stateCategories.get(i)).build();
+		stateCategories.parallelStream().forEach(state -> {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(state.getStateId())).withObject(state)
+					.build();
 			String documentId = elasticsearchOperations.index(indexQuery);
 			log.info("documentId: " + documentId);
-		}
+		});
 	}
 }
