@@ -84,7 +84,7 @@ public class UserController {
 
 		return UserBusinessFactoryUtil.createUser(user.getUsername(), user.getPassword(), user.getEmail(),
 				user.getPhone(), user.getFirstName(), user.getLastName(), user.getAge(), user.getAddress(),
-				user.getBirthDay(), user.getDescription(), user.getIsHost(), user.getAvatar());
+				user.getBirthDay(), user.getDescription(), user.getIsHost(), user.getSex(), user.getAvatar());
 
 	}
 
@@ -114,8 +114,8 @@ public class UserController {
 		return UserBusinessFactoryUtil.updateUser(userModel.getUserId(), userModel.getUsername(),
 				userModel.getPassword(), userModel.getEmail(), userModel.getPhone(), userModel.getFirstName(),
 				userModel.getLastName(), userModel.getAge(), userModel.getAddress(), userModel.getBirthDay(),
-				userModel.getDescription(), userModel.getIsHost(), userModel.getIsEnabled(), userModel.getHashSecret(),
-				userModel.getTmnCode(), userContext);
+				userModel.getDescription(), userModel.getIsHost(), userModel.getSex(), userModel.getIsEnabled(),
+				userModel.getHashSecret(), userModel.getTmnCode(), userContext);
 
 	}
 

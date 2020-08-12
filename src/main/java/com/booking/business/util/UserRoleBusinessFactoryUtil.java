@@ -14,7 +14,7 @@ import com.booking.util.UserContext;
  */
 public class UserRoleBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static UserRoleBusiness _userRoleBusiness;
+	private static UserRoleBusiness _userRoleBusiness;
 
 	public static UserRoleBusiness getUserRoleBusiness() {
 

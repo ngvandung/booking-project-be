@@ -28,4 +28,8 @@ public class UserConstant {
 	public static final int PENDING = 2;
 	public static final int REJECT = 3;
 	public static final int DISABLE = 0;
+	
+	public static final int MALE = 1;
+	public static final int FEMALE = 2;
+	public static final int DIFF = 0;
 }

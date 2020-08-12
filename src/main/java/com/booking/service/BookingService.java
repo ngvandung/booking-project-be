@@ -28,7 +28,7 @@ public interface BookingService {
 
 	public Booking updateBooking(Booking booking);
 
-	public List<Booking> findByToDate(Date now, String bookingStatus);
+	public List<Booking> findByToDate(String bookingStatus);
 
 	public List<Booking> findBookings(String className, Long classPK, Double totalAmount, Integer numberOfGuest,
 			String bookingStatus, Long userId);
@@ -40,4 +40,5 @@ public interface BookingService {
 	public List<Map<String, Object>> findDetailBookings(long ownerId, Long classPK, String className,
 			String bookingStatus);
 
+	public void indexing();
 }

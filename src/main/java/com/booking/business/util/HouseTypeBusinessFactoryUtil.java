@@ -14,7 +14,7 @@ import com.booking.util.UserContext;
  */
 public class HouseTypeBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static HouseTypeBusiness _houseTypeBusiness;
+	private static HouseTypeBusiness _houseTypeBusiness;
 
 	public static HouseTypeBusiness getHouseTypeBusiness() {
 

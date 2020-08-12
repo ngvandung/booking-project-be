@@ -14,7 +14,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.booking.business.BookingBusiness;
@@ -41,8 +40,6 @@ import com.booking.util.UserContext;
  *
  */
 public class BookingBusinessImpl implements BookingBusiness {
-
-	private static final Logger _log = Logger.getLogger(BookingBusinessImpl.class);
 
 	@Autowired
 	private BookingService bookingService;
@@ -143,8 +140,8 @@ public class BookingBusinessImpl implements BookingBusiness {
 	}
 
 	@Override
-	public List<Booking> findByToDate(Date now, String bookingStatus) {
-		return bookingService.findByToDate(now, bookingStatus);
+	public List<Booking> findByToDate(String bookingStatus) {
+		return bookingService.findByToDate(bookingStatus);
 	}
 
 	@Override
@@ -239,6 +236,11 @@ public class BookingBusinessImpl implements BookingBusiness {
 			throw new ForbiddenException();
 		}
 		return result;
+	}
+
+	@Override
+	public void indexing(UserContext userContext) {
+		bookingService.indexing();
 	}
 
 }

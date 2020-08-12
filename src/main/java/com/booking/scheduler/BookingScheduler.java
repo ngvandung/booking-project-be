@@ -77,8 +77,8 @@ public class BookingScheduler {
 		_log.info("Booking Scheduler: " + DateFormat.formatDateToString_ddMMyyyy_HHmmss(now));
 
 		String condition = "'" + BookingConstant.RENTING + "','" + BookingConstant.CANCEL_FAILED + "','"
-				+ BookingConstant.CANCEL_PENDING + "'";
-		List<Booking> bookings = bookingService.findByToDate(now, condition);
+				+ BookingConstant.CANCEL_PENDING + "'"; // Hoac neu dang paying thi neu trong 2 tieng khong thanh toan se bi khoa
+		List<Booking> bookings = bookingService.findByToDate(condition);
 		bookings.parallelStream().forEach(booking -> {
 			// update status booking
 			booking.setBookingStatus("done");

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +29,6 @@ import com.booking.repository.UserRoleRepository;
  */
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-
-	private static final Logger _log = Logger.getLogger(CustomAuthenticationProvider.class);
 
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;

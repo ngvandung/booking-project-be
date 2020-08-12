@@ -24,7 +24,7 @@ import com.booking.util.UserContext;
  */
 public class BookingBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static BookingBusiness _bookingBusiness;
+	private static BookingBusiness _bookingBusiness;
 
 	public static BookingBusiness getBookingBusiness() {
 
@@ -81,8 +81,13 @@ public class BookingBusinessFactoryUtil {
 		return getBookingBusiness().cancelRequestBooking(bookingId, userContext);
 	}
 
-	public static Map<String, Object> cancelActionBooking(HttpServletRequest request, HttpServletResponse response, long bookingId,
-			String bookingStatus, UserContext userContext) throws UnsupportedEncodingException, IOException {
+	public static Map<String, Object> cancelActionBooking(HttpServletRequest request, HttpServletResponse response,
+			long bookingId, String bookingStatus, UserContext userContext)
+			throws UnsupportedEncodingException, IOException {
 		return getBookingBusiness().cancelActionBooking(request, response, bookingId, bookingStatus, userContext);
+	}
+
+	public static void indexing(UserContext userContext) {
+		getBookingBusiness().indexing(userContext);
 	}
 }

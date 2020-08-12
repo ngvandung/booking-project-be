@@ -14,7 +14,7 @@ import com.booking.util.UserContext;
  */
 public class DistrictCategoryBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static DistrictCategoryBusiness _districtCategoryBusiness;
+	private static DistrictCategoryBusiness _districtCategoryBusiness;
 
 	public static DistrictCategoryBusiness getDistrictCategoryBusiness() {
 

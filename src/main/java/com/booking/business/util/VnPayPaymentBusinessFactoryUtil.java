@@ -19,7 +19,7 @@ import com.booking.util.BeanUtil;
  */
 public class VnPayPaymentBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static VnPayPaymentBusiness _vnPayPaymentBusiness;
+	private static VnPayPaymentBusiness _vnPayPaymentBusiness;
 
 	public static VnPayPaymentBusiness getVnPayPaymentBusiness() {
 

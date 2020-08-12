@@ -16,7 +16,7 @@ import com.booking.util.UserContext;
  */
 public class VotingBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static VotingBusiness _votingBusiness;
+	private static VotingBusiness _votingBusiness;
 
 	public static VotingBusiness getVotingBusiness() {
 

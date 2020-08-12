@@ -18,7 +18,7 @@ import com.booking.util.UserContext;
 public class UserBusinessFactoryUtil {
 
 	// Design pattern - Singleton
-	public static UserBusiness _userBusiness;
+	private static UserBusiness _userBusiness;
 
 	public static UserBusiness getUserBusiness() {
 
@@ -37,17 +37,17 @@ public class UserBusinessFactoryUtil {
 	}
 
 	public static User createUser(String username, String password, String email, String phone, String firstName,
-			String lastName, int age, String address, Date birthDay, String description, Integer isHost,
+			String lastName, int age, String address, Date birthDay, String description, Integer isHost, Integer sex,
 			String avatar) {
 		return getUserBusiness().createUser(username, password, email, phone, firstName, lastName, age, address,
-				birthDay, description, isHost, avatar);
+				birthDay, description, isHost, sex, avatar);
 	}
 
 	public static User updateUser(long userId, String username, String password, String email, String phone,
 			String firstName, String lastName, int age, String address, Date birthDay, String description,
-			Integer isHost, int isEnabled, String hashSecret, String tmnCode, UserContext userContext) {
+			Integer isHost, Integer sex, int isEnabled, String hashSecret, String tmnCode, UserContext userContext) {
 		return getUserBusiness().updateUser(userId, username, password, email, phone, firstName, lastName, age, address,
-				birthDay, description, isHost, isEnabled, hashSecret, tmnCode, userContext);
+				birthDay, description, isHost, sex, isEnabled, hashSecret, tmnCode, userContext);
 	}
 
 	public static User deleteUser(long userId, UserContext userContext) {

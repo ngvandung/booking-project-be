@@ -19,7 +19,7 @@ import com.booking.util.UserContext;
  */
 public class FileEntryBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static FileEntryBusiness _fileEntryBusiness;
+	private static FileEntryBusiness _fileEntryBusiness;
 
 	public static FileEntryBusiness getFileEntryBusiness() {
 

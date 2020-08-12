@@ -16,7 +16,7 @@ import com.booking.util.UserContext;
  */
 public class CommentBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static CommentBusiness _commentBusiness;
+	private static CommentBusiness _commentBusiness;
 
 	public static CommentBusiness getCommentBusiness() {
 

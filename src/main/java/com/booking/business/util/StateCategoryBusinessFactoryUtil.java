@@ -14,7 +14,7 @@ import com.booking.util.UserContext;
  */
 public class StateCategoryBusinessFactoryUtil {
 	// Design pattern - Singleton
-	public static StateCategoryBusiness _stateCategoryBusiness;
+	private static StateCategoryBusiness _stateCategoryBusiness;
 
 	public static StateCategoryBusiness getStateCategoryBusiness() {
 

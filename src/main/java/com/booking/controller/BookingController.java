@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.booking.business.util.BookingBusinessFactoryUtil;
+import com.booking.business.util.HouseBusinessFactoryUtil;
+import com.booking.business.util.UserBusinessFactoryUtil;
 import com.booking.business.util.VnPayPaymentBusinessFactoryUtil;
 import com.booking.model.Booking;
 import com.booking.model.House;
+import com.booking.model.User;
 import com.booking.util.BeanUtil;
 import com.booking.util.DateFormat;
 import com.booking.util.UserContext;
@@ -50,6 +54,37 @@ public class BookingController {
 
 		return BookingBusinessFactoryUtil.findBookings(className, classPK, totalAmount, numberOfGuest, bookingStatus,
 				userId);
+	}
+
+	@RequestMapping(value = "/booking/indexing", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> indexing(HttpServletRequest request, HttpSession session) {
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		BookingBusinessFactoryUtil.indexing(userContext);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", 200);
+		return result;
+	}
+
+	@RequestMapping(value = "/payment/house/{bookingId}", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> payment(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@PathVariable("bookingId") long bookingId) throws UnsupportedEncodingException, IOException {
+		UserContext userContext = BeanUtil.getBean(UserContext.class);
+		userContext = (UserContext) session.getAttribute("userContext");
+
+		Booking booking = BookingBusinessFactoryUtil.findById(bookingId);
+		House house = HouseBusinessFactoryUtil.findById(booking.getClassPK());
+		User user = UserBusinessFactoryUtil.findById(house.getOwnerHouseId(), userContext);
+
+		Map<String, Object> result = VnPayPaymentBusinessFactoryUtil.payment(request, response,
+				"Thanh toan don hang thoi gian: " + DateFormat.formatDateToString_ddMMyyyy_HHmmss(new Date()),
+				"billpayment", "NCB", "vn", user.getTmnCode(), user.getHashSecret(), booking.getTotalAmount(),
+				bookingId);
+		return result;
 	}
 
 	@RequestMapping(value = "/bookings/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

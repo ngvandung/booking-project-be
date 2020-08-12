@@ -22,6 +22,7 @@ import com.booking.model.Booking;
 import com.booking.model.House;
 import com.booking.repository.BookingRepository;
 import com.booking.repository.elasticsearch.BookingElasticsearchRepository;
+import com.booking.util.HibernateUtil;
 import com.booking.util.RentUtil;
 
 /**
@@ -95,7 +96,8 @@ public class BookingRepositoryImpl implements BookingRepository {
 	}
 
 	@Override
-	public List<Booking> findByToDate(Date now, String bookingStatus) {
+	public List<Booking> findByToDate(String bookingStatus) {
+		Date now = new Date();
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		List<Booking> bookings = null;
@@ -103,7 +105,8 @@ public class BookingRepositoryImpl implements BookingRepository {
 			if (session != null) {
 				transaction = session.beginTransaction();
 
-				String hql = " FROM Booking U WHERE U.toDate < :now AND U.bookingStatus IN (" + bookingStatus + ")";
+				String hql = " FROM Booking B WHERE (B.toDate < :now AND B.bookingStatus IN (" + bookingStatus
+						+ ")) OR (HOUR(NOW() - createDate) >= 2 AND B.bookingStatus = 'PAYING')";
 				Query query = session.createQuery(hql);
 				query.setParameter("now", now);
 				bookings = query.getResultList();
@@ -130,25 +133,25 @@ public class BookingRepositoryImpl implements BookingRepository {
 			if (session != null) {
 				transaction = session.beginTransaction();
 
-				String hql = " FROM Booking U WHERE 1 = 1";
+				String hql = " FROM Booking B WHERE 1 = 1";
 				StringBuilder condition = new StringBuilder();
 				if (className != null) {
-					condition.append(" AND U.className = :className");
+					condition.append(" AND B.className = :className");
 				}
 				if (classPK != null) {
-					condition.append(" AND U.classPK = :classPK");
+					condition.append(" AND B.classPK = :classPK");
 				}
 				if (totalAmount != null) {
-					condition.append(" AND U.totalAmount = :totalAmount");
+					condition.append(" AND B.totalAmount = :totalAmount");
 				}
 				if (numberOfGuest != null) {
-					condition.append(" AND U.numberOfGuest = :numberOfGuest");
+					condition.append(" AND B.numberOfGuest = :numberOfGuest");
 				}
 				if (bookingStatus != null) {
-					condition.append(" AND U.bookingStatus = :bookingStatus");
+					condition.append(" AND B.bookingStatus = :bookingStatus");
 				}
 				if (userId != null) {
-					condition.append(" AND U.userId = :userId");
+					condition.append(" AND B.userId = :userId");
 				}
 				hql += condition.toString();
 				Query query = session.createQuery(hql);
@@ -193,20 +196,20 @@ public class BookingRepositoryImpl implements BookingRepository {
 			if (session != null) {
 				transaction = session.beginTransaction();
 
-				String hql = " FROM Booking U WHERE 1 = 1";
+				String hql = " FROM Booking B WHERE 1 = 1";
 				StringBuilder condition = new StringBuilder();
 				if (className != null) {
-					condition.append(" AND U.className = :className");
+					condition.append(" AND B.className = :className");
 				}
 				if (classPK != null) {
-					condition.append(" AND U.classPK = :classPK");
+					condition.append(" AND B.classPK = :classPK");
 				}
 				if (bookingStatus != null) {
-					condition.append(" AND U.bookingStatus = :bookingStatus");
+					condition.append(" AND B.bookingStatus = :bookingStatus");
 				}
 				if (fromDate != null) {
 					condition.append(
-							" AND ((U.fromDate < :fromDate AND U.toDate > :fromDate) OR (U.fromDate < :toDate AND U.toDate > :toDate))");
+							" AND ((B.fromDate < :fromDate AND B.toDate > :fromDate) OR (B.fromDate < :toDate AND B.toDate > :toDate))");
 				}
 				hql += condition.toString();
 				Query query = session.createQuery(hql);
@@ -248,13 +251,13 @@ public class BookingRepositoryImpl implements BookingRepository {
 			if (session != null) {
 				transaction = session.beginTransaction();
 
-				String hql = " FROM Booking U INNER JOIN";
+				String hql = " FROM Booking B INNER JOIN";
 				if (className.equals(House.class.getName())) {
-					hql += " House H ON U.classPK = H.houseId";
+					hql += " House H ON B.classPK = H.houseId";
 				}
-				hql += " WHERE 1 = 1 AND U.userId = :userId AND U.className = :className";
+				hql += " WHERE 1 = 1 AND B.userId = :userId AND B.className = :className";
 				if (bookingStatus != null) {
-					hql += " AND U.bookingStatus = :bookingStatus";
+					hql += " AND B.bookingStatus = :bookingStatus";
 				}
 				Query query = session.createQuery(hql);
 				query.setParameter("userId", userId);
@@ -325,5 +328,16 @@ public class BookingRepositoryImpl implements BookingRepository {
 		session.close();
 
 		return result;
+	}
+
+	@Override
+	public List<Booking> findAll() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		transaction = session.beginTransaction();
+		List<Booking> bookings = HibernateUtil.loadAllData(Booking.class, session);
+		transaction.commit();
+		session.close();
+		return bookings;
 	}
 }

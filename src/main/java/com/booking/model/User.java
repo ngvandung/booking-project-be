@@ -45,18 +45,28 @@ public class User {
 	private String description;
 	@Column(name = "isHost", nullable = false)
 	private Integer isHost;
+	@Column(name = "sex", nullable = true)
+	private Integer sex;
 	@Column(name = "isEnabled", nullable = false)
 	private Integer isEnabled;
 	@Column(name = "tmnCode", nullable = true)
 	private String tmnCode;
 	@Column(name = "hashSecret", nullable = true)
 	private String hashSecret;
-	@Column(name = "avatar", columnDefinition="LONGTEXT", nullable = true)
+	@Column(name = "avatar", columnDefinition = "LONGTEXT", nullable = true)
 	private String avatar;
 	@Column(name = "createDate", nullable = false)
 	private Date createDate;
 	@Column(name = "modifiedDate", nullable = false)
 	private Date modifiedDate;
+
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
 
 	public String getAvatar() {
 		return avatar;

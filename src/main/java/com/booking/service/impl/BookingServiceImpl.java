@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 
 import com.booking.model.Booking;
 import com.booking.repository.BookingRepository;
-import com.booking.service.CounterService;
 import com.booking.service.BookingService;
+import com.booking.service.CounterService;
 
 /**
  * @author ddung
@@ -135,8 +135,8 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> findByToDate(Date now, String bookingStatus) {
-		return bookingRepository.findByToDate(now, bookingStatus);
+	public List<Booking> findByToDate(String bookingStatus) {
+		return bookingRepository.findByToDate(bookingStatus);
 	}
 
 	@Override
@@ -161,4 +161,14 @@ public class BookingServiceImpl implements BookingService {
 		return bookingRepository.findDetailBookings(ownerId, classPK, className, bookingStatus);
 	}
 
+	@Override
+	public void indexing() {
+		List<Booking> bookings = bookingRepository.findAll();
+		bookings.parallelStream().forEach(booking -> {
+			IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(booking.getBookingId()))
+					.withObject(booking).build();
+			String documentId = elasticsearchOperations.index(indexQuery);
+			log.info("documentId: " + documentId);
+		});
+	}
 }
