@@ -10,7 +10,7 @@
 <link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css>
 <link href=<c:url value='/static/css/app.c7917dad.css' />  rel=preload as=style>
 <link href=<c:url value='/static/css/chunk-vendors.43378290.css' /> rel=preload as=style>
-<link href=<c:url value='/static/js/app.b5259963.js' /> rel=preload as=script>
+<link href=<c:url value='/static/js/app.31956bba.js' /> rel=preload as=script>
 <link href=<c:url value='/static/js/chunk-vendors.8c38899c.js' /> rel=preload as=script>
 <link href=<c:url value='/static/css/chunk-vendors.43378290.css' /> rel=stylesheet>
 <link href=<c:url value='/static/css/app.c7917dad.css' /> rel=stylesheet>
@@ -18,6 +18,6 @@
 <body><noscript><strong>We're sorry but booking doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript>
 <div id=app></div>
 <script type=text/javascript src=<c:url value='/static/js/chunk-vendors.8c38899c.js' />></script>
-<script type=text/javascript src=<c:url value='/static/js/app.b5259963.js' />></script>
+<script type=text/javascript src=<c:url value='/static/js/app.31956bba.js' />></script>
 
 

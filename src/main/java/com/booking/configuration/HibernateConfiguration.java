@@ -44,6 +44,10 @@ public class HibernateConfiguration {
 
 	@Bean
 	public DataSource dataSource() {
+		System.out.println("==============> URL:" + environment.getRequiredProperty("jdbc.url"));
+		System.out.println("==============> username:" + environment.getRequiredProperty("jdbc.username"));
+		System.out.println("==============> password:" + environment.getRequiredProperty("jdbc.password"));
+		System.out.println("==============> Elasticsearch: " + environment.getRequiredProperty("host.elasticsearch"));
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
 		dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
