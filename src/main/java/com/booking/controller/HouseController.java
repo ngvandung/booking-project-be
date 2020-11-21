@@ -41,11 +41,8 @@ public class HouseController {
 				house.getStateId(), house.getStateName(), house.getCityId(), house.getCityName(), house.getDistrictId(),
 				house.getDistrictName(), house.getVillageId(), house.getVillageName(), house.getLinkGoogleMap(),
 				house.getPrice(), house.getBedroom(), house.getLivingroom(), house.getBathroom(), house.getMaxGuest(),
-				house.getIsWifi(), house.getIsOven(), house.getIsAirConditioning(), house.getIsShampoo(),
-				house.getIsTowels(), house.getIsToothpaste(), house.getIsSoap(), house.getIsHairDryer(),
-				house.getIsMicroWave(), house.getIsFridge(), house.getIsBalcony(), house.getIsWindows(),
-				house.getIsSmartTv(), house.getIsExtraMattress(), house.getDescription(),
-				userContext.getUser().getUserId(), userContext);
+				house.getExtensionCategoryDetailIds(), house.getDescription(), userContext.getUser().getUserId(),
+				userContext);
 	}
 
 	@RequestMapping(value = "/house/indexing", method = RequestMethod.POST)
@@ -72,11 +69,8 @@ public class HouseController {
 				house.getTypeName(), house.getStateId(), house.getStateName(), house.getCityId(), house.getCityName(),
 				house.getDistrictId(), house.getDistrictName(), house.getVillageId(), house.getVillageName(),
 				house.getLinkGoogleMap(), house.getPrice(), house.getBedroom(), house.getLivingroom(),
-				house.getBathroom(), house.getMaxGuest(), house.getIsWifi(), house.getIsOven(),
-				house.getIsAirConditioning(), house.getIsShampoo(), house.getIsTowels(), house.getIsToothpaste(),
-				house.getIsSoap(), house.getIsHairDryer(), house.getIsMicroWave(), house.getIsFridge(),
-				house.getIsBalcony(), house.getIsWindows(), house.getIsSmartTv(), house.getIsExtraMattress(),
-				house.getDescription(), house.getIsActive(), userContext.getUser().getUserId(), userContext);
+				house.getBathroom(), house.getMaxGuest(), house.getExtensionCategoryDetailIds(), house.getDescription(),
+				house.getIsActive(), userContext.getUser().getUserId(), userContext);
 
 	}
 

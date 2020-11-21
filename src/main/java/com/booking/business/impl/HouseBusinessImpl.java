@@ -38,9 +38,8 @@ public class HouseBusinessImpl implements HouseBusiness {
 	public House updateHouse(long houseId, String name, long houseTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
 			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
-			int maxGuest, int isWifi, int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste,
-			int isSoap, int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
-			int isExtraMattress, String description, int isActive, long ownerHouseId, UserContext userContext) {
+			int maxGuest, String extensionCategoryDetailIds, String description, int isActive, long ownerHouseId,
+			UserContext userContext) {
 
 		User user = userService.findByUserId(userContext.getUser().getUserId());
 		if (user.getIsEnabled() != 1) {
@@ -51,9 +50,8 @@ public class HouseBusinessImpl implements HouseBusiness {
 		if (PermissionCheckerFactoryUtil.isOwner(userContext, house.getUserId())) {
 			return houseService.updateHouse(houseId, name, houseTypeId, typeName, stateId, stateName, cityId, cityName,
 					districtId, districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom,
-					bathroom, maxGuest, isWifi, isOven, isAirConditioning, isShampoo, isTowels, isToothpaste, isSoap,
-					isHairDryer, isMicroWave, isFridge, isBalcony, isWindows, isSmartTv, isExtraMattress, description,
-					isActive, ownerHouseId, userContext.getUser().getUserId());
+					bathroom, maxGuest, extensionCategoryDetailIds, description, isActive, ownerHouseId,
+					userContext.getUser().getUserId());
 		} else {
 			throw new ForbiddenException();
 		}
@@ -62,10 +60,8 @@ public class HouseBusinessImpl implements HouseBusiness {
 	@Override
 	public House createHouse(String name, long houseTypeId, String typeName, long stateId, String stateName,
 			long cityId, String cityName, long districtId, String districtName, long villageId, String villageName,
-			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest, int isWifi,
-			int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste, int isSoap,
-			int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
-			int isExtraMattress, String description, long ownerHouseId, UserContext userContext) {
+			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest,
+			String extensionCategoryDetailIds, String description, long ownerHouseId, UserContext userContext) {
 
 		User user = userService.findByUserId(userContext.getUser().getUserId());
 		if (user.getIsEnabled() != 1) {
@@ -75,9 +71,7 @@ public class HouseBusinessImpl implements HouseBusiness {
 
 		return houseService.createHouse(name, houseTypeId, typeName, stateId, stateName, cityId, cityName, districtId,
 				districtName, villageId, villageName, linkGoogleMap, price, bedroom, livingroom, bathroom, maxGuest,
-				isWifi, isOven, isAirConditioning, isShampoo, isTowels, isToothpaste, isSoap, isHairDryer, isMicroWave,
-				isFridge, isBalcony, isWindows, isSmartTv, isExtraMattress, description, ownerHouseId,
-				userContext.getUser().getUserId());
+				extensionCategoryDetailIds, description, ownerHouseId, userContext.getUser().getUserId());
 	}
 
 	@Override

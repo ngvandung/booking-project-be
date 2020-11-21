@@ -47,9 +47,8 @@ public class HouseServiceImpl implements HouseService {
 	public House updateHouse(long houseId, String name, long houseTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
 			String villageName, String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom,
-			int maxGuest, int isWifi, int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste,
-			int isSoap, int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
-			int isExtraMattress, String description, int isActive, long ownerHouseId, long userId) {
+			int maxGuest, String extensionCategoryDetailIds, String description, int isActive, long ownerHouseId,
+			long userId) {
 		House house = houseRepository.findById(houseId);
 
 		if (house != null) {
@@ -75,20 +74,7 @@ public class HouseServiceImpl implements HouseService {
 			house.setOwnerHouseId(ownerHouseId);
 			house.setPrice(price);
 			house.setUserId(userId);
-			house.setIsWifi(isWifi);
-			house.setIsOven(isOven);
-			house.setIsAirConditioning(isAirConditioning);
-			house.setIsShampoo(isShampoo);
-			house.setIsTowels(isTowels);
-			house.setIsToothpaste(isToothpaste);
-			house.setIsSoap(isSoap);
-			house.setIsHairDryer(isHairDryer);
-			house.setIsMicroWave(isMicroWave);
-			house.setIsFridge(isFridge);
-			house.setIsBalcony(isBalcony);
-			house.setIsWindows(isWindows);
-			house.setIsSmartTv(isSmartTv);
-			house.setIsExtraMattress(isExtraMattress);
+			house.setExtensionCategoryDetailIds(extensionCategoryDetailIds);
 
 			house = houseRepository.updateHouse(house);
 			if (house != null) {
@@ -105,10 +91,8 @@ public class HouseServiceImpl implements HouseService {
 	@Override
 	public House createHouse(String name, long houseTypeId, String typeName, long stateId, String stateName,
 			long cityId, String cityName, long districtId, String districtName, long villageId, String villageName,
-			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest, int isWifi,
-			int isOven, int isAirConditioning, int isShampoo, int isTowels, int isToothpaste, int isSoap,
-			int isHairDryer, int isMicroWave, int isFridge, int isBalcony, int isWindows, int isSmartTv,
-			int isExtraMattress, String description, long ownerHouseId, long userId) {
+			String linkGoogleMap, double price, int bedroom, int livingroom, int bathroom, int maxGuest,
+			String extensionCategoryDetailIds, String description, long ownerHouseId, long userId) {
 		House house = new House();
 		long houseId = counterService.increment(House.class.getName());
 
@@ -136,20 +120,7 @@ public class HouseServiceImpl implements HouseService {
 		house.setOwnerHouseId(ownerHouseId);
 		house.setPrice(price);
 		house.setUserId(userId);
-		house.setIsWifi(isWifi);
-		house.setIsOven(isOven);
-		house.setIsAirConditioning(isAirConditioning);
-		house.setIsShampoo(isShampoo);
-		house.setIsTowels(isTowels);
-		house.setIsToothpaste(isToothpaste);
-		house.setIsSoap(isSoap);
-		house.setIsHairDryer(isHairDryer);
-		house.setIsMicroWave(isMicroWave);
-		house.setIsFridge(isFridge);
-		house.setIsBalcony(isBalcony);
-		house.setIsWindows(isWindows);
-		house.setIsSmartTv(isSmartTv);
-		house.setIsExtraMattress(isExtraMattress);
+		house.setExtensionCategoryDetailIds(extensionCategoryDetailIds);
 
 		house = houseRepository.createHouse(house);
 		if (house != null) {

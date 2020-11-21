@@ -57,34 +57,8 @@ public class House {
 	private Integer bathroom;
 	@Column(name = "maxGuest", nullable = false)
 	private Integer maxGuest;
-	@Column(name = "isWifi", nullable = true)
-	private Integer isWifi;
-	@Column(name = "isOven", nullable = true)
-	private Integer isOven;
-	@Column(name = "isAirConditioning", nullable = true)
-	private Integer isAirConditioning;
-	@Column(name = "isShampoo", nullable = true)
-	private Integer isShampoo;
-	@Column(name = "isTowels", nullable = true)
-	private Integer isTowels;
-	@Column(name = "isToothpaste", nullable = true)
-	private Integer isToothpaste;
-	@Column(name = "isSoap", nullable = true)
-	private Integer isSoap;
-	@Column(name = "isHairDryer", nullable = true)
-	private Integer isHairDryer;
-	@Column(name = "isMicroWave", nullable = true)
-	private Integer isMicroWave;
-	@Column(name = "isFridge", nullable = true)
-	private Integer isFridge;
-	@Column(name = "isBalcony", nullable = true)
-	private Integer isBalcony;
-	@Column(name = "isWindows", nullable = true)
-	private Integer isWindows;
-	@Column(name = "isSmartTv", nullable = true)
-	private Integer isSmartTv;
-	@Column(name = "isExtraMattress", nullable = true)
-	private Integer isExtraMattress;
+	@Column(name = "extensionCategoryDetailIds", nullable = true)
+	private String extensionCategoryDetailIds;
 	@Column(name = "description", columnDefinition = "LONGTEXT", nullable = true)
 	private String description;
 	@Column(name = "isActive", nullable = false)
@@ -242,116 +216,12 @@ public class House {
 		this.maxGuest = maxGuest;
 	}
 
-	public Integer getIsWifi() {
-		return isWifi;
+	public String getExtensionCategoryDetailIds() {
+		return extensionCategoryDetailIds;
 	}
 
-	public void setIsWifi(Integer isWifi) {
-		this.isWifi = isWifi;
-	}
-
-	public Integer getIsOven() {
-		return isOven;
-	}
-
-	public void setIsOven(Integer isOven) {
-		this.isOven = isOven;
-	}
-
-	public Integer getIsAirConditioning() {
-		return isAirConditioning;
-	}
-
-	public void setIsAirConditioning(Integer isAirConditioning) {
-		this.isAirConditioning = isAirConditioning;
-	}
-
-	public Integer getIsShampoo() {
-		return isShampoo;
-	}
-
-	public void setIsShampoo(Integer isShampoo) {
-		this.isShampoo = isShampoo;
-	}
-
-	public Integer getIsTowels() {
-		return isTowels;
-	}
-
-	public void setIsTowels(Integer isTowels) {
-		this.isTowels = isTowels;
-	}
-
-	public Integer getIsToothpaste() {
-		return isToothpaste;
-	}
-
-	public void setIsToothpaste(Integer isToothpaste) {
-		this.isToothpaste = isToothpaste;
-	}
-
-	public Integer getIsSoap() {
-		return isSoap;
-	}
-
-	public void setIsSoap(Integer isSoap) {
-		this.isSoap = isSoap;
-	}
-
-	public Integer getIsHairDryer() {
-		return isHairDryer;
-	}
-
-	public void setIsHairDryer(Integer isHairDryer) {
-		this.isHairDryer = isHairDryer;
-	}
-
-	public Integer getIsMicroWave() {
-		return isMicroWave;
-	}
-
-	public void setIsMicroWave(Integer isMicroWave) {
-		this.isMicroWave = isMicroWave;
-	}
-
-	public Integer getIsFridge() {
-		return isFridge;
-	}
-
-	public void setIsFridge(Integer isFridge) {
-		this.isFridge = isFridge;
-	}
-
-	public Integer getIsBalcony() {
-		return isBalcony;
-	}
-
-	public void setIsBalcony(Integer isBalcony) {
-		this.isBalcony = isBalcony;
-	}
-
-	public Integer getIsWindows() {
-		return isWindows;
-	}
-
-	public void setIsWindows(Integer isWindows) {
-		this.isWindows = isWindows;
-	}
-
-	public Integer getIsSmartTv() {
-		return isSmartTv;
-	}
-
-	public void setIsSmartTv(Integer isSmartTv) {
-		this.isSmartTv = isSmartTv;
-	}
-
-	public Integer getIsExtraMattress() {
-		return isExtraMattress;
-	}
-
-	public void setIsExtraMattress(Integer isExtraMattress) {
-		this.isExtraMattress = isExtraMattress;
+	public void setExtensionCategoryDetailIds(String extensionCategoryDetailIds) {
+		this.extensionCategoryDetailIds = extensionCategoryDetailIds;
 	}
 
 	public String getDescription() {
