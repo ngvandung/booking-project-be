@@ -19,8 +19,8 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
  *
  */
 public class EmailSender {
-	private static final String MY_EMAIL = "********";
-	private static final String MY_PASSWORD = "*******";
+	private static final String MY_EMAIL = "*****************";
+	private static final String MY_PASSWORD = "************";
 
 	private static final Logger _log = Logger.getLogger(EmailSender.class);
 

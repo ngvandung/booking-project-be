@@ -16,4 +16,6 @@ public class HouseConstant {
 
 	public static final int YES = 1;
 	public static final int NO = 2;
+
+	public static final int MAX_HOUES_RECOMMENDATION = 5;
 }

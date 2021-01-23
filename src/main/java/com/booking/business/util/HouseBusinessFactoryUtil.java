@@ -3,6 +3,7 @@
  */
 package com.booking.business.util;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +66,13 @@ public class HouseBusinessFactoryUtil {
 
 	public static List<Map<String, Object>> findMyHouses(Long ownerHouseId, String flag, UserContext userContext) {
 		return getHouseBusiness().findMyHouses(ownerHouseId, flag, userContext);
+	}
+
+	public static List<House> recommenderByKMean(long houseId) throws IOException {
+		return getHouseBusiness().recommenderByKMean(houseId);
+	}
+
+	public static List<House> recommenderByCollaborativeFiltering(long userId) throws IOException {
+		return getHouseBusiness().recommenderByCollaborativeFiltering(userId);
 	}
 }

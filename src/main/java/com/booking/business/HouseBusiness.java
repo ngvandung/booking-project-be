@@ -3,6 +3,7 @@
  */
 package com.booking.business;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,10 @@ import com.booking.util.UserContext;
  */
 public interface HouseBusiness {
 	public House findById(long houseId);
+
+	public List<House> recommenderByKMean(long houseId) throws IOException;
+
+	public List<House> recommenderByCollaborativeFiltering(long userId) throws IOException;
 
 	public House updateHouse(long houseId, String name, long houseTypeId, String typeName, long stateId,
 			String stateName, long cityId, String cityName, long districtId, String districtName, long villageId,
